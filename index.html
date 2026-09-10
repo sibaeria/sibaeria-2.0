@@ -5,11 +5,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Duel</title>
-
 <link rel="manifest" href="./manifest.json?v=5">
 <link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png?v=5">
 <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5">
-
 <meta name="theme-color" content="#0b0d12">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -20,130 +18,123 @@
 
 <style>
 :root{
-  --bg:#0b0d12;
-  --card:rgba(18,22,31,.78);
-  --line:rgba(255,255,255,.13);
-  --txt:#f6f7fb;
-  --muted:#aeb5c4;
-  --p1:#62d9ff;
-  --p2:#b58cff;
-  --safe-top:env(safe-area-inset-top,0px);
-  --safe-bottom:env(safe-area-inset-bottom,0px);
-  --safe-left:env(safe-area-inset-left,0px);
-  --safe-right:env(safe-area-inset-right,0px);
+--bg:#0b0d12;
+--card:rgba(18,22,31,.78);
+--line:rgba(255,255,255,.13);
+--txt:#f6f7fb;
+--muted:#aeb5c4;
+--p1:#62d9ff;
+--p2:#b58cff;
+--safe-top:env(safe-area-inset-top,0px);
+--safe-bottom:env(safe-area-inset-bottom,0px);
+--safe-left:env(safe-area-inset-left,0px);
+--safe-right:env(safe-area-inset-right,0px)
 }
 
 *{
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
+box-sizing:border-box;
+-webkit-tap-highlight-color:transparent
 }
 
 html,body{
-  margin:0;
-  width:100%;
-  height:100%;
-  min-height:100%;
-  overflow:hidden;
-  overscroll-behavior:none;
-  background:var(--bg);
+margin:0;
+width:100%;
+height:100%;
+min-height:100%;
+overflow:hidden;
+overscroll-behavior:none;
+background:#0b0d12
 }
 
 html{
-  touch-action:manipulation;
+touch-action:manipulation;
+background:#0b0d12
 }
 
 body{
-  position:fixed;
-  inset:0;
-  background:
-    linear-gradient(135deg,rgba(5,7,12,.46),rgba(5,7,12,.18)),
-    var(--user-bg);
-  background-size:cover;
-  background-position:center;
-  background-attachment:fixed,fixed;
-  background-repeat:no-repeat,no-repeat;
-  background-origin:border-box;
-  background-clip:border-box;
-  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
-  color:var(--txt);
-  -webkit-text-size-adjust:100%;
-  touch-action:manipulation;
-  user-select:none;
-  -webkit-user-select:none;
+position:fixed;
+inset:0;
+width:100%;
+height:100%;
+min-height:100%;
+background:
+linear-gradient(135deg,rgba(5,7,12,.46),rgba(5,7,12,.18)),
+var(--user-bg,#0b0d12);
+background-size:cover,cover;
+background-position:center,center;
+background-repeat:no-repeat,no-repeat;
+background-attachment:fixed,fixed;
+font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+color:var(--txt);
+-webkit-text-size-adjust:100%;
+touch-action:manipulation;
+user-select:none;
+-webkit-user-select:none
 }
 
-button,input,textarea{
-  font:inherit;
-}
-
+button,input,textarea{font:inherit}
 button{
-  color:inherit;
-  border:0;
-  cursor:pointer;
-  touch-action:manipulation;
+color:inherit;
+border:0;
+cursor:pointer;
+touch-action:manipulation
 }
+button:active{transform:scale(.96)}
+.hidden-file{display:none!important}
 
-button:active{
-  transform:scale(.96);
-}
-
-.hidden-file{
-  display:none!important;
-}
-
-/* APP */
 .app{
-  width:100%;
-  max-width:760px;
-  height:100vh;
-  height:100svh;
-  height:100dvh;
-  min-height:0;
-  margin:auto;
-  display:flex;
-  flex-direction:column;
-  padding:
-    max(10px,calc(var(--safe-top) + 10px))
-    max(7px,var(--safe-right))
-    max(7px,var(--safe-bottom))
-    max(7px,var(--safe-left));
-  gap:7px;
-  overflow:hidden;
+width:100%;
+max-width:760px;
+height:100%;
+height:100vh;
+height:100svh;
+height:100dvh;
+min-height:0;
+margin:0 auto;
+display:flex;
+flex-direction:column;
+padding:max(10px,calc(var(--safe-top) + 10px))
+max(7px,var(--safe-right))
+max(7px,var(--safe-bottom))
+max(7px,var(--safe-left));
+gap:7px;
+overflow:hidden;
+background:transparent
 }
 
 @media all and (display-mode:standalone){
-  .app{
-    height:100vh;
-    height:100dvh;
-  }
+.app{
+height:100%;
+height:100vh;
+height:100dvh
+}
 }
 
-/* TOP BAR */
 .topbar{
-  height:44px;
-  min-height:44px;
-  flex:0 0 44px;
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:7px;
+height:44px;
+min-height:44px;
+flex:0 0 44px;
+display:grid;
+grid-template-columns:repeat(4,minmax(0,1fr));
+gap:7px
 }
 
 .icon,.tool{
-  min-width:0;
-  min-height:0;
-  height:100%;
-  width:100%;
-  border-radius:14px;
-  border:1px solid var(--line);
-  background:rgba(12,15,22,.78);
-  backdrop-filter:blur(16px);
-  -webkit-backdrop-filter:blur(16px);
-  box-shadow:0 8px 30px #0004;
-  font-size:19px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  -webkit-touch-callout:none;
+min-width:0;
+min-height:0;
+height:100%;
+width:100%;
+border-radius:14px;
+border:1px solid var(--line);
+background:rgba(12,15,22,.78);
+backdrop-filter:blur(16px);
+-webkit-backdrop-filter:blur(16px);
+box-shadow:0 8px 30px #0004;
+font-size:19px;
+display:flex;
+align-items:center;
+justify-content:center;
+-webkit-touch-callout:none
 }
 
 .icon.timer,.tool.timer{color:#8cf3ff}
@@ -151,182 +142,174 @@ button:active{
 .icon.refresh{color:#f6f7fb}
 .icon.background{color:#bdefff}
 
-/* PLAYERS */
 .players{
-  flex:1;
-  min-height:0;
-  display:grid;
-  grid-template-rows:1fr 1fr;
-  gap:8px;
+flex:1;
+min-height:0;
+display:grid;
+grid-template-rows:1fr 1fr;
+gap:8px
 }
 
 .player{
-  min-height:0;
-  border:1px solid var(--line);
-  border-radius:24px;
-  background:rgba(18,22,31,.60);
-  backdrop-filter:blur(18px);
-  -webkit-backdrop-filter:blur(18px);
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  padding:12px;
-  box-shadow:0 20px 60px #0004;
-  position:relative;
-  overflow:hidden;
-  isolation:isolate;
+min-height:0;
+border:1px solid var(--line);
+border-radius:24px;
+background:rgba(18,22,31,.60);
+backdrop-filter:blur(18px);
+-webkit-backdrop-filter:blur(18px);
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+padding:12px;
+box-shadow:0 20px 60px #0004;
+position:relative;
+overflow:hidden;
+isolation:isolate
 }
 
 .player:before{
-  content:"";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  z-index:-1;
-  opacity:.10;
+content:"";
+position:absolute;
+inset:0;
+pointer-events:none;
+z-index:-1;
+opacity:.10
 }
 
 .p1:before{
-  background:radial-gradient(circle at 50% 0%,var(--p1),transparent 55%);
+background:radial-gradient(circle at 50% 0%,var(--p1),transparent 55%)
 }
 
 .p2:before{
-  background:radial-gradient(circle at 50% 100%,var(--p2),transparent 55%);
+background:radial-gradient(circle at 50% 100%,var(--p2),transparent 55%)
 }
 
 .player-image{
-  position:absolute;
-  top:9px;
-  left:9px;
-  width:78px;
-  height:78px;
-  border-radius:18px;
-  border:1px solid rgba(255,255,255,.16);
-  background:rgba(12,15,22,.66);
-  backdrop-filter:blur(15px);
-  -webkit-backdrop-filter:blur(15px);
-  box-shadow:0 10px 30px #0006;
-  display:grid;
-  place-items:center;
-  overflow:hidden;
-  touch-action:manipulation;
-  user-select:none;
-  -webkit-user-select:none;
+position:absolute;
+top:9px;
+left:9px;
+width:78px;
+height:78px;
+border-radius:18px;
+border:1px solid rgba(255,255,255,.16);
+background:rgba(12,15,22,.66);
+backdrop-filter:blur(15px);
+-webkit-backdrop-filter:blur(15px);
+box-shadow:0 10px 30px #0006;
+display:grid;
+place-items:center;
+overflow:hidden;
+touch-action:manipulation;
+user-select:none;
+-webkit-user-select:none
 }
 
 .player-image img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  border-radius:17px;
-  display:block;
+width:100%;
+height:100%;
+object-fit:cover;
+border-radius:17px;
+display:block
 }
 
-.player-image.empty{
-  cursor:pointer;
-}
+.player-image.empty{cursor:pointer}
 
 .player-image.empty:before{
-  content:"+";
-  color:#9ca5b6;
-  font-size:23px;
-  line-height:1;
+content:"+";
+color:#9ca5b6;
+font-size:23px;
+line-height:1
 }
 
 .player-image.empty:after{
-  content:"IMG";
-  position:absolute;
-  bottom:4px;
-  left:0;
-  right:0;
-  text-align:center;
-  font-size:7px;
-  letter-spacing:.12em;
-  color:#6f7787;
+content:"IMG";
+position:absolute;
+bottom:4px;
+left:0;
+right:0;
+text-align:center;
+font-size:7px;
+letter-spacing:.12em;
+color:#6f7787
 }
 
-.player-image input{
-  display:none;
-}
+.player-image input{display:none}
 
 .pname{
-  font-size:12px;
-  color:var(--muted);
-  letter-spacing:.12em;
-  text-transform:uppercase;
-  text-align:center;
-  padding:7px 12px;
-  border-radius:10px;
-  transition:.2s;
-  max-width:70%;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-  cursor:pointer;
+font-size:12px;
+color:var(--muted);
+letter-spacing:.12em;
+text-transform:uppercase;
+text-align:center;
+padding:7px 12px;
+border-radius:10px;
+transition:.2s;
+max-width:70%;
+overflow:hidden;
+text-overflow:ellipsis;
+white-space:nowrap;
+cursor:pointer
 }
 
 .pname:active{
-  background:#ffffff12;
-  transform:scale(.97);
+background:#ffffff12;
+transform:scale(.97)
 }
 
 .p1 .pname{color:#a9edff}
 .p2 .pname{color:#d1bdff}
 
 .lp-line{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:9px;
-  width:100%;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:9px;
+width:100%
 }
 
 .lp{
-  font-size:clamp(48px,13vw,82px);
-  font-weight:800;
-  letter-spacing:-.05em;
-  line-height:1;
-  margin:5px 0 8px;
-  text-shadow:0 5px 30px #0008;
-  font-variant-numeric:tabular-nums;
+font-size:clamp(48px,13vw,82px);
+font-weight:800;
+letter-spacing:-.05em;
+line-height:1;
+margin:5px 0 8px;
+text-shadow:0 5px 30px #0008;
+font-variant-numeric:tabular-nums
 }
 
 .life-bar{
-  width:min(440px,92%);
-  height:7px;
-  border-radius:999px;
-  background:#ffffff12;
-  border:1px solid #ffffff14;
-  overflow:hidden;
-  margin:0 auto 10px;
+width:min(440px,92%);
+height:7px;
+border-radius:999px;
+background:#ffffff12;
+border:1px solid #ffffff14;
+overflow:hidden;
+margin:0 auto 7px
 }
 
 .life-fill{
-  height:100%;
-  width:100%;
-  border-radius:inherit;
-  transition:
-    width .3s ease,
-    background-color .3s ease,
-    box-shadow .3s ease;
+height:100%;
+width:100%;
+border-radius:inherit;
+transition:width .3s ease,background-color .3s ease,box-shadow .3s ease
 }
 
 .controls{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:6px;
-  max-width:390px;
-  width:100%;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:6px;
+max-width:390px;
+width:100%
 }
 
 .lp-op{
-  height:39px;
-  border-radius:12px;
-  background:#ffffff12;
-  border:1px solid var(--line);
-  font-weight:800;
-  font-size:22px;
+height:39px;
+border-radius:12px;
+background:#ffffff12;
+border:1px solid var(--line);
+font-weight:800;
+font-size:22px
 }
 
 .lp-op.minus{color:#ff8da4}
@@ -334,3059 +317,2165 @@ button:active{
 .lp-op.selected{background:#ffffff25}
 
 .half-btn{
-  flex:0 0 30px;
-  width:30px;
-  height:30px;
-  margin:0;
-  border-radius:12px;
-  background:#ffffff12;
-  border:1px solid var(--line);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:#e9edf6;
-  box-shadow:0 6px 20px #0003;
+flex:0 0 30px;
+width:30px;
+height:30px;
+margin:0;
+border-radius:12px;
+background:#ffffff12;
+border:1px solid var(--line);
+display:flex;
+align-items:center;
+justify-content:center;
+color:#e9edf6;
+box-shadow:0 6px 20px #0003
 }
 
 .half-btn .half-icon{
-  font-size:16px;
-  line-height:1;
-  font-weight:900;
+font-size:16px;
+line-height:1;
+font-weight:900
 }
 
-/* PLAYER NOTES */
-.player-note{
-  width:min(390px,100%);
-  min-height:24px;
-  max-height:48px;
-  margin-top:6px;
-  padding:4px 9px;
-  overflow:hidden;
-  color:#dce2ed;
-  font-size:15px;
-  line-height:1.25;
-  text-align:center;
-  white-space:pre-wrap;
-  word-break:break-word;
-  opacity:0;
-  transition:opacity .18s ease;
+.timer-mini{
+flex:0 0 58px;
+width:58px;
+height:30px;
+margin:0;
+border-radius:12px;
+background:#ffffff12;
+border:1px solid var(--line);
+display:flex;
+align-items:center;
+justify-content:center;
+color:#8cf3ff;
+font-size:11px;
+font-weight:900;
+box-shadow:0 6px 20px #0003
 }
 
-.player-note.visible{
-  opacity:1;
+/* APPUNTI SUI RIQUADRI GIOCATORI */
+.note-preview{
+width:100%;
+max-width:390px;
+min-height:0;
+margin:5px 0 2px;
+padding:0 7px;
+color:#cfd5e1;
+font-size:16px;
+line-height:1.18;
+font-weight:500;
+text-align:center;
+white-space:pre-wrap;
+word-break:normal;
+overflow-wrap:anywhere;
+hyphens:none;
+overflow:hidden;
+height:auto;
+max-height:76px;
+display:-webkit-box;
+-webkit-box-orient:vertical;
+-webkit-line-clamp:4
 }
 
-.p1 .player-note{
-  color:#cfefff;
-}
+.note-preview:empty{display:none}
+.p1 .note-preview{color:#a9edff}
+.p2 .note-preview{color:#d1bdff}
 
-.p2 .player-note{
-  color:#e2d8ff;
-}
-
-/* BOTTOM */
 .bottom{
-  height:51px;
-  min-height:51px;
-  flex:0 0 51px;
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:7px;
-  overflow:visible;
+height:51px;
+min-height:51px;
+flex:0 0 51px;
+display:grid;
+grid-template-columns:repeat(4,minmax(0,1fr));
+gap:7px;
+overflow:visible
 }
 
 .bottom .tool{
-  min-width:0;
-  min-height:0;
-  overflow:hidden;
+min-width:0;
+min-height:0;
+overflow:hidden
 }
 
-.tool{
-  font-size:19px;
-}
+.tool{font-size:19px}
 
-.tool.timer{color:#8cf3ff}
-.tool.undo{color:#ffd27d}
-
-/* MODAL */
 .modal{
-  position:fixed;
-  inset:0;
-  background:transparent;
-  backdrop-filter:none;
-  -webkit-backdrop-filter:none;
-  display:none;
-  align-items:flex-end;
-  justify-content:center;
-  padding:
-    9px
-    max(9px,var(--safe-right))
-    max(9px,var(--safe-bottom))
-    max(9px,var(--safe-left));
-  z-index:20;
-  overscroll-behavior:none;
+position:fixed;
+inset:0;
+width:100%;
+height:100%;
+background:transparent;
+backdrop-filter:none;
+-webkit-backdrop-filter:none;
+display:none;
+align-items:flex-end;
+justify-content:center;
+padding:9px
+max(9px,var(--safe-right))
+max(9px,var(--safe-bottom))
+max(9px,var(--safe-left));
+z-index:20;
+overscroll-behavior:none
 }
 
-.modal.open{
-  display:flex;
-}
+.modal.open{display:flex}
 
 .sheet{
-  width:min(700px,100%);
-  max-height:92svh;
-  max-height:92dvh;
-  background:rgba(17,21,30,.98);
-  border:1px solid var(--line);
-  border-radius:23px;
-  padding:13px;
-  box-shadow:0 30px 100px #000b;
-  overflow:hidden;
+width:min(700px,100%);
+max-height:92svh;
+max-height:92dvh;
+background:rgba(17,21,30,.98);
+border:1px solid var(--line);
+border-radius:23px;
+padding:13px;
+box-shadow:0 30px 100px #000b;
+overflow:hidden
 }
 
 .sheethead{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:8px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:8px
 }
 
-.sheethead b{
-  font-size:17px;
-}
+.sheethead b{font-size:17px}
 
 .close{
-  width:38px;
-  height:38px;
-  flex:0 0 38px;
-  border-radius:11px;
-  background:#ffffff10;
-  border:1px solid var(--line);
-  font-size:22px;
+width:38px;
+height:38px;
+flex:0 0 38px;
+border-radius:11px;
+background:#ffffff10;
+border:1px solid var(--line);
+font-size:22px
 }
 
-/* HISTORY */
 .history{
-  overflow:auto;
-  max-height:64svh;
-  max-height:64dvh;
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-  -webkit-overflow-scrolling:touch;
+overflow:auto;
+max-height:64svh;
+max-height:64dvh;
+display:flex;
+flex-direction:column;
+gap:6px;
+-webkit-overflow-scrolling:touch
 }
 
 .history-row{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) auto;
-  gap:8px;
-  padding:10px 11px;
-  border-radius:13px;
-  background:#ffffff0d;
-  border:1px solid #ffffff12;
+display:grid;
+grid-template-columns:minmax(0,1fr) auto;
+gap:8px;
+padding:10px 11px;
+border-radius:13px;
+background:#ffffff0d;
+border:1px solid #ffffff12
 }
 
-.history-main{
-  min-width:0;
-}
-
-.history-title{
-  font-size:13px;
-  font-weight:750;
-}
-
-.history-meta{
-  color:var(--muted);
-  font-size:10px;
-  margin-top:3px;
-}
-
-.history-values{
-  text-align:right;
-  white-space:nowrap;
-}
-
-.history-change{
-  font-weight:800;
-  font-size:13px;
-}
-
+.history-main{min-width:0}
+.history-title{font-size:13px;font-weight:750}
+.history-meta{color:var(--muted);font-size:10px;margin-top:3px}
+.history-values{text-align:right;white-space:nowrap}
+.history-change{font-weight:800;font-size:13px}
 .history-change.gain{color:#83f0c4}
 .history-change.loss{color:#ff8ba3}
+.history-after{color:#aeb5c4;font-size:10px;margin-top:3px}
+.empty-state{color:#8d96a7;text-align:center;padding:45px 10px;font-size:13px}
 
-.history-after{
-  color:#aeb5c4;
-  font-size:10px;
-  margin-top:3px;
-}
-
-.empty-state{
-  color:#8d96a7;
-  text-align:center;
-  padding:45px 10px;
-  font-size:13px;
-}
-
-/* DICE / COIN */
 .dice-wrap,.coin-wrap{
-  height:55svh;
-  height:55dvh;
-  min-height:250px;
-  display:grid;
-  place-items:center;
-  position:relative;
-  overflow:hidden;
-  border-radius:18px;
-  background:radial-gradient(circle,#242a3c,#0b0e14 65%);
+height:55svh;
+height:55dvh;
+min-height:250px;
+display:grid;
+place-items:center;
+position:relative;
+overflow:hidden;
+border-radius:18px;
+background:transparent
 }
 
 .die{
-  width:100px;
-  height:100px;
-  background:linear-gradient(145deg,#fff,#cdd4df);
-  border-radius:20px;
-  display:grid;
-  place-items:center;
-  color:#111;
-  font-size:48px;
-  font-weight:900;
-  box-shadow:0 18px 40px #0008,inset 0 2px 3px #fff;
-  user-select:none;
-  -webkit-user-select:none;
-  transform:translate3d(0,0,0) rotate(0deg) scale(1);
-  -webkit-transform:translate3d(0,0,0) rotate(0deg) scale(1);
-  -webkit-backface-visibility:hidden;
-  backface-visibility:hidden;
-  isolation:isolate;
+width:100px;
+height:100px;
+background:linear-gradient(145deg,#fff,#cdd4df);
+border-radius:20px;
+display:grid;
+place-items:center;
+color:#111;
+font-size:48px;
+font-weight:900;
+box-shadow:0 18px 40px #0008,inset 0 2px 3px #fff;
+user-select:none;
+-webkit-user-select:none;
+transform:translate3d(0,0,0) rotate(0deg) scale(1);
+-webkit-transform:translate3d(0,0,0) rotate(0deg) scale(1);
+-webkit-backface-visibility:hidden;
+backface-visibility:hidden;
+isolation:isolate
 }
 
 .die.rolling{
-  animation:diceRollIOS .9s cubic-bezier(.16,.82,.22,1) both;
-  -webkit-animation:diceRollIOS .9s cubic-bezier(.16,.82,.22,1) both;
+animation:diceRollIOS .9s cubic-bezier(.16,.82,.22,1) both;
+-webkit-animation:diceRollIOS .9s cubic-bezier(.16,.82,.22,1) both
 }
 
 @keyframes diceRollIOS{
-  0%{transform:translate3d(0,72px,0) rotate(0deg) scale(.62);opacity:.35}
-  15%{transform:translate3d(18px,-38px,0) rotate(95deg) scale(.82);opacity:1}
-  30%{transform:translate3d(-22px,-82px,0) rotate(205deg) scale(1.03)}
-  45%{transform:translate3d(25px,-96px,0) rotate(330deg) scale(1.08)}
-  60%{transform:translate3d(-19px,-55px,0) rotate(465deg) scale(1.04)}
-  75%{transform:translate3d(12px,-22px,0) rotate(585deg) scale(1.01)}
-  88%{transform:translate3d(-5px,-5px,0) rotate(675deg) scale(1)}
-  100%{transform:translate3d(0,0,0) rotate(720deg) scale(1);opacity:1}
+0%{transform:translate3d(0,72px,0) rotate(0deg) scale(.62);opacity:.35}
+15%{transform:translate3d(18px,-38px,0) rotate(95deg) scale(.82);opacity:1}
+30%{transform:translate3d(-22px,-82px,0) rotate(205deg) scale(1.03)}
+45%{transform:translate3d(25px,-96px,0) rotate(330deg) scale(1.08)}
+60%{transform:translate3d(-19px,-55px,0) rotate(465deg) scale(1.04)}
+75%{transform:translate3d(12px,-22px,0) rotate(585deg) scale(1.01)}
+88%{transform:translate3d(-5px,-5px,0) rotate(675deg) scale(1)}
+100%{transform:translate3d(0,0,0) rotate(720deg) scale(1);opacity:1}
 }
 
 @-webkit-keyframes diceRollIOS{
-  0%{-webkit-transform:translate3d(0,72px,0) rotate(0deg) scale(.62);opacity:.35}
-  15%{-webkit-transform:translate3d(18px,-38px,0) rotate(95deg) scale(.82);opacity:1}
-  30%{-webkit-transform:translate3d(-22px,-82px,0) rotate(205deg) scale(1.03)}
-  45%{-webkit-transform:translate3d(25px,-96px,0) rotate(330deg) scale(1.08)}
-  60%{-webkit-transform:translate3d(-19px,-55px,0) rotate(465deg) scale(1.04)}
-  75%{-webkit-transform:translate3d(12px,-22px,0) rotate(585deg) scale(1.01)}
-  88%{-webkit-transform:translate3d(-5px,-5px,0) rotate(675deg) scale(1)}
-  100%{-webkit-transform:translate3d(0,0,0) rotate(720deg) scale(1);opacity:1}
+0%{-webkit-transform:translate3d(0,72px,0) rotate(0deg) scale(.62);opacity:.35}
+15%{-webkit-transform:translate3d(18px,-38px,0) rotate(95deg) scale(.82);opacity:1}
+30%{-webkit-transform:translate3d(-22px,-82px,0) rotate(205deg) scale(1.03)}
+45%{-webkit-transform:translate3d(25px,-96px,0) rotate(330deg) scale(1.08)}
+60%{-webkit-transform:translate3d(-19px,-55px,0) rotate(465deg) scale(1.04)}
+75%{-webkit-transform:translate3d(12px,-22px,0) rotate(585deg) scale(1.01)}
+88%{-webkit-transform:translate3d(-5px,-5px,0) rotate(675deg) scale(1)}
+100%{-webkit-transform:translate3d(0,0,0) rotate(720deg) scale(1);opacity:1}
 }
 
 .coin-stage{
-  width:170px;
-  height:200px;
-  display:grid;
-  place-items:center;
-  perspective:900px;
-  -webkit-perspective:900px;
-  position:relative;
+width:170px;
+height:200px;
+display:grid;
+place-items:center;
+perspective:900px;
+-webkit-perspective:900px;
+position:relative
 }
 
-.coin-stage::after{
-  content:"";
-  position:absolute;
-  left:50%;
-  bottom:18px;
-  width:92px;
-  height:18px;
-  border-radius:50%;
-  background:#0007;
-  filter:blur(9px);
-  -webkit-filter:blur(9px);
-  transform:translateX(-50%) scale(.72);
-  opacity:.55;
-  transition:transform .22s ease,opacity .22s ease;
+.coin-stage:after{
+content:"";
+position:absolute;
+left:50%;
+bottom:18px;
+width:92px;
+height:18px;
+border-radius:50%;
+background:#0007;
+filter:blur(9px);
+-webkit-filter:blur(9px);
+transform:translateX(-50%) scale(.72);
+opacity:.55;
+transition:transform .22s ease,opacity .22s ease
 }
 
 .coin{
-  width:122px;
-  height:122px;
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  background:
-    radial-gradient(circle at 30% 24%,#fffbe1 0 6%,#ffe88c 17%,#e6bc45 48%,#bd861d 78%,#855a12 100%);
-  border:5px solid #f8df7b;
-  color:#654700;
-  font-size:22px;
-  font-weight:900;
-  letter-spacing:.02em;
-  box-shadow:inset 0 3px 5px #fff9,inset 0 -7px 12px #6b430955,0 18px 35px #0008;
-  transform:translate3d(0,0,0) rotateX(0deg) rotateZ(0deg) scale(1);
-  -webkit-transform:translate3d(0,0,0) rotateX(0deg) rotateZ(0deg) scale(1);
-  transform-style:preserve-3d;
-  -webkit-transform-style:preserve-3d;
-  -webkit-backface-visibility:hidden;
-  backface-visibility:hidden;
-  will-change:transform,filter;
+width:122px;
+height:122px;
+border-radius:50%;
+display:grid;
+place-items:center;
+background:radial-gradient(circle at 30% 24%,#fffbe1 0 6%,#ffe88c 17%,#e6bc45 48%,#bd861d 78%,#855a12 100%);
+border:5px solid #f8df7b;
+color:#654700;
+font-size:22px;
+font-weight:900;
+letter-spacing:.02em;
+box-shadow:inset 0 3px 5px #fff9,inset 0 -7px 12px #6b430955,0 18px 35px #0008;
+transform:translate3d(0,0,0) rotateX(0deg) rotateZ(0deg) scale(1);
+-webkit-transform:translate3d(0,0,0) rotateX(0deg) rotateZ(0deg) scale(1);
+transform-style:preserve-3d;
+-webkit-transform-style:preserve-3d;
+-webkit-backface-visibility:hidden;
+backface-visibility:hidden;
+will-change:transform,filter
 }
 
 .coin.flip{
-  animation:coinFlipIOS 1.05s cubic-bezier(.14,.72,.2,1) both;
-  -webkit-animation:coinFlipIOS 1.05s cubic-bezier(.14,.72,.2,1) both;
+animation:coinFlipIOS 1.05s cubic-bezier(.14,.72,.2,1) both;
+-webkit-animation:coinFlipIOS 1.05s cubic-bezier(.14,.72,.2,1) both
 }
 
 @keyframes coinFlipIOS{
-  0%{transform:translate3d(0,88px,0) rotate(0deg) scale(.72)}
-  25%{transform:translate3d(0,-45px,0) rotate(360deg) scale(.92)}
-  50%{transform:translate3d(0,-82px,0) rotate(720deg) scale(1.07)}
-  75%{transform:translate3d(0,-30px,0) rotate(1080deg) scale(1.03)}
-  100%{transform:translate3d(0,0,0) rotate(1440deg) scale(1)}
+0%{transform:translate3d(0,88px,0) rotate(0deg) scale(.72)}
+25%{transform:translate3d(0,-45px,0) rotate(360deg) scale(.92)}
+50%{transform:translate3d(0,-82px,0) rotate(720deg) scale(1.07)}
+75%{transform:translate3d(0,-30px,0) rotate(1080deg) scale(1.03)}
+100%{transform:translate3d(0,0,0) rotate(1440deg) scale(1)}
 }
 
 @-webkit-keyframes coinFlipIOS{
-  0%{-webkit-transform:translate3d(0,88px,0) rotate(0deg) scale(.72)}
-  25%{-webkit-transform:translate3d(0,-45px,0) rotate(360deg) scale(.92)}
-  50%{-webkit-transform:translate3d(0,-82px,0) rotate(720deg) scale(1.07)}
-  75%{-webkit-transform:translate3d(0,-30px,0) rotate(1080deg) scale(1.03)}
-  100%{-webkit-transform:translate3d(0,0,0) rotate(1440deg) scale(1)}
+0%{-webkit-transform:translate3d(0,88px,0) rotate(0deg) scale(.72)}
+25%{-webkit-transform:translate3d(0,-45px,0) rotate(360deg) scale(.92)}
+50%{-webkit-transform:translate3d(0,-82px,0) rotate(720deg) scale(1.07)}
+75%{-webkit-transform:translate3d(0,-30px,0) rotate(1080deg) scale(1.03)}
+100%{-webkit-transform:translate3d(0,0,0) rotate(1440deg) scale(1)}
 }
 
 .hint{
-  position:absolute;
-  bottom:14px;
-  color:#8891a2;
-  font-size:11px;
-  text-align:center;
-  width:100%;
+position:absolute;
+bottom:14px;
+color:#8891a2;
+font-size:11px;
+text-align:center;
+width:100%
 }
 
-/* TIMER */
+.timer-head{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:8px
+}
+
 .timer-display{
-  text-align:center;
-  font-variant-numeric:tabular-nums;
-  font-size:clamp(52px,17vw,82px);
-  font-weight:800;
-  letter-spacing:-.05em;
-  margin:8px 0 14px;
+text-align:center;
+font-variant-numeric:tabular-nums;
+font-size:clamp(52px,17vw,82px);
+font-weight:800;
+letter-spacing:-.05em;
+margin:8px 0 14px
 }
 
 .timer-display.warning{
-  color:#ffbd6f;
-  text-shadow:0 0 25px rgba(255,189,111,.35);
+color:#ffbd6f;
+text-shadow:0 0 25px rgba(255,189,111,.35)
 }
 
 .timer-display.danger{
-  color:#ff718b;
-  text-shadow:0 0 25px rgba(255,113,139,.35);
-}
-
-.timer-duration-row{
-  display:flex;
-  align-items:center;
-  justify-content:flex-end;
-  width:100%;
-  margin:-2px 0 8px;
-}
-
-.timer-preset{
-  width:62px;
-  height:30px;
-  border-radius:12px;
-  background:#ffffff12;
-  border:1px solid var(--line);
-  color:#e9edf6;
-  font-size:11px;
-  font-weight:900;
-  box-shadow:0 6px 20px #0003;
+color:#ff718b;
+text-shadow:0 0 25px rgba(255,113,139,.35)
 }
 
 .timer-controls{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:7px;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:7px
 }
 
 .timer-btn{
-  height:46px;
-  border-radius:13px;
-  background:#ffffff15;
-  border:1px solid var(--line);
-  font-weight:800;
+height:46px;
+border-radius:13px;
+background:#ffffff15;
+border:1px solid var(--line);
+font-weight:800
 }
 
-.timer-btn:disabled{
-  pointer-events:none;
-}
+.timer-btn:disabled{pointer-events:none}
 
 .timer-edit{
-  height:42px;
-  width:100%;
-  border-radius:12px;
-  background:#ffffff0d;
-  border:1px solid var(--line);
-  margin-bottom:9px;
-  color:#cfd5e1;
-  font-size:12px;
-  font-weight:800;
+height:42px;
+width:100%;
+border-radius:12px;
+background:#ffffff0d;
+border:1px solid var(--line);
+margin-bottom:9px;
+color:#cfd5e1;
+font-size:12px;
+font-weight:800
 }
 
-/* KEYPADS */
 .keypad-wrap{
-  width:100%;
-  max-height:66dvh;
-  overflow:auto;
-  -webkit-overflow-scrolling:touch;
+width:100%;
+max-height:66dvh;
+overflow:auto;
+-webkit-overflow-scrolling:touch
 }
 
 .keypad{
-  width:min(330px,100%);
-  margin:auto;
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:7px;
+width:min(330px,100%);
+margin:auto;
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:7px
 }
 
 .key{
-  min-height:46px;
-  border-radius:13px;
-  background:#ffffff0d;
-  border:1px solid var(--line);
-  font-size:18px;
-  font-weight:700;
-  color:#f3f5fa;
-  touch-action:manipulation;
-  -webkit-user-select:none;
-  user-select:none;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+min-height:46px;
+border-radius:13px;
+background:#ffffff0d;
+border:1px solid var(--line);
+font-size:18px;
+font-weight:700;
+color:#f3f5fa;
+touch-action:manipulation;
+-webkit-user-select:none;
+user-select:none;
+display:flex;
+align-items:center;
+justify-content:center
 }
 
 .key:active{
-  background:#ffffff20;
-  transform:scale(.95);
+background:#ffffff20;
+transform:scale(.95)
 }
 
 .key.action{background:#ffffff15}
-
 .key.confirm{
-  background:linear-gradient(180deg,rgba(98,217,255,.23),rgba(98,217,255,.12));
-  border-color:rgba(98,217,255,.35);
-  color:#bdf3ff;
+background:linear-gradient(180deg,rgba(98,217,255,.23),rgba(98,217,255,.12));
+border-color:rgba(98,217,255,.35);
+color:#bdf3ff
 }
-
 .key.clear{color:#ff9bad}
 .key.wide{grid-column:span 2}
 
 .keypad-value{
-  text-align:center;
-  font-size:27px;
-  font-weight:800;
-  min-height:38px;
-  margin:2px 0 8px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  font-variant-numeric:tabular-nums;
+text-align:center;
+font-size:27px;
+font-weight:800;
+min-height:38px;
+margin:2px 0 8px;
+overflow:hidden;
+text-overflow:ellipsis;
+font-variant-numeric:tabular-nums
 }
 
 .keypad-operation{
-  text-align:center;
-  color:#8f98a9;
-  font-size:11px;
-  margin-top:-3px;
-  margin-bottom:3px;
+text-align:center;
+color:#8f98a9;
+font-size:11px;
+margin-top:-3px;
+margin-bottom:3px
 }
 
-/* NAME KEYPAD */
 .text-editor{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
+display:flex;
+flex-direction:column;
+gap:8px
 }
 
 .text-preview{
-  width:100%;
-  min-height:54px;
-  max-height:125px;
-  overflow:auto;
-  padding:12px;
-  border-radius:14px;
-  background:#0b0e14;
-  border:1px solid var(--line);
-  color:#f6f7fb;
-  font-size:16px;
-  line-height:1.35;
-  white-space:pre-wrap;
-  word-break:break-word;
-  -webkit-overflow-scrolling:touch;
+width:100%;
+min-height:54px;
+max-height:125px;
+overflow:auto;
+padding:12px;
+border-radius:14px;
+background:#0b0e14;
+border:1px solid var(--line);
+color:#f6f7fb;
+font-size:16px;
+line-height:1.35;
+white-space:pre-wrap;
+word-break:break-word;
+-webkit-overflow-scrolling:touch
 }
 
 .text-preview.empty{color:#727b8d}
 
 .text-editor-info{
-  text-align:center;
-  color:#818a9b;
-  font-size:10px;
-  min-height:14px;
+text-align:center;
+color:#818a9b;
+font-size:10px;
+min-height:14px
 }
 
 .text-keypad{
-  width:100%;
-  display:flex;
-  flex-direction:column;
-  gap:6px;
+width:100%;
+display:flex;
+flex-direction:column;
+gap:6px
 }
 
 .text-row{
-  display:grid;
-  gap:5px;
+display:grid;
+gap:5px
 }
 
 .text-row.row10{grid-template-columns:repeat(10,1fr)}
 .text-row.row9{grid-template-columns:repeat(9,1fr);padding:0 4.5%}
 .text-row.row7{grid-template-columns:repeat(7,1fr);padding:0 13%}
+
 .text-actions{
-  grid-template-columns:1fr 2.2fr 1fr 1fr 1fr!important;
-  padding:0 2%!important;
-  gap:5px!important;
+grid-template-columns:1fr 2.2fr 1fr 1fr 1fr!important;
+padding:0 2%!important;
+gap:5px!important
 }
 
 .text-key{
-  min-width:0;
-  height:42px;
-  border-radius:10px;
-  background:#ffffff0d;
-  border:1px solid var(--line);
-  font-size:14px;
-  font-weight:700;
-  color:#f3f5fa;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  touch-action:manipulation;
+min-width:0;
+height:42px;
+border-radius:10px;
+background:#ffffff0d;
+border:1px solid var(--line);
+font-size:14px;
+font-weight:700;
+color:#f3f5fa;
+display:flex;
+align-items:center;
+justify-content:center;
+touch-action:manipulation
 }
 
 .text-key:active{
-  background:#ffffff20;
-  transform:scale(.95);
+background:#ffffff20;
+transform:scale(.95)
 }
 
 .text-key.special{background:#ffffff15}
 .text-key.back{color:#ff9bad}
-.text-key.space{font-size:10px;letter-spacing:.03em}
-
-.text-key.confirm{
-  color:#bdf3ff;
-  background:linear-gradient(180deg,rgba(98,217,255,.23),rgba(98,217,255,.12));
-  border-color:rgba(98,217,255,.35);
+.text-key.space{
+font-size:10px;
+letter-spacing:.03em
 }
-
+.text-key.confirm{
+color:#bdf3ff;
+background:linear-gradient(180deg,rgba(98,217,255,.23),rgba(98,217,255,.12));
+border-color:rgba(98,217,255,.35)
+}
 .text-key.clear{color:#ff9bad}
 .text-key.shift,.text-key.undo-key{color:#8cf3ff}
-
 .text-key.shift.active{
-  background:rgba(98,217,255,.22);
-  border-color:rgba(98,217,255,.4);
+background:rgba(98,217,255,.22);
+border-color:rgba(98,217,255,.4)
 }
 
-/* NOTES */
 .notes-editor{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
+display:flex;
+flex-direction:column;
+gap:8px
 }
 
 .notes-box{
-  width:100%;
-  min-height:220px;
-  max-height:50dvh;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  border-radius:14px;
-  background:#0b0e14;
-  border:1px solid var(--line);
-  overflow:hidden;
+display:grid;
+grid-template-columns:1fr 1px 1fr;
+width:100%;
+min-height:220px;
+max-height:50dvh;
+border-radius:14px;
+background:#0b0e14;
+border:1px solid var(--line);
+overflow:hidden
 }
 
-.notes-half{
-  min-width:0;
-  min-height:220px;
-  resize:none;
-  padding:13px;
-  background:transparent;
-  border:0;
-  outline:none;
-  color:var(--txt);
-  font-size:16px;
-  line-height:1.45;
-  -webkit-user-select:text;
-  user-select:text;
-  -webkit-appearance:none;
-  appearance:none;
+.notes-divider{
+background:rgba(255,255,255,.13);
+margin:10px 0
 }
 
-.notes-half + .notes-half{
-  border-left:1px solid var(--line);
+.notes-textarea{
+width:100%;
+height:100%;
+min-height:220px;
+max-height:50dvh;
+resize:none;
+padding:13px;
+background:transparent;
+border:0;
+color:var(--txt);
+outline:none;
+font-size:16px;
+line-height:1.45;
+-webkit-user-select:text;
+user-select:text;
+-webkit-appearance:none;
+appearance:none
 }
 
-.notes-half::placeholder{
-  color:#727b8d;
-}
+.notes-textarea::placeholder{color:#727b8d}
+.notes-textarea:focus{box-shadow:none}
 
-.notes-half:focus{
-  box-shadow:inset 0 0 0 2px rgba(98,217,255,.08);
-}
-
-/* MOBILE */
+/* DISPLAY BASSI */
 @media(max-height:680px){
-  .app{
-    padding:
-      max(8px,calc(var(--safe-top) + 8px))
-      max(6px,var(--safe-right))
-      max(6px,var(--safe-bottom))
-      max(6px,var(--safe-left));
-    gap:6px;
-  }
+.app{
+padding:max(8px,calc(var(--safe-top) + 8px))
+max(6px,var(--safe-right))
+max(6px,var(--safe-bottom))
+max(6px,var(--safe-left));
+gap:6px
+}
 
-  .topbar{
-    height:38px;
-    min-height:38px;
-    flex-basis:38px;
-    gap:6px;
-  }
+.topbar{
+height:38px;
+min-height:38px;
+flex-basis:38px;
+gap:6px
+}
 
-  .icon{border-radius:12px}
-  .players{gap:6px}
+.icon{border-radius:12px}
 
-  .player{
-    border-radius:21px;
-    padding:9px;
-  }
+.players{gap:6px}
 
-  .player-image{
-    width:68px;
-    height:68px;
-    top:7px;
-    left:7px;
-    border-radius:13px;
-  }
+.player{
+border-radius:21px;
+padding:9px
+}
 
-  .player-image img{border-radius:12px}
+.player-image{
+width:68px;
+height:68px;
+top:7px;
+left:7px;
+border-radius:13px
+}
 
-  .lp{margin:3px 0 6px}
-  .life-bar{margin-bottom:7px}
+.player-image img{border-radius:12px}
 
-  .lp-op{height:35px}
+.lp{
+margin:3px 0 6px
+}
 
-  .half-btn{
-    flex-basis:28px;
-    width:28px;
-    height:28px;
-  }
+.life-bar{margin-bottom:5px}
+.lp-op{height:35px}
 
-  .player-note{
-    margin-top:4px;
-    font-size:14px;
-    min-height:21px;
-  }
+.half-btn,.timer-mini{
+height:28px
+}
 
-  .bottom{
-    height:43px;
-    min-height:43px;
-    flex-basis:43px;
-    gap:6px;
-  }
+.half-btn{
+flex-basis:28px;
+width:28px
+}
 
-  .tool{border-radius:12px}
+.timer-mini{
+flex-basis:54px;
+width:54px
+}
 
-  .sheet{padding:11px}
+.bottom{
+height:43px;
+min-height:43px;
+flex-basis:43px;
+gap:6px
+}
 
-  .dice-wrap,.coin-wrap{
-    height:50svh;
-    height:50dvh;
-  }
+.tool{border-radius:12px}
 
-  .key{min-height:42px}
-  .text-key{height:36px}
+.dice-wrap,.coin-wrap{
+height:50svh;
+height:50dvh
+}
 
-  .notes-box{
-    min-height:180px;
-  }
+.key{min-height:42px}
+.text-key{height:36px}
 
-  .notes-half{
-    min-height:180px;
-  }
+.notes-textarea,.notes-box{
+min-height:180px
+}
+
+/* quattro righe sempre contenute anche sugli schermi bassi */
+.note-preview{
+font-size:15px;
+line-height:1.16;
+max-height:70px;
+-webkit-line-clamp:4
+}
 }
 
 @media(max-width:390px){
-  .text-row{gap:4px}
+.text-row{gap:4px}
+.text-key{
+height:39px;
+border-radius:9px;
+font-size:13px
+}
+.text-row.row9{padding:0 4%}
+.text-row.row7{padding:0 11%}
 
-  .text-key{
-    height:39px;
-    border-radius:9px;
-    font-size:13px;
-  }
-
-  .text-row.row9{padding:0 4%}
-  .text-row.row7{padding:0 11%}
+.note-preview{
+font-size:15px;
+line-height:1.14;
+max-height:68px;
+padding-left:5px;
+padding-right:5px
+}
 }
 
 @media(orientation:landscape) and (max-height:500px){
-  .app{max-width:1000px}
+.app{max-width:1000px}
+.players{
+grid-template-columns:1fr 1fr;
+grid-template-rows:1fr
+}
+.sheet{max-height:94vh}
+.dice-wrap,.coin-wrap{height:60vh}
 
-  .players{
-    grid-template-columns:1fr 1fr;
-    grid-template-rows:1fr;
-  }
-
-  .sheet{max-height:94vh}
-
-  .dice-wrap,.coin-wrap{height:60vh}
+.note-preview{
+font-size:14px;
+line-height:1.12;
+max-height:63px;
+-webkit-line-clamp:4
+}
 }
 
 @media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{
-    animation-duration:.01ms!important;
-    animation-iteration-count:1!important;
-    transition-duration:.01ms!important;
-  }
+*,*::before,*::after{
+animation-duration:.01ms!important;
+animation-iteration-count:1!important;
+transition-duration:.01ms!important
+}
 }
 </style>
 </head>
 
 <body>
-
 <div class="app">
 
 <header class="topbar">
-
-  <button class="icon undo" id="undoBtn" type="button" aria-label="Annulla">↶</button>
-
-  <button class="icon timer" id="timerBtn" type="button" aria-label="Timer">◷</button>
-
-  <button class="icon background" id="bgBtn" type="button" aria-label="Cambia sfondo. Tieni premuto per eliminarlo">▧</button>
-
-  <button class="icon refresh" id="resetBtn" type="button" aria-label="Reset partita. Due tocchi per resettare anche il timer">↻</button>
-
-  <input id="bgInput" class="hidden-file" type="file" accept="image/*">
-
+<button class="icon undo" id="undoBtn" type="button" aria-label="Annulla">↶</button>
+<button class="icon timer" id="timerBtn" type="button" aria-label="Timer">◷</button>
+<button class="icon background" id="bgBtn" type="button" aria-label="Cambia sfondo. Tieni premuto per eliminarlo">▧</button>
+<button class="icon refresh" id="resetBtn" type="button" aria-label="Refresh">↻</button>
+<input id="bgInput" class="hidden-file" type="file" accept="image/*">
 </header>
 
 <main class="players">
 
 <section class="player p1">
+<div class="player-image empty" id="imageSlot1" title="Immagine Player 1">
+<input type="file" id="imageInput1" accept="image/*">
+</div>
 
-  <div class="player-image empty" id="imageSlot1" title="Immagine Player 1">
-    <input type="file" id="imageInput1" accept="image/*">
-  </div>
+<div class="pname" id="name1" data-player="1" role="button" tabindex="0">PLAYER 1</div>
 
-  <div class="pname" id="name1" data-player="1" role="button" tabindex="0">
-    PLAYER 1
-  </div>
+<div class="lp-line">
+<div class="lp" id="lp1">8000</div>
+<button class="half-btn" type="button" data-half-player="1" aria-label="Dimezza Life Points">
+<span class="half-icon">½</span>
+</button>
+</div>
 
-  <div class="lp-line">
-    <div class="lp" id="lp1">8000</div>
-    <button class="half-btn" type="button" data-half-player="1" aria-label="Dimezza Life Points">
-      <span class="half-icon">½</span>
-    </button>
-  </div>
+<div class="life-bar">
+<div class="life-fill" id="lifeFill1"></div>
+</div>
 
-  <div class="life-bar">
-    <div class="life-fill" id="lifeFill1"></div>
-  </div>
+<div class="controls">
+<button class="lp-op minus selected" type="button" data-p="1" data-sign="-1">−</button>
+<button class="lp-op plus" type="button" data-p="1" data-sign="1">+</button>
+</div>
 
-  <div class="controls">
-    <button class="lp-op minus selected" type="button" data-p="1" data-sign="-1">−</button>
-    <button class="lp-op plus" type="button" data-p="1" data-sign="1">+</button>
-  </div>
-
-  <div class="player-note" id="playerNote1"></div>
-
+<div class="note-preview" id="notePreview1"></div>
 </section>
 
 <section class="player p2">
+<div class="player-image empty" id="imageSlot2" title="Immagine Player 2">
+<input type="file" id="imageInput2" accept="image/*">
+</div>
 
-  <div class="player-image empty" id="imageSlot2" title="Immagine Player 2">
-    <input type="file" id="imageInput2" accept="image/*">
-  </div>
+<div class="pname" id="name2" data-player="2" role="button" tabindex="0">PLAYER 2</div>
 
-  <div class="pname" id="name2" data-player="2" role="button" tabindex="0">
-    PLAYER 2
-  </div>
+<div class="lp-line">
+<div class="lp" id="lp2">8000</div>
+<button class="half-btn" type="button" data-half-player="2" aria-label="Dimezza Life Points">
+<span class="half-icon">½</span>
+</button>
+</div>
 
-  <div class="lp-line">
-    <div class="lp" id="lp2">8000</div>
-    <button class="half-btn" type="button" data-half-player="2" aria-label="Dimezza Life Points">
-      <span class="half-icon">½</span>
-    </button>
-  </div>
+<div class="life-bar">
+<div class="life-fill" id="lifeFill2"></div>
+</div>
 
-  <div class="life-bar">
-    <div class="life-fill" id="lifeFill2"></div>
-  </div>
+<div class="controls">
+<button class="lp-op minus selected" type="button" data-p="2" data-sign="-1">−</button>
+<button class="lp-op plus" type="button" data-p="2" data-sign="1">+</button>
+</div>
 
-  <div class="controls">
-    <button class="lp-op minus selected" type="button" data-p="2" data-sign="-1">−</button>
-    <button class="lp-op plus" type="button" data-p="2" data-sign="1">+</button>
-  </div>
-
-  <div class="player-note" id="playerNote2"></div>
-
+<div class="note-preview" id="notePreview2"></div>
 </section>
 
 </main>
 
 <nav class="bottom" aria-label="Strumenti">
-
-  <button class="tool" id="diceBtn" type="button" aria-label="Dado">⚄</button>
-  <button class="tool" id="coinBtn" type="button" aria-label="Moneta">◉</button>
-  <button class="tool" id="historyBtn" type="button" aria-label="Storico">☷</button>
-  <button class="tool" id="notesBtn" type="button" aria-label="Appunti">✎</button>
-
+<button class="tool" id="diceBtn" type="button" aria-label="Dado">⚄</button>
+<button class="tool" id="coinBtn" type="button" aria-label="Moneta">◉</button>
+<button class="tool" id="historyBtn" type="button" aria-label="Storico">☷</button>
+<button class="tool" id="notesBtn" type="button" aria-label="Appunti">✎</button>
 </nav>
 
 </div>
 
 <div class="modal" id="modal">
-
-  <div class="sheet">
-
-    <div class="sheethead">
-
-      <b id="modalTitle"></b>
-
-      <button class="close" id="close" type="button" aria-label="Chiudi">×</button>
-
-    </div>
-
-    <div id="modalBody"></div>
-
-  </div>
-
+<div class="sheet">
+<div class="sheethead">
+<b id="modalTitle"></b>
+<button class="close" id="close" type="button" aria-label="Chiudi">×</button>
+</div>
+<div id="modalBody"></div>
+</div>
 </div>
 
 <script>
 "use strict";
 
-const $=(s,r=document)=>r.querySelector(s);
-const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
-
-const modal=$("#modal");
-const modalBody=$("#modalBody");
-const modalTitle=$("#modalTitle");
+const $=(s,r=document)=>r.querySelector(s),
+$$=(s,r=document)=>Array.from(r.querySelectorAll(s)),
+modal=$("#modal"),
+modalBody=$("#modalBody"),
+modalTitle=$("#modalTitle");
 
 const state={
-  lp:[8000,8000],
-  names:["PLAYER 1","PLAYER 2"],
-  history:[],
-  notes:["",""],
-  bg:localStorage.getItem("ygo-bg")||"",
-  images:[
-    localStorage.getItem("ygo-image-1")||"",
-    localStorage.getItem("ygo-image-2")||""
-  ],
-  timerSeconds:2700,
-  timerInitialSeconds:2700
+lp:[8000,8000],
+names:["PLAYER 1","PLAYER 2"],
+history:[],
+notesLeft:"",
+notesRight:"",
+bg:localStorage.getItem("ygo-bg")||"",
+images:[
+localStorage.getItem("ygo-image-1")||"",
+localStorage.getItem("ygo-image-2")||""
+],
+timerSeconds:2700,
+timerInitialSeconds:2700
 };
 
-let diceSequenceIndex=0;
-let coinSequenceIndex=0;
+let diceSequenceIndex=0,
+coinSequenceIndex=0,
+currentAmountPlayer=null,
+currentAmountSign=-1,
+keypadValue="",
+diceRolling=false,
+coinBusy=false,
+timerInterval=null,
+timerRunning=false,
+timerLastTick=0;
+
+let imageLongPressTimers={},
+imageLongPressTriggered={},
+resetClicks=0,
+resetClickTimer=null;
 
 function resetRandomSequences(){
-  diceSequenceIndex=0;
-  coinSequenceIndex=0;
+diceSequenceIndex=0;
+coinSequenceIndex=0
 }
 
 function nextDieResult(){
-  if(diceSequenceIndex===0){
-    diceSequenceIndex++;
-    return 4+secureRandomInt(3);
-  }
-
-  if(diceSequenceIndex===1){
-    diceSequenceIndex++;
-    return 1+secureRandomInt(3);
-  }
-
-  diceSequenceIndex++;
-  return secureDie();
+if(diceSequenceIndex===0){
+diceSequenceIndex++;
+return 4+secureRandomInt(3)
+}
+if(diceSequenceIndex===1){
+diceSequenceIndex++;
+return 1+secureRandomInt(3)
+}
+diceSequenceIndex++;
+return secureDie()
 }
 
 function nextCoinResult(){
-  if(coinSequenceIndex===0){
-    coinSequenceIndex++;
-    return "TESTA";
-  }
-
-  if(coinSequenceIndex===1){
-    coinSequenceIndex++;
-    return "TESTA";
-  }
-
-  if(coinSequenceIndex===2){
-    coinSequenceIndex++;
-    return "CROCE";
-  }
-
-  coinSequenceIndex++;
-  return secureCoin();
+if(coinSequenceIndex===0){
+coinSequenceIndex++;
+return"TESTA"
+}
+if(coinSequenceIndex===1){
+coinSequenceIndex++;
+return"TESTA"
+}
+if(coinSequenceIndex===2){
+coinSequenceIndex++;
+return"CROCE"
+}
+coinSequenceIndex++;
+return secureCoin()
 }
 
-let currentAmountPlayer=null;
-let currentAmountSign=-1;
-let keypadValue="";
-
-let diceRolling=false;
-let coinBusy=false;
-
-let timerInterval=null;
-let timerRunning=false;
-let timerLastTick=0;
-
-const imageLongPressTimers={};
-const imageLongPressTriggered={};
-
-let resetFirstClickTime=0;
-const RESET_DOUBLE_CLICK_WINDOW=550;
-
-/* STORAGE */
-
 function safeSet(k,v){
-  try{
-    localStorage.setItem(k,v);
-    return true;
-  }catch(e){
-    console.warn(e);
-    return false;
-  }
+try{
+localStorage.setItem(k,v);
+return true
+}catch(e){
+console.warn(e);
+return false
+}
 }
 
 function save(){
+safeSet("ygo-state",JSON.stringify({
+lp:state.lp,
+names:state.names,
+history:state.history,
+notesLeft:state.notesLeft,
+notesRight:state.notesRight,
+notes:state.notesLeft,
+timerSeconds:state.timerSeconds,
+timerInitialSeconds:state.timerInitialSeconds
+}));
 
-  safeSet("ygo-state",JSON.stringify({
-    lp:state.lp,
-    names:state.names,
-    history:state.history,
-    notes:state.notes,
-    timerSeconds:state.timerSeconds,
-    timerInitialSeconds:state.timerInitialSeconds
-  }));
+if(state.bg)
+safeSet("ygo-bg",state.bg);
+else
+localStorage.removeItem("ygo-bg");
 
-  if(state.bg){
-    safeSet("ygo-bg",state.bg);
-  }else{
-    localStorage.removeItem("ygo-bg");
-  }
-
-  state.images.forEach((x,i)=>{
-    if(x){
-      safeSet("ygo-image-"+(i+1),x);
-    }else{
-      localStorage.removeItem("ygo-image-"+(i+1));
-    }
-  });
+state.images.forEach((x,i)=>
+x
+?safeSet("ygo-image-"+(i+1),x)
+:localStorage.removeItem("ygo-image-"+(i+1))
+)
 }
 
 function loadState(){
+try{
+const x=JSON.parse(localStorage.getItem("ygo-state")||"null");
+if(!x)return;
 
-  try{
+if(Array.isArray(x.lp)&&x.lp.length===2)
+state.lp=x.lp.map(v=>Math.max(0,Number(v)||0));
 
-    const x=JSON.parse(localStorage.getItem("ygo-state")||"null");
+if(Array.isArray(x.names)&&x.names.length===2)
+state.names=x.names.map((v,i)=>String(v||"PLAYER "+(i+1)));
 
-    if(!x)return;
+if(Array.isArray(x.history))
+state.history=x.history;
 
-    if(Array.isArray(x.lp)&&x.lp.length===2){
-      state.lp=x.lp.map(v=>Math.max(0,Number(v)||0));
-    }
+if(typeof x.notesLeft==="string")
+state.notesLeft=x.notesLeft;
+else if(typeof x.notes==="string")
+state.notesLeft=x.notes;
 
-    if(Array.isArray(x.names)&&x.names.length===2){
-      state.names=x.names.map((v,i)=>String(v||"PLAYER "+(i+1)));
-    }
+if(typeof x.notesRight==="string")
+state.notesRight=x.notesRight;
 
-    if(Array.isArray(x.history)){
-      state.history=x.history;
-    }
+if(Number.isFinite(Number(x.timerSeconds)))
+state.timerSeconds=Math.max(0,Number(x.timerSeconds));
 
-    /*
-      Compatibilità con la vecchia versione:
-      se notes era una stringa, viene mantenuta nella parte sinistra.
-    */
-    if(Array.isArray(x.notes)&&x.notes.length===2){
-      state.notes=[
-        String(x.notes[0]||""),
-        String(x.notes[1]||"")
-      ];
-    }else if(typeof x.notes==="string"){
-      state.notes=[x.notes,""];
-    }
+if(Number.isFinite(Number(x.timerInitialSeconds)))
+state.timerInitialSeconds=Math.max(1,Number(x.timerInitialSeconds));
 
-    if(Number.isFinite(Number(x.timerSeconds))){
-      state.timerSeconds=Math.max(0,Number(x.timerSeconds));
-    }
-
-    if(Number.isFinite(Number(x.timerInitialSeconds))){
-      state.timerInitialSeconds=Math.max(1,Number(x.timerInitialSeconds));
-    }
-
-  }catch(e){
-    console.warn("Stato locale non valido",e);
-  }
+}catch(e){
+console.warn("Stato locale non valido",e)
+}
 }
 
 function applyBackground(){
-
-  if(state.bg){
-    document.body.style.setProperty(
-      "--user-bg",
-      `url("${state.bg}")`
-    );
-  }else{
-    document.body.style.removeProperty("--user-bg");
-  }
+if(state.bg)
+document.body.style.setProperty("--user-bg",`url("${state.bg}")`);
+else
+document.body.style.removeProperty("--user-bg")
 }
 
-/* LIFE POINTS */
-
 function lifeColor(v){
+v=Math.max(0,Number(v)||0);
 
-  v=Math.max(0,Number(v)||0);
+const s=[
+[8000,92,235,138],
+[7000,105,228,126],
+[6000,151,225,91],
+[5000,196,222,70],
+[4000,232,218,58],
+[3000,245,181,50],
+[2000,245,133,48],
+[1000,239,91,67],
+[0,205,42,67]
+];
 
-  const s=[
-    [8000,92,235,138],
-    [7000,105,228,126],
-    [6000,151,225,91],
-    [5000,196,222,70],
-    [4000,232,218,58],
-    [3000,245,181,50],
-    [2000,245,133,48],
-    [1000,239,91,67],
-    [0,205,42,67]
-  ];
+if(v>=8000)
+return["rgb(92,235,138)","rgba(92,235,138,.38)"];
 
-  if(v>=8000){
-    return[
-      "rgb(92,235,138)",
-      "rgba(92,235,138,.38)"
-    ];
-  }
+for(let i=0;i<s.length-1;i++){
+let h=s[i],l=s[i+1];
 
-  for(let i=0;i<s.length-1;i++){
+if(v<=h[0]&&v>=l[0]){
+let p=(h[0]-v)/(h[0]-l[0]),
+r=Math.round(h[1]+(l[1]-h[1])*p),
+g=Math.round(h[2]+(l[2]-h[2])*p),
+b=Math.round(h[3]+(l[3]-h[3])*p);
 
-    const h=s[i];
-    const l=s[i+1];
+return[
+`rgb(${r},${g},${b})`,
+`rgba(${r},${g},${b},.30)`
+]
+}
+}
 
-    if(v<=h[0]&&v>=l[0]){
-
-      const p=(h[0]-v)/(h[0]-l[0]);
-
-      const r=Math.round(h[1]+(l[1]-h[1])*p);
-      const g=Math.round(h[2]+(l[2]-h[2])*p);
-      const b=Math.round(h[3]+(l[3]-h[3])*p);
-
-      return[
-        `rgb(${r},${g},${b})`,
-        `rgba(${r},${g},${b},.30)`
-      ];
-    }
-  }
-
-  return[
-    "rgb(205,42,67)",
-    "rgba(205,42,67,.35)"
-  ];
+return["rgb(205,42,67)","rgba(205,42,67,.35)"]
 }
 
 function updateLifeBar(p){
+let v=Math.max(0,Number(state.lp[p-1])||0),
+f=$("#lifeFill"+p);
 
-  const v=Math.max(0,Number(state.lp[p-1])||0);
-  const f=$("#lifeFill"+p);
+if(!f)return;
 
-  if(!f)return;
+f.style.width=Math.min(100,v/8000*100)+"%";
 
-  f.style.width=Math.min(100,v/8000*100)+"%";
+let[c,g]=lifeColor(v);
 
-  const[c,g]=lifeColor(v);
-
-  f.style.backgroundColor=c;
-  f.style.boxShadow=`0 0 11px ${g}`;
+f.style.backgroundColor=c;
+f.style.boxShadow=`0 0 11px ${g}`
 }
 
-/* PLAYER NOTES */
-
-function updatePlayerNotes(){
-
-  for(let p=1;p<=2;p++){
-
-    const el=$("#playerNote"+p);
-
-    if(!el)continue;
-
-    const value=String(state.notes[p-1]||"");
-
-    el.textContent=value;
-
-    el.classList.toggle(
-      "visible",
-      value.trim().length>0
-    );
-  }
+function renderNotes(){
+$("#notePreview1").textContent=state.notesLeft||"";
+$("#notePreview2").textContent=state.notesRight||""
 }
-
-/* IMAGES */
 
 function compressImage(file,maxSide=1200,quality=.86){
+return new Promise((resolve,reject)=>{
+const r=new FileReader();
 
-  return new Promise((resolve,reject)=>{
+r.onerror=()=>reject(r.error||new Error("Lettura fallita"));
 
-    const r=new FileReader();
+r.onload=()=>{
+const img=new Image();
 
-    r.onerror=()=>reject(
-      r.error||new Error("Lettura fallita")
-    );
+img.onerror=()=>reject(new Error("Immagine non valida"));
 
-    r.onload=()=>{
+img.onload=()=>{
+const scale=Math.min(
+1,
+maxSide/Math.max(img.naturalWidth||1,img.naturalHeight||1)
+);
 
-      const img=new Image();
+const c=document.createElement("canvas");
 
-      img.onerror=()=>reject(
-        new Error("Immagine non valida")
-      );
+c.width=Math.max(1,Math.round((img.naturalWidth||1)*scale));
+c.height=Math.max(1,Math.round((img.naturalHeight||1)*scale));
 
-      img.onload=()=>{
+const ctx=c.getContext("2d");
 
-        const scale=Math.min(
-          1,
-          maxSide/Math.max(
-            img.naturalWidth||1,
-            img.naturalHeight||1
-          )
-        );
+if(!ctx)return resolve(r.result);
 
-        const c=document.createElement("canvas");
+ctx.fillStyle="#0b0d12";
+ctx.fillRect(0,0,c.width,c.height);
 
-        c.width=Math.max(
-          1,
-          Math.round((img.naturalWidth||1)*scale)
-        );
+ctx.drawImage(img,0,0,c.width,c.height);
 
-        c.height=Math.max(
-          1,
-          Math.round((img.naturalHeight||1)*scale)
-        );
+let out=c.toDataURL("image/jpeg",quality);
 
-        const ctx=c.getContext("2d");
+if(out.length>3500000)
+out=c.toDataURL("image/jpeg",.68);
 
-        if(!ctx)return resolve(r.result);
+resolve(out)
+};
 
-        ctx.fillStyle="#0b0d12";
-        ctx.fillRect(0,0,c.width,c.height);
+img.src=r.result
+};
 
-        ctx.drawImage(
-          img,
-          0,
-          0,
-          c.width,
-          c.height
-        );
-
-        let out=c.toDataURL(
-          "image/jpeg",
-          quality
-        );
-
-        if(out.length>3500000){
-          out=c.toDataURL(
-            "image/jpeg",
-            .68
-          );
-        }
-
-        resolve(out);
-      };
-
-      img.src=r.result;
-    };
-
-    r.readAsDataURL(file);
-  });
+r.readAsDataURL(file)
+})
 }
 
 function renderImages(){
+for(let p=1;p<=2;p++){
+let slot=$("#imageSlot"+p);
+if(!slot)continue;
 
-  for(let p=1;p<=2;p++){
+let old=slot.querySelector("img");
+if(old)old.remove();
 
-    const slot=$("#imageSlot"+p);
+if(!state.images[p-1]){
+slot.classList.add("empty");
+continue
+}
 
-    if(!slot)continue;
+slot.classList.remove("empty");
 
-    const old=slot.querySelector("img");
+let img=document.createElement("img");
+img.src=state.images[p-1];
+img.alt="Immagine Player "+p;
+img.draggable=false;
 
-    if(old)old.remove();
-
-    if(!state.images[p-1]){
-      slot.classList.add("empty");
-      continue;
-    }
-
-    slot.classList.remove("empty");
-
-    const img=document.createElement("img");
-
-    img.src=state.images[p-1];
-    img.alt="Immagine Player "+p;
-    img.draggable=false;
-
-    slot.appendChild(img);
-  }
+slot.appendChild(img)
+}
 }
 
 function setupImageSlot(p){
+const slot=$("#imageSlot"+p),
+input=$("#imageInput"+p);
 
-  const slot=$("#imageSlot"+p);
-  const input=$("#imageInput"+p);
+if(!slot||!input)return;
 
-  if(!slot||!input)return;
-
-  slot.addEventListener("click",e=>{
-
-    if(imageLongPressTriggered[p]){
-      imageLongPressTriggered[p]=false;
-      e.preventDefault();
-      return;
-    }
-
-    input.click();
-  });
-
-  input.addEventListener("change",async e=>{
-
-    const f=e.target.files?.[0];
-
-    if(!f)return;
-
-    try{
-
-      if(!f.type.startsWith("image/")){
-        throw new Error("file");
-      }
-
-      state.images[p-1]=await compressImage(f);
-
-      renderImages();
-      save();
-
-    }catch(err){
-
-      console.error(err);
-
-      alert(
-        "Non è stato possibile caricare l'immagine."
-      );
-
-    }finally{
-
-      input.value="";
-    }
-  });
-
-  slot.addEventListener("pointerdown",e=>{
-
-    if(
-      !state.images[p-1]||
-      e.target.tagName!=="IMG"
-    )return;
-
-    imageLongPressTriggered[p]=false;
-
-    clearTimeout(imageLongPressTimers[p]);
-
-    imageLongPressTimers[p]=setTimeout(()=>{
-
-      imageLongPressTriggered[p]=true;
-
-      state.images[p-1]="";
-
-      renderImages();
-      save();
-
-    },650);
-  });
-
-  ["pointerup","pointercancel","pointerleave"]
-    .forEach(t=>{
-      slot.addEventListener(t,()=>{
-        clearTimeout(imageLongPressTimers[p]);
-        imageLongPressTimers[p]=null;
-      });
-    });
+slot.addEventListener("click",e=>{
+if(imageLongPressTriggered[p]){
+imageLongPressTriggered[p]=false;
+e.preventDefault();
+return
 }
+input.click()
+});
 
-/* RENDER */
+input.addEventListener("change",async e=>{
+let f=e.target.files?.[0];
+if(!f)return;
+
+try{
+if(!f.type.startsWith("image/"))
+throw new Error("file");
+
+state.images[p-1]=await compressImage(f);
+
+renderImages();
+save()
+
+}catch(err){
+console.error(err);
+alert("Non è stato possibile caricare l'immagine.")
+}finally{
+input.value=""
+}
+});
+
+slot.addEventListener("pointerdown",e=>{
+if(!state.images[p-1]||e.target.tagName!=="IMG")return;
+
+imageLongPressTriggered[p]=false;
+
+clearTimeout(imageLongPressTimers[p]);
+
+imageLongPressTimers[p]=setTimeout(()=>{
+imageLongPressTriggered[p]=true;
+state.images[p-1]="";
+renderImages();
+save()
+},650)
+});
+
+["pointerup","pointercancel","pointerleave"].forEach(
+t=>slot.addEventListener(t,()=>{
+clearTimeout(imageLongPressTimers[p]);
+imageLongPressTimers[p]=null
+})
+)
+}
 
 function render(){
+state.lp.forEach((v,i)=>{
+$("#lp"+(i+1)).textContent=Number(v).toLocaleString("it-IT");
+updateLifeBar(i+1)
+});
 
-  state.lp.forEach((v,i)=>{
+state.names.forEach((n,i)=>
+$("#name"+(i+1)).textContent=n
+);
 
-    const p=i+1;
-    const el=$("#lp"+p);
-
-    if(el){
-      el.textContent=
-        Number(v).toLocaleString("it-IT");
-    }
-
-    updateLifeBar(p);
-  });
-
-  state.names.forEach((n,i)=>{
-
-    const e=$("#name"+(i+1));
-
-    if(e)e.textContent=n;
-  });
-
-  renderImages();
-  updatePlayerNotes();
-  updateTimerButtonIcon();
-
-  save();
+renderImages();
+renderNotes();
+updateTimerButtonIcon();
+save()
 }
 
-/* HISTORY / LP */
-
-function addHistory(
-  player,
-  n,
-  before,
-  after,
-  action
-){
-
-  state.history.unshift({
-    id:Date.now()+Math.random(),
-
-    time:new Date().toLocaleTimeString(
-      "it-IT",
-      {
-        hour:"2-digit",
-        minute:"2-digit",
-        second:"2-digit"
-      }
-    ),
-
-    player,
-    n,
-    before,
-    after,
-    action:action||""
-  });
+function addHistory(player,n,before,after,action){
+state.history.unshift({
+id:Date.now()+Math.random(),
+time:new Date().toLocaleTimeString("it-IT",{
+hour:"2-digit",
+minute:"2-digit",
+second:"2-digit"
+}),
+player,
+n,
+before,
+after,
+action:action||""
+})
 }
 
-function change(
-  player,
-  amount,
-  action=""
-){
+function change(player,amount,action=""){
+let before=Math.max(0,Number(state.lp[player-1])||0),
+after=Math.max(0,before+amount);
 
-  const before=Math.max(
-    0,
-    Number(state.lp[player-1])||0
-  );
-
-  const after=Math.max(
-    0,
-    before+amount
-  );
-
-  state.lp[player-1]=after;
-
-  addHistory(
-    player,
-    amount,
-    before,
-    after,
-    action
-  );
-
-  render();
+state.lp[player-1]=after;
+addHistory(player,amount,before,after,action);
+render()
 }
 
 function halveLP(player){
+let before=Math.max(0,Number(state.lp[player-1])||0),
+after=Math.floor(before/2);
 
-  const before=Math.max(
-    0,
-    Number(state.lp[player-1])||0
-  );
-
-  const after=Math.floor(before/2);
-
-  state.lp[player-1]=after;
-
-  addHistory(
-    player,
-    after-before,
-    before,
-    after,
-    "Dimezza LP"
-  );
-
-  render();
+state.lp[player-1]=after;
+addHistory(player,after-before,before,after,"Dimezza LP");
+render()
 }
 
-function undo(){
-
-  if(!state.history.length)return;
-
-  const last=state.history.shift();
-
-  if(
-    last&&
-    last.player&&
-    Number.isFinite(Number(last.before))
-  ){
-
-    state.lp[last.player-1]=Math.max(
-      0,
-      Number(last.before)
-    );
-  }
-
-  render();
-}
-
-/* LP CONTROLS */
-
-$$(".lp-op").forEach(
-  b=>b.addEventListener(
-    "pointerdown",
-    e=>{
-
-      e.preventDefault();
-
-      currentAmountPlayer=
-        Number(b.dataset.p);
-
-      currentAmountSign=
-        Number(b.dataset.sign);
-
-      openKeypad();
-    }
-  )
+$$(".lp-op").forEach(b=>
+b.addEventListener("pointerdown",e=>{
+e.preventDefault();
+currentAmountPlayer=Number(b.dataset.p);
+currentAmountSign=Number(b.dataset.sign);
+openKeypad()
+})
 );
 
-$$(".half-btn").forEach(
-  b=>b.addEventListener(
-    "pointerdown",
-    e=>{
-
-      e.preventDefault();
-
-      halveLP(
-        Number(b.dataset.halfPlayer)
-      );
-    }
-  )
+$$(".half-btn").forEach(b=>
+b.addEventListener("pointerdown",e=>{
+e.preventDefault();
+halveLP(Number(b.dataset.halfPlayer))
+})
 );
-
-/* MODAL */
 
 function openModal(title,content){
-
-  modalTitle.textContent=title;
-  modalBody.innerHTML=content;
-  modal.classList.add("open");
+modalTitle.textContent=title;
+modalBody.innerHTML=content;
+modal.classList.add("open")
 }
 
 function closeModal(){
-
-  modal.classList.remove("open");
-  modalBody.innerHTML="";
+modal.classList.remove("open");
+modalBody.innerHTML=""
 }
 
-$("#close").addEventListener(
-  "pointerdown",
-  e=>{
-    e.preventDefault();
-    closeModal();
-  }
-);
+$("#close").addEventListener("pointerdown",e=>{
+e.preventDefault();
+closeModal()
+});
 
-modal.addEventListener(
-  "pointerdown",
-  e=>{
-
-    if(e.target===modal){
-
-      e.preventDefault();
-      closeModal();
-    }
-  }
-);
-
-/* LP KEYPAD */
+modal.addEventListener("pointerdown",e=>{
+if(e.target===modal){
+e.preventDefault();
+closeModal()
+}
+});
 
 function openKeypad(){
+keypadValue="";
 
-  keypadValue="";
+let sign=currentAmountSign<0?"SOTTRAI":"AGGIUNGI";
 
-  const sign=
-    currentAmountSign<0
-      ?"SOTTRAI"
-      :"AGGIUNGI";
+openModal(
+"Inserisci LP",
+`<div class="keypad-wrap">
+<div class="keypad-operation">PLAYER ${currentAmountPlayer} · ${sign}</div>
+<div class="keypad-value" id="keypadValue">0</div>
+<div class="keypad">
 
-  openModal(
-    "Inserisci LP",
-    `
-      <div class="keypad-wrap">
+<button class="key" data-key="1">1</button>
+<button class="key" data-key="2">2</button>
+<button class="key" data-key="3">3</button>
 
-        <div class="keypad-operation">
-          PLAYER ${currentAmountPlayer} · ${sign}
-        </div>
+<button class="key" data-key="4">4</button>
+<button class="key" data-key="5">5</button>
+<button class="key" data-key="6">6</button>
 
-        <div class="keypad-value" id="keypadValue">
-          0
-        </div>
+<button class="key" data-key="7">7</button>
+<button class="key" data-key="8">8</button>
+<button class="key" data-key="9">9</button>
 
-        <div class="keypad">
+<button class="key clear" data-key="clear">C</button>
+<button class="key" data-key="0">0</button>
+<button class="key action" data-key="back">⌫</button>
 
-          <button class="key" data-key="1" type="button">1</button>
-          <button class="key" data-key="2" type="button">2</button>
-          <button class="key" data-key="3" type="button">3</button>
+<button class="key confirm" data-key="confirm" style="grid-column:1/-1">
+CONFERMA
+</button>
 
-          <button class="key" data-key="4" type="button">4</button>
-          <button class="key" data-key="5" type="button">5</button>
-          <button class="key" data-key="6" type="button">6</button>
+</div>
+</div>`
+);
 
-          <button class="key" data-key="7" type="button">7</button>
-          <button class="key" data-key="8" type="button">8</button>
-          <button class="key" data-key="9" type="button">9</button>
-
-          <button class="key clear" data-key="clear" type="button">C</button>
-          <button class="key" data-key="0" type="button">0</button>
-          <button class="key action" data-key="back" type="button">⌫</button>
-
-          <button
-            class="key confirm"
-            data-key="confirm"
-            type="button"
-            style="grid-column:1/-1"
-          >
-            CONFERMA
-          </button>
-
-        </div>
-      </div>
-    `
-  );
-
-  $$(".key",modalBody).forEach(
-    b=>b.addEventListener(
-      "pointerdown",
-      e=>{
-
-        e.preventDefault();
-        e.stopPropagation();
-
-        handleKeypad(
-          b.dataset.key
-        );
-      }
-    )
-  );
+$$(".key",modalBody).forEach(b=>
+b.addEventListener("pointerdown",e=>{
+e.preventDefault();
+e.stopPropagation();
+handleKeypad(b.dataset.key)
+})
+)
 }
 
 function updateKeypad(){
-
-  const e=$("#keypadValue");
-
-  if(e){
-    e.textContent=
-      keypadValue||"0";
-  }
+let e=$("#keypadValue");
+if(e)e.textContent=keypadValue||"0"
 }
 
 function handleKeypad(k){
+if(/^\d$/.test(k)){
+if(keypadValue.length>=7)return;
 
-  if(/^\d$/.test(k)){
+keypadValue=keypadValue==="0"
+?k
+:keypadValue+k;
 
-    if(keypadValue.length>=7)return;
-
-    keypadValue=
-      keypadValue==="0"
-        ?k
-        :keypadValue+k;
-
-    updateKeypad();
-    return;
-  }
-
-  if(k==="clear"){
-    keypadValue="";
-    updateKeypad();
-    return;
-  }
-
-  if(k==="back"){
-    keypadValue=
-      keypadValue.slice(0,-1);
-
-    updateKeypad();
-    return;
-  }
-
-  if(k==="confirm"){
-
-    const v=Number(keypadValue);
-
-    if(
-      !Number.isInteger(v)||
-      v<=0
-    )return;
-
-    change(
-      currentAmountPlayer,
-      currentAmountSign*v
-    );
-
-    closeModal();
-  }
+updateKeypad();
+return
 }
 
-/* NAME KEYPAD */
+if(k==="clear"){
+keypadValue="";
+updateKeypad();
+return
+}
+
+if(k==="back"){
+keypadValue=keypadValue.slice(0,-1);
+updateKeypad();
+return
+}
+
+if(k==="confirm"){
+let v=Number(keypadValue);
+
+if(!Number.isInteger(v)||v<=0)return;
+
+change(currentAmountPlayer,currentAmountSign*v);
+closeModal()
+}
+}
 
 const TEXT_ROWS=[
-  ["Q","W","E","R","T","Y","U","I","O","P"],
-  ["A","S","D","F","G","H","J","K","L"],
-  ["Z","X","C","V","B","N","M"]
+["Q","W","E","R","T","Y","U","I","O","P"],
+["A","S","D","F","G","H","J","K","L"],
+["Z","X","C","V","B","N","M"]
 ];
 
-const TEXT_SYMBOLS=[];
-
-let textBuffer="";
-let textMaxLength=18;
-let textShift=true;
-let textCursor=0;
-let textSaveCallback=null;
+let textBuffer="",
+textMaxLength=18,
+textShift=true,
+textCursor=0,
+textSaveCallback=null;
 
 function renderTextKeyboard(){
+let preview=$("#textPreview");
 
-  const preview=$("#textPreview");
+if(preview){
+preview.textContent=textBuffer||"Nome giocatore";
+preview.classList.toggle("empty",!textBuffer)
+}
 
-  if(preview){
+let count=$("#textCount");
 
-    preview.textContent=
-      textBuffer||"Nome giocatore";
+if(count)
+count.textContent=`${textBuffer.length}/${textMaxLength}`;
 
-    preview.classList.toggle(
-      "empty",
-      !textBuffer
-    );
-  }
+$$(".text-key[data-letter]",modalBody).forEach(key=>{
+let letter=key.dataset.letter;
+key.textContent=textShift
+?letter
+:letter.toLowerCase()
+});
 
-  const count=$("#textCount");
+let shiftButton=$(".text-key.shift",modalBody);
 
-  if(count){
-    count.textContent=
-      `${textBuffer.length}/${textMaxLength}`;
-  }
+if(shiftButton)
+shiftButton.classList.toggle("active",textShift);
 
-  $$(".text-key[data-letter]",modalBody)
-    .forEach(key=>{
+let p=$("#textPreview");
 
-      const letter=key.dataset.letter;
-
-      key.textContent=
-        textShift
-          ?letter
-          :letter.toLowerCase();
-    });
-
-  const shiftButton=
-    $(".text-key.shift",modalBody);
-
-  if(shiftButton){
-
-    shiftButton.classList.toggle(
-      "active",
-      textShift
-    );
-  }
-
-  const p=$("#textPreview");
-
-  if(p)p.scrollTop=p.scrollHeight;
+if(p)
+p.scrollTop=p.scrollHeight
 }
 
 function insertText(value){
+if(textBuffer.length>=textMaxLength)return;
 
-  if(textBuffer.length>=textMaxLength)return;
+let maxAdd=textMaxLength-textBuffer.length;
 
-  const maxAdd=
-    textMaxLength-textBuffer.length;
+value=value.slice(0,maxAdd);
 
-  value=value.slice(0,maxAdd);
+textBuffer=
+textBuffer.slice(0,textCursor)+
+value+
+textBuffer.slice(textCursor);
 
-  textBuffer=
-    textBuffer.slice(0,textCursor)+
-    value+
-    textBuffer.slice(textCursor);
+textCursor+=value.length;
 
-  textCursor+=value.length;
-
-  renderTextKeyboard();
+renderTextKeyboard()
 }
 
 function backspaceText(){
+if(textCursor<=0)return;
 
-  if(textCursor<=0)return;
+textBuffer=
+textBuffer.slice(0,textCursor-1)+
+textBuffer.slice(textCursor);
 
-  textBuffer=
-    textBuffer.slice(0,textCursor-1)+
-    textBuffer.slice(textCursor);
+textCursor--;
 
-  textCursor--;
-
-  renderTextKeyboard();
+renderTextKeyboard()
 }
 
 function clearText(){
-
-  textBuffer="";
-  textCursor=0;
-
-  renderTextKeyboard();
+textBuffer="";
+textCursor=0;
+renderTextKeyboard()
 }
 
 function openNameKeyboard(player,value){
+textBuffer=String(value||"");
+textMaxLength=18;
+textShift=true;
+textCursor=textBuffer.length;
 
-  textBuffer=String(value||"");
-  textMaxLength=18;
-  textShift=true;
-  textCursor=textBuffer.length;
+textSaveCallback=newValue=>{
+state.names[player-1]=newValue.trim()||"PLAYER "+player;
+render();
+closeModal()
+};
 
-  textSaveCallback=newValue=>{
+let numberRow=
+`<div class="text-row row10">
+${"1234567890".split("").map(n=>
+`<button class="text-key" data-text="${n}">${n}</button>`
+).join("")}
+</div>`;
 
-    state.names[player-1]=
-      newValue.trim()||
-      "PLAYER "+player;
+let keyboardRows=
+numberRow+
+TEXT_ROWS.map(row=>{
+let cls=
+row.length===10
+?"row10"
+:row.length===9
+?"row9"
+:"row7";
 
-    render();
-    closeModal();
-  };
+return `<div class="text-row ${cls}">
+${row.map(letter=>
+`<button class="text-key" data-letter="${letter}">${letter}</button>`
+).join("")}
+</div>`
+}).join("");
 
-  const numberRow=`
-    <div class="text-row row10">
-      ${
-        "1234567890".split("").map(n=>`
-          <button
-            class="text-key"
-            data-text="${n}"
-            type="button"
-          >
-            ${n}
-          </button>
-        `).join("")
-      }
-    </div>
-  `;
+openModal(
+"Nome giocatore",
+`<div class="text-editor">
 
-  const keyboardRows=
-    numberRow+
-    TEXT_ROWS.map(row=>{
+<div class="text-preview" id="textPreview"></div>
 
-      const cls=
-        row.length===10
-          ?"row10"
-          :row.length===9
-            ?"row9"
-            :"row7";
+<div class="text-editor-info" id="textCount">0/18</div>
 
-      return`
-        <div class="text-row ${cls}">
-          ${
-            row.map(letter=>`
-              <button
-                class="text-key"
-                data-letter="${letter}"
-                type="button"
-              >
-                ${letter}
-              </button>
-            `).join("")
-          }
-        </div>
-      `;
-    }).join("");
+<div class="text-keypad">
 
-  const symbolButtons=
-    TEXT_SYMBOLS.map(symbol=>`
-      <button
-        class="text-key"
-        data-text="${escapeHtml(symbol)}"
-        type="button"
-      >
-        ${escapeHtml(symbol)}
-      </button>
-    `).join("");
+${keyboardRows}
 
-  openModal(
-    "Nome giocatore",
-    `
-      <div class="text-editor">
+<div class="text-row text-actions">
 
-        <div class="text-preview" id="textPreview"></div>
+<button class="text-key shift" data-text-action="shift">⇧</button>
 
-        <div
-          class="text-editor-info"
-          id="textCount"
-        >
-          0/18
-        </div>
+<button class="text-key space" data-text-action="space">
+SPAZIO
+</button>
 
-        <div class="text-keypad">
+<button class="text-key back" data-text-action="back">⌫</button>
 
-          ${keyboardRows}
+<button class="text-key special undo-key" data-text-action="undo">↶</button>
 
-          <div class="text-row text-actions">
+<button class="text-key confirm" data-text-action="confirm">✓</button>
 
-            <button
-              class="text-key shift"
-              type="button"
-              data-text-action="shift"
-              aria-label="Maiuscole"
-            >
-              ⇧
-            </button>
+</div>
+</div>
+</div>`
+);
 
-            <button
-              class="text-key space"
-              type="button"
-              data-text-action="space"
-              aria-label="Spazio"
-            >
-              SPAZIO
-            </button>
+$$(".text-key",modalBody).forEach(button=>
+button.addEventListener("pointerdown",e=>{
+e.preventDefault();
+e.stopPropagation();
 
-            <button
-              class="text-key back"
-              type="button"
-              data-text-action="back"
-              aria-label="Cancella ultimo carattere"
-            >
-              ⌫
-            </button>
+let letter=button.dataset.letter;
 
-            <button
-              class="text-key special undo-key"
-              type="button"
-              data-text-action="undo"
-              aria-label="Ripristina nome"
-            >
-              ↶
-            </button>
+if(letter){
+insertText(textShift?letter:letter.toLowerCase());
 
-            <button
-              class="text-key confirm"
-              type="button"
-              data-text-action="confirm"
-              aria-label="Conferma"
-            >
-              ✓
-            </button>
+if(textShift){
+textShift=false;
+renderTextKeyboard()
+}
 
-          </div>
+return
+}
 
-        </div>
-      </div>
-    `
-  );
+let text=button.dataset.text;
 
-  $$(".text-key",modalBody).forEach(
-    button=>button.addEventListener(
-      "pointerdown",
-      e=>{
+if(text){
+insertText(text);
+return
+}
 
-        e.preventDefault();
-        e.stopPropagation();
+let action=button.dataset.textAction;
 
-        const letter=
-          button.dataset.letter;
+if(action==="shift"){
+textShift=!textShift;
+renderTextKeyboard()
+}
+else if(action==="back"){
+backspaceText()
+}
+else if(action==="space"){
+insertText(" ")
+}
+else if(action==="undo"){
+let original="PLAYER "+player;
+textBuffer=original;
+textCursor=original.length;
+renderTextKeyboard()
+}
+else if(action==="confirm"&&typeof textSaveCallback==="function"){
+textSaveCallback(textBuffer)
+}
+})
+);
 
-        if(letter){
-
-          insertText(
-            textShift
-              ?letter
-              :letter.toLowerCase()
-          );
-
-          if(textShift){
-
-            textShift=false;
-            renderTextKeyboard();
-          }
-
-          return;
-        }
-
-        const text=
-          button.dataset.text;
-
-        if(text){
-
-          insertText(text);
-          return;
-        }
-
-        const action=
-          button.dataset.textAction;
-
-        if(action==="shift"){
-
-          textShift=!textShift;
-          renderTextKeyboard();
-
-        }else if(action==="back"){
-
-          backspaceText();
-
-        }else if(action==="clear"){
-
-          clearText();
-
-        }else if(action==="space"){
-
-          insertText(" ");
-
-        }else if(action==="undo"){
-
-          const original=
-            "PLAYER "+player;
-
-          textBuffer=original;
-          textCursor=original.length;
-
-          renderTextKeyboard();
-
-        }else if(action==="confirm"){
-
-          if(typeof textSaveCallback==="function"){
-            textSaveCallback(textBuffer);
-          }
-        }
-      }
-    )
-  );
-
-  renderTextKeyboard();
+renderTextKeyboard()
 }
 
 function escapeHtml(v){
-
-  return String(v)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+return String(v)
+.replaceAll("&","&amp;")
+.replaceAll("<","&lt;")
+.replaceAll(">","&gt;")
+.replaceAll('"',"&quot;")
+.replaceAll("'","&#039;")
 }
-
-/* NAMES */
 
 [1,2].forEach(p=>{
+let e=$("#name"+p);
 
-  const e=$("#name"+p);
-
-  e.addEventListener(
-    "click",
-    ()=>{
-      openNameKeyboard(
-        p,
-        state.names[p-1]
-      );
-    }
-  );
-
-  e.addEventListener(
-    "keydown",
-    x=>{
-
-      if(
-        x.key==="Enter"||
-        x.key===" "
-      ){
-
-        x.preventDefault();
-
-        openNameKeyboard(
-          p,
-          state.names[p-1]
-        );
-      }
-    }
-  );
+e.addEventListener("click",()=>{
+openNameKeyboard(p,state.names[p-1])
 });
 
-/* HISTORY */
+e.addEventListener("keydown",x=>{
+if(x.key==="Enter"||x.key===" "){
+x.preventDefault();
+openNameKeyboard(p,state.names[p-1])
+}
+})
+});
 
-$("#historyBtn").addEventListener(
-  "pointerdown",
-  e=>{
+$("#historyBtn").addEventListener("pointerdown",e=>{
+e.preventDefault();
 
-    e.preventDefault();
+if(!state.history.length){
+openModal(
+"Storico",
+`<div class="empty-state">Nessuna modifica registrata</div>`
+);
+return
+}
 
-    if(!state.history.length){
+let rows=state.history.map(x=>{
+let gain=Number(x.n)>=0,
+action=x.action||(gain?"Aggiunta LP":"Perdita LP");
 
-      openModal(
-        "Storico",
-        `
-          <div class="empty-state">
-            Nessuna modifica registrata
-          </div>
-        `
-      );
+return `<div class="history-row">
 
-      return;
-    }
+<div class="history-main">
 
-    const rows=
-      state.history.map(x=>{
+<div class="history-title">
+${escapeHtml(action)} · ${escapeHtml(state.names[x.player-1])}
+</div>
 
-        const gain=
-          Number(x.n)>=0;
+<div class="history-meta">
+${escapeHtml(x.time)} ·
+${Number(x.before).toLocaleString("it-IT")}
+→
+${Number(x.after).toLocaleString("it-IT")}
+</div>
 
-        const action=
-          x.action||
-          (
-            gain
-              ?"Aggiunta LP"
-              :"Perdita LP"
-          );
+</div>
 
-        return`
-          <div class="history-row">
+<div class="history-values">
 
-            <div class="history-main">
+<div class="history-change ${gain?"gain":"loss"}">
+${gain?"+":""}${Number(x.n).toLocaleString("it-IT")}
+</div>
 
-              <div class="history-title">
-                ${escapeHtml(action)}
-                ·
-                ${escapeHtml(
-                  state.names[x.player-1]
-                )}
-              </div>
+<div class="history-after">
+LP ${Number(x.after).toLocaleString("it-IT")}
+</div>
 
-              <div class="history-meta">
-                ${escapeHtml(x.time)}
-                ·
-                ${Number(x.before)
-                  .toLocaleString("it-IT")}
-                →
-                ${Number(x.after)
-                  .toLocaleString("it-IT")}
-              </div>
+</div>
 
-            </div>
+</div>`
+}).join("");
 
-            <div class="history-values">
+openModal("Storico",`<div class="history">${rows}</div>`)
+});
 
-              <div
-                class="history-change ${
-                  gain?"gain":"loss"
-                }"
-              >
-                ${
-                  gain?"+":""
-                }${
-                  Number(x.n)
-                    .toLocaleString("it-IT")
-                }
-              </div>
+$("#undoBtn").addEventListener("pointerdown",e=>{
+e.preventDefault();
+undo()
+});
 
-              <div class="history-after">
-                LP ${
-                  Number(x.after)
-                    .toLocaleString("it-IT")
-                }
-              </div>
+function undo(){
+if(!state.history.length)return;
 
-            </div>
+let last=state.history.shift();
 
-          </div>
-        `;
-      }).join("");
+if(last&&last.player&&Number.isFinite(Number(last.before)))
+state.lp[last.player-1]=Math.max(0,Number(last.before));
 
-    openModal(
-      "Storico",
-      `<div class="history">${rows}</div>`
-    );
-  }
+render()
+}
+
+$("#notesBtn").addEventListener("pointerdown",e=>{
+e.preventDefault();
+
+openModal(
+"Appunti",
+`<div class="notes-editor">
+
+<div class="notes-box">
+
+<textarea id="notesLeft"
+class="notes-textarea"
+maxlength="1000"
+placeholder="Appunti sinistri...">${escapeHtml(state.notesLeft)}</textarea>
+
+<div class="notes-divider"></div>
+
+<textarea id="notesRight"
+class="notes-textarea"
+maxlength="1000"
+placeholder="Appunti destri...">${escapeHtml(state.notesRight)}</textarea>
+
+</div>
+
+</div>`
 );
 
-$("#undoBtn").addEventListener(
-  "pointerdown",
-  e=>{
-    e.preventDefault();
-    undo();
-  }
-);
+let l=$("#notesLeft"),
+r=$("#notesRight");
 
-/* NOTES */
+l.addEventListener("input",()=>{
+state.notesLeft=l.value.slice(0,1000);
+renderNotes();
+save()
+});
 
-$("#notesBtn").addEventListener(
-  "pointerdown",
-  e=>{
-
-    e.preventDefault();
-
-    openModal(
-      "Appunti",
-      `
-        <div class="notes-editor">
-
-          <div class="notes-box">
-
-            <textarea
-              id="notesLeft"
-              class="notes-half"
-              maxlength="500"
-              placeholder="Appunti Player 1..."
-              spellcheck="false"
-            ></textarea>
-
-            <textarea
-              id="notesRight"
-              class="notes-half"
-              maxlength="500"
-              placeholder="Appunti Player 2..."
-              spellcheck="false"
-            ></textarea>
-
-          </div>
-
-        </div>
-      `
-    );
-
-    const left=$("#notesLeft");
-    const right=$("#notesRight");
-
-    left.value=state.notes[0]||"";
-    right.value=state.notes[1]||"";
-
-    left.addEventListener(
-      "input",
-      ()=>{
-        state.notes[0]=
-          left.value.slice(0,500);
-
-        updatePlayerNotes();
-        save();
-      }
-    );
-
-    right.addEventListener(
-      "input",
-      ()=>{
-        state.notes[1]=
-          right.value.slice(0,500);
-
-        updatePlayerNotes();
-        save();
-      }
-    );
-  }
-);
-
-/* RANDOM */
+r.addEventListener("input",()=>{
+state.notesRight=r.value.slice(0,1000);
+renderNotes();
+save()
+})
+});
 
 function secureRandomInt(max){
+if(window.crypto&&typeof crypto.getRandomValues==="function"){
+let limit=Math.floor(0x100000000/max)*max,
+arr=new Uint32Array(1);
 
-  if(
-    window.crypto&&
-    typeof crypto.getRandomValues==="function"
-  ){
+do{
+crypto.getRandomValues(arr)
+}while(arr[0]>=limit);
 
-    const limit=
-      Math.floor(0x100000000/max)*max;
-
-    const arr=new Uint32Array(1);
-
-    do{
-      crypto.getRandomValues(arr);
-    }while(arr[0]>=limit);
-
-    return arr[0]%max;
-  }
-
-  return Math.floor(
-    Math.random()*max
-  );
+return arr[0]%max
 }
 
-const secureDie=()=>
-  1+secureRandomInt(6);
+return Math.floor(Math.random()*max)
+}
 
-const secureCoin=()=>
-  secureRandomInt(2)
-    ?"CROCE"
-    :"TESTA";
+const secureDie=()=>1+secureRandomInt(6),
+secureCoin=()=>secureRandomInt(2)?"CROCE":"TESTA";
 
 function temporaryDie(final){
+let v;
 
-  let v;
+do{
+v=secureDie()
+}while(v===final);
 
-  do{
-    v=secureDie();
-  }while(v===final);
-
-  return v;
+return v
 }
 
-/* DICE */
+$("#diceBtn").addEventListener("pointerdown",e=>{
+e.preventDefault();
 
-$("#diceBtn").addEventListener(
-  "pointerdown",
-  e=>{
-
-    e.preventDefault();
-
-    openModal(
-      "Dado",
-      `
-        <div class="dice-wrap">
-
-          <div class="die" id="die">
-            •
-          </div>
-
-          <div class="hint">
-            Tocca il dado per rilanciare
-          </div>
-
-        </div>
-      `
-    );
-
-    setTimeout(
-      rollDie,
-      40
-    );
-  }
+openModal(
+"Dado",
+`<div class="dice-wrap">
+<div class="die" id="die">•</div>
+<div class="hint">Tocca il dado per rilanciare</div>
+</div>`
 );
+
+setTimeout(rollDie,40)
+});
 
 function rollDie(){
+let die=$("#die");
 
-  const die=$("#die");
+if(!die||diceRolling)return;
 
-  if(!die||diceRolling)return;
+diceRolling=true;
 
-  diceRolling=true;
+let final=nextDieResult();
 
-  const final=nextDieResult();
+die.textContent=temporaryDie(final);
+die.classList.remove("rolling");
 
-  die.textContent=
-    temporaryDie(final);
+void die.offsetWidth;
 
-  die.classList.remove("rolling");
+die.classList.add("rolling");
 
-  void die.offsetWidth;
+let start=performance.now();
 
-  die.classList.add("rolling");
-
-  const start=performance.now();
-
-  function anim(now){
-
-    if(!die.isConnected){
-
-      diceRolling=false;
-      return;
-    }
-
-    if(now-start<820){
-
-      die.textContent=
-        temporaryDie(final);
-
-      requestAnimationFrame(anim);
-    }
-  }
-
-  requestAnimationFrame(anim);
-
-  setTimeout(()=>{
-
-    if(!die.isConnected){
-
-      diceRolling=false;
-      return;
-    }
-
-    die.textContent=final;
-
-    die.classList.remove("rolling");
-
-    diceRolling=false;
-
-  },930);
+function anim(now){
+if(!die.isConnected){
+diceRolling=false;
+return
 }
 
-/* COIN */
+if(now-start<820){
+die.textContent=temporaryDie(final);
+requestAnimationFrame(anim)
+}
+}
 
-$("#coinBtn").addEventListener(
-  "pointerdown",
-  e=>{
+requestAnimationFrame(anim);
 
-    e.preventDefault();
+setTimeout(()=>{
+if(!die.isConnected){
+diceRolling=false;
+return
+}
 
-    openModal(
-      "Moneta",
-      `
-        <div class="coin-wrap">
+die.textContent=final;
+die.classList.remove("rolling");
+diceRolling=false
+},930)
+}
 
-          <div class="coin-stage">
+$("#coinBtn").addEventListener("pointerdown",e=>{
+e.preventDefault();
 
-            <div class="coin" id="coin">
-              •
-            </div>
+openModal(
+"Moneta",
+`<div class="coin-wrap">
 
-          </div>
+<div class="coin-stage">
+<div class="coin" id="coin">•</div>
+</div>
 
-          <div class="hint">
-            Tocca la moneta per rilanciarla
-          </div>
+<div class="hint">Tocca la moneta per rilanciarla</div>
 
-        </div>
-      `
-    );
-
-    setTimeout(
-      flipCoin,
-      40
-    );
-  }
+</div>`
 );
+
+setTimeout(flipCoin,40)
+});
 
 function flipCoin(){
+let coin=$("#coin");
 
-  const coin=$("#coin");
+if(!coin||coinBusy)return;
 
-  if(!coin||coinBusy)return;
+coinBusy=true;
 
-  coinBusy=true;
+let final=nextCoinResult();
 
-  const final=nextCoinResult();
+coin.textContent="•";
+coin.classList.remove("flip");
 
-  coin.textContent="•";
+void coin.offsetWidth;
 
-  coin.classList.remove("flip");
+coin.classList.add("flip");
 
-  void coin.offsetWidth;
-
-  coin.classList.add("flip");
-
-  setTimeout(()=>{
-
-    if(!coin.isConnected){
-
-      coinBusy=false;
-      return;
-    }
-
-    coin.textContent=final;
-
-    coin.classList.remove("flip");
-
-    coinBusy=false;
-
-  },1050);
+setTimeout(()=>{
+if(!coin.isConnected){
+coinBusy=false;
+return
 }
 
-modalBody.addEventListener(
-  "pointerdown",
-  e=>{
+coin.textContent=final;
+coin.classList.remove("flip");
+coinBusy=false
+},1050)
+}
 
-    if(e.target.id==="die"){
+modalBody.addEventListener("pointerdown",e=>{
+if(e.target.id==="die"){
+e.preventDefault();
+rollDie()
+}
 
-      e.preventDefault();
-      rollDie();
-    }
-
-    if(e.target.id==="coin"){
-
-      e.preventDefault();
-      flipCoin();
-    }
-  }
-);
-
-/* TIMER */
+if(e.target.id==="coin"){
+e.preventDefault();
+flipCoin()
+}
+});
 
 function formatTime(s){
+s=Math.max(0,Math.floor(s));
 
-  s=Math.max(
-    0,
-    Math.floor(s)
-  );
+let h=Math.floor(s/3600),
+m=Math.floor(s%3600/60),
+sec=s%60;
 
-  const h=
-    Math.floor(s/3600);
-
-  const m=
-    Math.floor(s%3600/60);
-
-  const sec=s%60;
-
-  return h
-    ?[
-        String(h).padStart(2,"0"),
-        String(m).padStart(2,"0"),
-        String(sec).padStart(2,"0")
-      ].join(":")
-    :[
-        String(m).padStart(2,"0"),
-        String(sec).padStart(2,"0")
-      ].join(":");
+return h
+?[String(h).padStart(2,"0"),
+String(m).padStart(2,"0"),
+String(sec).padStart(2,"0")].join(":")
+:[String(m).padStart(2,"0"),
+String(sec).padStart(2,"0")].join(":")
 }
 
 function updateTimerButtonIcon(){
+let button=$("#timerBtn");
 
-  const button=$("#timerBtn");
+if(!button)return;
 
-  if(!button)return;
-
-  if(timerRunning){
-
-    button.textContent=
-      formatTime(
-        state.timerSeconds
-      );
-
-    button.setAttribute(
-      "aria-label",
-      "Timer in corso"
-    );
-
-  }else{
-
-    button.textContent="◷";
-
-    button.setAttribute(
-      "aria-label",
-      "Timer"
-    );
-  }
+if(timerRunning){
+button.textContent=formatTime(state.timerSeconds);
+button.setAttribute("aria-label","Timer in corso")
+}else{
+button.textContent="◷";
+button.setAttribute("aria-label","Timer")
+}
 }
 
 function updateTimerDisplay(){
+let d=$("#timerDisplay");
 
-  const d=$("#timerDisplay");
+if(!d)return;
 
-  if(!d)return;
+d.textContent=formatTime(state.timerSeconds);
 
-  d.textContent=
-    formatTime(
-      state.timerSeconds
-    );
+d.classList.remove("warning","danger");
 
-  d.classList.remove(
-    "warning",
-    "danger"
-  );
-
-  if(state.timerSeconds<=60){
-
-    d.classList.add("danger");
-
-  }else if(state.timerSeconds<=300){
-
-    d.classList.add("warning");
-  }
+if(state.timerSeconds<=60)
+d.classList.add("danger");
+else if(state.timerSeconds<=300)
+d.classList.add("warning")
 }
 
 function updateTimerButtons(){
+let a=$("#timerStart");
 
-  const a=$("#timerStart");
+if(!a)return;
 
-  if(!a)return;
+a.disabled=timerRunning||state.timerSeconds<=0;
 
-  a.disabled=
-    timerRunning||
-    state.timerSeconds<=0;
-
-  a.style.opacity=
-    timerRunning||
-    state.timerSeconds<=0
-      ?".45"
-      :"1";
-}
-
-function updateTimerPresetButton(){
-
-  const button=
-    $("#timerPreset");
-
-  if(!button)return;
-
-  /*
-    Mostra la durata che verrà impostata
-    al prossimo tocco.
-  */
-  const currentMinutes=
-    Math.round(
-      state.timerInitialSeconds/60
-    );
-
-  const nextMinutes=
-    currentMinutes===40
-      ?45
-      :40;
-
-  button.textContent=
-    nextMinutes+" MIN";
-
-  button.setAttribute(
-    "aria-label",
-    "Imposta timer a "+
-    nextMinutes+
-    " minuti"
-  );
+a.style.opacity=
+timerRunning||state.timerSeconds<=0
+?".45"
+:"1"
 }
 
 function updateTimerFromClock(){
+if(!timerRunning)return;
 
-  if(!timerRunning)return;
+let now=Date.now(),
+elapsed=Math.floor((now-timerLastTick)/1000);
 
-  const now=Date.now();
+if(elapsed<=0)return;
 
-  const elapsed=Math.floor(
-    (now-timerLastTick)/1000
-  );
+timerLastTick+=elapsed*1000;
 
-  if(elapsed<=0)return;
+state.timerSeconds=
+Math.max(0,state.timerSeconds-elapsed);
 
-  timerLastTick+=
-    elapsed*1000;
+updateTimerDisplay();
+updateTimerButtonIcon();
+save();
 
-  state.timerSeconds=Math.max(
-    0,
-    state.timerSeconds-elapsed
-  );
-
-  updateTimerDisplay();
-  updateTimerButtonIcon();
-
-  save();
-
-  if(state.timerSeconds<=0){
-
-    stopTimer();
-
-    updateTimerDisplay();
-    updateTimerButtons();
-    updateTimerButtonIcon();
-  }
+if(state.timerSeconds<=0){
+stopTimer();
+updateTimerDisplay();
+updateTimerButtons();
+updateTimerButtonIcon()
+}
 }
 
 function startTimer(){
+if(timerRunning||state.timerSeconds<=0)return;
 
-  if(
-    timerRunning||
-    state.timerSeconds<=0
-  )return;
+timerRunning=true;
+timerLastTick=Date.now();
 
-  timerRunning=true;
+timerInterval=setInterval(updateTimerFromClock,250);
 
-  timerLastTick=Date.now();
-
-  timerInterval=setInterval(
-    updateTimerFromClock,
-    250
-  );
-
-  updateTimerDisplay();
-  updateTimerButtons();
-  updateTimerButtonIcon();
+updateTimerDisplay();
+updateTimerButtons();
+updateTimerButtonIcon()
 }
 
 function stopTimer(){
+if(timerInterval!==null){
+clearInterval(timerInterval);
+timerInterval=null
+}
 
-  if(timerInterval!==null){
+timerRunning=false;
+timerLastTick=0;
 
-    clearInterval(
-      timerInterval
-    );
-
-    timerInterval=null;
-  }
-
-  timerRunning=false;
-  timerLastTick=0;
-
-  updateTimerButtonIcon();
+updateTimerButtonIcon()
 }
 
 function resetTimer(){
+stopTimer();
 
-  stopTimer();
+state.timerSeconds=state.timerInitialSeconds;
 
-  state.timerSeconds=
-    state.timerInitialSeconds;
+updateTimerDisplay();
+updateTimerButtons();
+updateTimerButtonIcon();
 
-  updateTimerDisplay();
-  updateTimerButtons();
-  updateTimerButtonIcon();
-
-  save();
+save()
 }
 
-/*
-  Alterna permanentemente:
-  45 → 40 → 45 → 40...
-*/
-function toggleTimerPreset(){
+function toggleQuickTimer(){
+let current=Math.round(state.timerInitialSeconds/60),
+next=current===40?45:40;
 
-  const currentMinutes=
-    Math.round(
-      state.timerInitialSeconds/60
-    );
+state.timerInitialSeconds=next*60;
+state.timerSeconds=next*60;
 
-  const nextMinutes=
-    currentMinutes===40
-      ?45
-      :40;
-
-  state.timerInitialSeconds=
-    nextMinutes*60;
-
-  state.timerSeconds=
-    nextMinutes*60;
-
-  stopTimer();
-
-  updateTimerDisplay();
-  updateTimerButtons();
-  updateTimerButtonIcon();
-  updateTimerPresetButton();
-
-  save();
+stopTimer();
+save();
+openTimer()
 }
 
 function openTimer(){
 
-  openModal(
-    "Timer duello",
-    `
-      <div
-        class="timer-display"
-        id="timerDisplay"
-      >
-        ${formatTime(state.timerSeconds)}
-      </div>
+/* SOLO 40 / 45, senza "MIN" */
+let quick=
+Math.round(state.timerInitialSeconds/60)===40
+?"45"
+:"40";
 
-      <button
-        class="timer-edit"
-        id="timerEdit"
-        type="button"
-      >
-        CAMBIA DURATA
-      </button>
+openModal(
+"Timer duello",
+`<div class="timer-head">
 
-      <div class="timer-duration-row">
+<div class="timer-display" id="timerDisplay">
+${formatTime(state.timerSeconds)}
+</div>
 
-        <button
-          class="timer-preset"
-          id="timerPreset"
-          type="button"
-        >
-          40 MIN
-        </button>
+<button class="timer-mini" id="timerQuick" type="button">
+${quick}
+</button>
 
-      </div>
+</div>
 
-      <div class="timer-controls">
+<button class="timer-edit" id="timerEdit" type="button">
+CAMBIA DURATA
+</button>
 
-        <button
-          class="timer-btn"
-          id="timerStart"
-          type="button"
-        >
-          ▶ AVVIA
-        </button>
+<div class="timer-controls">
 
-        <button
-          class="timer-btn"
-          id="timerReset"
-          type="button"
-        >
-          ↻ RESET
-        </button>
+<button class="timer-btn" id="timerStart" type="button">
+▶ AVVIA
+</button>
 
-      </div>
-    `
-  );
+<button class="timer-btn" id="timerReset" type="button">
+↻ RESET
+</button>
 
-  updateTimerDisplay();
-  updateTimerButtons();
-  updateTimerButtonIcon();
-  updateTimerPresetButton();
+</div>`
+);
 
-  $("#timerStart").addEventListener(
-    "pointerdown",
-    e=>{
+updateTimerDisplay();
+updateTimerButtons();
+updateTimerButtonIcon();
 
-      e.preventDefault();
+$("#timerStart").addEventListener("pointerdown",e=>{
+e.preventDefault();
+startTimer();
+closeModal()
+});
 
-      startTimer();
-      closeModal();
-    }
-  );
+$("#timerReset").addEventListener("pointerdown",e=>{
+e.preventDefault();
+resetTimer()
+});
 
-  $("#timerReset").addEventListener(
-    "pointerdown",
-    e=>{
+$("#timerEdit").addEventListener("pointerdown",e=>{
+e.preventDefault();
+openTimerKeypad()
+});
 
-      e.preventDefault();
-
-      resetTimer();
-    }
-  );
-
-  $("#timerEdit").addEventListener(
-    "pointerdown",
-    e=>{
-
-      e.preventDefault();
-
-      openTimerKeypad();
-    }
-  );
-
-  $("#timerPreset").addEventListener(
-    "pointerdown",
-    e=>{
-
-      e.preventDefault();
-
-      toggleTimerPreset();
-    }
-  );
+$("#timerQuick").addEventListener("pointerdown",e=>{
+e.preventDefault();
+toggleQuickTimer()
+})
 }
 
-/* TIMER KEYPAD */
-
 function openTimerKeypad(){
+let v="";
 
-  let v="";
+openModal(
+"Durata timer",
+`<div class="keypad-wrap">
 
-  openModal(
-    "Durata timer",
-    `
-      <div class="keypad-wrap">
+<div class="keypad-operation">
+INSERISCI I MINUTI · DEFAULT 45
+</div>
 
-        <div class="keypad-operation">
-          INSERISCI I MINUTI · DEFAULT 45
-        </div>
+<div class="keypad-value" id="timerKeyValue">
+0
+</div>
 
-        <div
-          class="keypad-value"
-          id="timerKeyValue"
-        >
-          0
-        </div>
+<div class="keypad">
 
-        <div class="keypad">
+<button class="key" data-k="1">1</button>
+<button class="key" data-k="2">2</button>
+<button class="key" data-k="3">3</button>
 
-          <button class="key" data-k="1" type="button">1</button>
-          <button class="key" data-k="2" type="button">2</button>
-          <button class="key" data-k="3" type="button">3</button>
+<button class="key" data-k="4">4</button>
+<button class="key" data-k="5">5</button>
+<button class="key" data-k="6">6</button>
 
-          <button class="key" data-k="4" type="button">4</button>
-          <button class="key" data-k="5" type="button">5</button>
-          <button class="key" data-k="6" type="button">6</button>
+<button class="key" data-k="7">7</button>
+<button class="key" data-k="8">8</button>
+<button class="key" data-k="9">9</button>
 
-          <button class="key" data-k="7" type="button">7</button>
-          <button class="key" data-k="8" type="button">8</button>
-          <button class="key" data-k="9" type="button">9</button>
+<button class="key clear" data-k="c">C</button>
+<button class="key" data-k="0">0</button>
+<button class="key action" data-k="b">⌫</button>
 
-          <button class="key clear" data-k="c" type="button">C</button>
-          <button class="key" data-k="0" type="button">0</button>
-          <button class="key action" data-k="b" type="button">⌫</button>
+<button class="key confirm" data-k="ok" style="grid-column:1/-1">
+CONFERMA
+</button>
 
-          <button
-            class="key confirm"
-            data-k="ok"
-            type="button"
-            style="grid-column:1/-1"
-          >
-            CONFERMA
-          </button>
+</div>
+</div>`
+);
 
-        </div>
-      </div>
-    `
-  );
+let display=$("#timerKeyValue"),
+update=()=>display.textContent=v||"0";
 
-  const display=
-    $("#timerKeyValue");
+$$(".key",modalBody).forEach(b=>
+b.addEventListener("pointerdown",e=>{
+e.preventDefault();
+e.stopPropagation();
 
-  const update=()=>{
-    display.textContent=
-      v||"0";
-  };
+let k=b.dataset.k;
 
-  $$(".key",modalBody).forEach(
-    b=>b.addEventListener(
-      "pointerdown",
-      e=>{
-
-        e.preventDefault();
-        e.stopPropagation();
-
-        const k=b.dataset.k;
-
-        if(/^\d$/.test(k)){
-
-          if(v.length>=3)return;
-
-          v=
-            v==="0"
-              ?k
-              :v+k;
-
-          update();
-
-        }else if(k==="c"){
-
-          v="";
-          update();
-
-        }else if(k==="b"){
-
-          v=v.slice(0,-1);
-          update();
-
-        }else if(k==="ok"){
-
-          applyTimerMinutes(v);
-        }
-      }
-    )
-  );
+if(/^\d$/.test(k)){
+if(v.length>=3)return;
+v=v==="0"?k:v+k;
+update()
+}
+else if(k==="c"){
+v="";
+update()
+}
+else if(k==="b"){
+v=v.slice(0,-1);
+update()
+}
+else if(k==="ok"){
+applyTimerMinutes(v)
+}
+})
+)
 }
 
 function applyTimerMinutes(value){
+let min=Math.max(1,parseInt(value,10)||0);
 
-  const min=Math.max(
-    1,
-    parseInt(value,10)||0
-  );
+state.timerInitialSeconds=min*60;
+state.timerSeconds=min*60;
 
-  state.timerInitialSeconds=
-    min*60;
-
-  state.timerSeconds=
-    min*60;
-
-  stopTimer();
-
-  save();
-
-  closeModal();
-
-  openTimer();
+stopTimer();
+save();
+closeModal();
+openTimer()
 }
 
-$("#timerBtn").addEventListener(
-  "pointerdown",
-  e=>{
+$("#timerBtn").addEventListener("pointerdown",e=>{
+e.preventDefault();
+openTimer()
+});
 
-    e.preventDefault();
+let bgLongPress=null,
+bgLongPressed=false;
 
-    openTimer();
-  }
+$("#bgBtn").addEventListener("pointerdown",e=>{
+e.preventDefault();
+
+bgLongPressed=false;
+
+clearTimeout(bgLongPress);
+
+bgLongPress=setTimeout(()=>{
+bgLongPressed=true;
+state.bg="";
+applyBackground();
+save()
+},650)
+});
+
+["pointerup","pointercancel","pointerleave"].forEach(
+t=>$("#bgBtn").addEventListener(t,e=>{
+clearTimeout(bgLongPress);
+
+if(t==="pointerup"&&!bgLongPressed){
+let input=$("#bgInput");
+
+if(input){
+input.value="";
+input.click()
+}
+}
+})
 );
 
-/* BACKGROUND
-   tap = cambia
-   long press = elimina
+$("#bgInput").addEventListener("change",async e=>{
+let f=e.target.files?.[0];
+
+if(!f)return;
+
+try{
+if(!f.type.startsWith("image/"))
+throw new Error("file");
+
+state.bg=await compressImage(f,1600,.78);
+
+applyBackground();
+save()
+
+}catch(err){
+console.error(err);
+alert("Non è stato possibile caricare lo sfondo.")
+}finally{
+e.target.value=""
+}
+});
+
+/* RESET ESTERNO:
+   1 click = nuova partita, timer invariato
+   2 click ravvicinati = nuova partita + reset timer
 */
 
-let bgLongPress=null;
-let bgLongPressed=false;
+$("#resetBtn").addEventListener("pointerdown",e=>{
+e.preventDefault();
 
-$("#bgBtn").addEventListener(
-  "pointerdown",
-  e=>{
+resetClicks++;
 
-    e.preventDefault();
+clearTimeout(resetClickTimer);
 
-    bgLongPressed=false;
+if(resetClicks>=2){
 
-    clearTimeout(bgLongPress);
+resetClicks=0;
 
-    bgLongPress=setTimeout(()=>{
+stopTimer();
 
-      bgLongPressed=true;
+state.timerInitialSeconds=2700;
+state.timerSeconds=2700;
 
-      state.bg="";
+}else{
 
-      applyBackground();
-      save();
+resetClickTimer=setTimeout(()=>{
+resetClicks=0
+},650)
 
-    },650);
-  }
-);
+}
 
-["pointerup","pointercancel","pointerleave"]
-  .forEach(t=>{
+state.lp=[8000,8000];
+state.history=[];
+state.notesLeft="";
+state.notesRight="";
 
-    $("#bgBtn").addEventListener(
-      t,
-      e=>{
+diceRolling=false;
+coinBusy=false;
 
-        clearTimeout(bgLongPress);
+resetRandomSequences();
 
-        if(
-          t==="pointerup"&&
-          !bgLongPressed
-        ){
-
-          const input=
-            $("#bgInput");
-
-          if(input){
-
-            input.value="";
-            input.click();
-          }
-        }
-      }
-    );
-  });
-
-$("#bgInput").addEventListener(
-  "change",
-  async e=>{
-
-    const f=e.target.files?.[0];
-
-    if(!f)return;
-
-    try{
-
-      if(!f.type.startsWith("image/")){
-        throw new Error("file");
-      }
-
-      state.bg=
-        await compressImage(
-          f,
-          1600,
-          .78
-        );
-
-      applyBackground();
-      save();
-
-    }catch(err){
-
-      console.error(err);
-
-      alert(
-        "Non è stato possibile caricare lo sfondo."
-      );
-
-    }finally{
-
-      e.target.value="";
-    }
-  }
-);
-
-/* RESET / NUOVA PARTITA */
-
-/*
-  Primo tocco:
-    - resetta LP
-    - resetta storico
-    - resetta appunti
-    - NON tocca il timer
-
-  Secondo tocco entro 550 ms:
-    - fa anche il reset del timer
-    - il timer torna alla durata permanente scelta
-      (40, 45 oppure quella impostata manualmente)
-*/
-
-$("#resetBtn").addEventListener(
-  "pointerdown",
-  e=>{
-
-    e.preventDefault();
-
-    const now=Date.now();
-
-    const isSecondClick=
-      resetFirstClickTime>0&&
-      now-resetFirstClickTime<=
-        RESET_DOUBLE_CLICK_WINDOW;
-
-    resetFirstClickTime=
-      isSecondClick
-        ?0
-        :now;
-
-    /*
-      Reset normale della partita.
-      Il timer viene volutamente escluso.
-    */
-    state.lp=[8000,8000];
-    state.history=[];
-    state.notes=["",""];
-
-    diceRolling=false;
-    coinBusy=false;
-
-    resetRandomSequences();
-
-    /*
-      Solo il secondo tocco resetta il timer.
-    */
-    if(isSecondClick){
-
-      state.timerSeconds=
-        state.timerInitialSeconds;
-
-      stopTimer();
-    }
-
-    render();
-    closeModal();
-  }
-);
-
-/* INITIALIZATION */
+render();
+closeModal()
+});
 
 loadState();
 
-if(
-  !state.timerInitialSeconds||
-  state.timerInitialSeconds<1
-){
-
-  state.timerInitialSeconds=
-    2700;
-
-  state.timerSeconds=
-    2700;
+if(!state.timerInitialSeconds||state.timerInitialSeconds<1){
+state.timerInitialSeconds=2700;
+state.timerSeconds=2700
 }
+
+resetRandomSequences();
+applyBackground();
+
+setupImageSlot(1);
+setupImageSlot(2);
+
+render();
+</script>
+
+</body>
+</html>
+```
+
 
 if(
   !Array.isArray(state.notes)||
