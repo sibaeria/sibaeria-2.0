@@ -1235,44 +1235,6 @@ const state={
   timerQuickTarget:40 
 }; 
  
-let diceSequenceIndex=0; 
-let coinSequenceIndex=0; 
- 
-function resetRandomSequences(){ 
-  diceSequenceIndex=0; 
-  coinSequenceIndex=0; 
-} 
- 
-function nextDieResult(){ 
-  if(diceSequenceIndex===0){ 
-    diceSequenceIndex++; 
-    return 4+secureRandomInt(3); 
-  } 
-  if(diceSequenceIndex===1){ 
-    diceSequenceIndex++; 
-    return 1+secureRandomInt(3); 
-  } 
-  diceSequenceIndex++; 
-  return secureDie(); 
-} 
- 
-function nextCoinResult(){ 
-  if(coinSequenceIndex===0){ 
-    coinSequenceIndex++; 
-    return "TESTA"; 
-  } 
-  if(coinSequenceIndex===1){ 
-    coinSequenceIndex++; 
-    return "TESTA"; 
-  } 
-  if(coinSequenceIndex===2){ 
-    coinSequenceIndex++; 
-    return "CROCE"; 
-  } 
-  coinSequenceIndex++; 
-  return secureCoin(); 
-} 
- 
 let currentAmountPlayer=null; 
 let currentAmountSign=-1; 
 let keypadValue=""; 
@@ -2354,7 +2316,7 @@ function rollDie(){
  
   diceRolling=true; 
  
-  const final=nextDieResult(); 
+  const final=secureDie(); 
  
   die.textContent=temporaryDie(final); 
  
@@ -2439,7 +2401,7 @@ function flipCoin(){
  
   coinBusy=true; 
  
-  const final=nextCoinResult(); 
+  const final=secureCoin(); 
  
   coin.textContent="•"; 
  
@@ -2946,7 +2908,6 @@ function resetNonTimerState(){
   state.notes=["",""];
   diceRolling=false;
   coinBusy=false;
-  resetRandomSequences();
   render();
   closeModal();
 }
@@ -2986,7 +2947,6 @@ if(
   state.timerSeconds=2700; 
 } 
  
-resetRandomSequences(); 
  
 if(!/^#[0-9a-fA-F]{6}$/.test(state.playerBg)) state.playerBg="";
 if(!/^#[0-9a-fA-F]{6}$/.test(state.lpColor)) state.lpColor="";
@@ -3002,6 +2962,5 @@ render();
  
 </body> 
 </html>
- 
 </body> 
 </html>
