@@ -1,739 +1,553 @@
-<!doctype html>
-<html lang="it">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<title>Duel</title>
-
-<link rel="manifest" href="./manifest.json?v=5">
-<link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png?v=5">
-<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5">
-
-<meta name="theme-color" content="#0b0d12">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-touch-fullscreen" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Duel">
-<meta name="format-detection" content="telephone=no">
-
-<style>
-:root{
-  --bg:#0b0d12;
-  --card:rgba(18,22,31,.78);
-  --line:rgba(255,255,255,.13);
-  --txt:#f6f7fb;
-  --muted:#aeb5c4;
-  --p1:#62d9ff;
-  --p2:#b58cff;
-  --user-bg:none;
-  --safe-top:env(safe-area-inset-top,0px);
-  --safe-bottom:env(safe-area-inset-bottom,0px);
-  --safe-left:env(safe-area-inset-left,0px);
-  --safe-right:env(safe-area-inset-right,0px)
-}
-
-*{
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent
-}
-
-html,body{
-  margin:0;
-  padding:0;
-  width:100%;
-  height:100%;
-  min-height:100%;
-  overflow:hidden;
-  overscroll-behavior:none;
-  background:var(--bg)
-}
-
-html{
-  touch-action:manipulation;
-  background:var(--bg)
-}
-
-body{
-  position:fixed;
-  inset:0;
-  width:100%;
-  height:100%;
-  min-height:100%;
-  background-color:var(--bg);
-  background-image:
-    linear-gradient(135deg,rgba(5,7,12,.46),rgba(5,7,12,.18)),
-    var(--user-bg);
-  background-size:cover,cover;
-  background-position:center,center;
+<!doctype html> 
+<html lang="it"> 
+<head> 
+<meta charset="utf-8"> 
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"> 
+<title>Duel</title> 
+ 
+<link rel="manifest" href="./manifest.json?v=5"> 
+<link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png?v=5"> 
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5"> 
+ 
+<meta name="theme-color" content="#0b0d12"> 
+<meta name="mobile-web-app-capable" content="yes"> 
+<meta name="apple-mobile-web-app-capable" content="yes"> 
+<meta name="apple-touch-fullscreen" content="yes"> 
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> 
+<meta name="apple-mobile-web-app-title" content="Duel"> 
+<meta name="format-detection" content="telephone=no"> 
+ 
+<style> 
+:root{ 
+  --bg:#0b0d12; 
+  --card:rgba(18,22,31,.78); 
+  --line:rgba(255,255,255,.13); 
+  --txt:#f6f7fb; 
+  --muted:#aeb5c4; 
+  --p1:#62d9ff; 
+  --p2:#b58cff; 
+  --player-bg:rgba(18,22,31,.60);
+  --player-surface:rgba(18,22,31,.60);
+  --player-base-rgb:18,22,31;
+  --player-light-rgb:42,49,66;
+  --player-dark-rgb:7,9,14;
+  --player-glow-1:98,217,255;
+  --player-glow-2:181,140,255;
+  --lp-color:var(--txt);
+  --safe-top:env(safe-area-inset-top,0px); 
+  --safe-bottom:env(safe-area-inset-bottom,0px); 
+  --safe-left:env(safe-area-inset-left,0px); 
+  --safe-right:env(safe-area-inset-right,0px); 
+} 
+ 
+*{ 
+  box-sizing:border-box; 
+  -webkit-tap-highlight-color:transparent; 
+} 
+ 
+html,body{ 
+  margin:0; 
+  width:100%; 
+  height:100%; 
+  min-height:100%; 
+  overflow:hidden; 
+  overscroll-behavior:none; 
+  background:var(--bg); 
+} 
+ 
+html{ 
+  touch-action:manipulation; 
+} 
+ 
+body{ 
+  position:fixed; 
+  inset:0; 
+  background:var(--bg); 
+  background-size:cover; 
+  background-position:center; 
+  background-attachment:fixed,fixed;
   background-repeat:no-repeat,no-repeat;
-  background-attachment:scroll,scroll;
-  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
-  color:var(--txt);
-  -webkit-text-size-adjust:100%;
-  touch-action:manipulation;
-  user-select:none;
-  -webkit-user-select:none
-}
-
-button,input,textarea{
-  font:inherit
-}
-
-button{
-  color:inherit;
-  border:0;
-  cursor:pointer;
-  touch-action:manipulation
-}
-
-button:active{
-  transform:scale(.96)
-}
-
-.hidden-file{
-  display:none!important
-}
-
-.app{
-  position:relative;
-  width:100%;
-  max-width:760px;
-  height:100dvh;
-  min-height:100dvh;
-  max-height:100dvh;
-  margin:0 auto;
-  display:flex;
-  flex-direction:column;
+  background-origin:border-box;
+  background-clip:border-box; 
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif; 
+  color:var(--txt); 
+  -webkit-text-size-adjust:100%; 
+  touch-action:manipulation; 
+  user-select:none; 
+  -webkit-user-select:none; 
+} 
+ 
+button,input,textarea{ 
+  font:inherit; 
+} 
+ 
+button{ 
+  color:inherit; 
+  border:0; 
+  cursor:pointer; 
+  touch-action:manipulation; 
+} 
+ 
+button:active{ 
+  transform:scale(.96); 
+} 
+ 
+.hidden-file{ 
+  display:none!important; 
+} 
+ 
+/* APP */ 
+.app{ 
+  width:100%; 
+  max-width:760px; 
+  height:100vh; 
+  height:100svh; 
+  height:100dvh; 
+  min-height:0; 
+  margin:auto; 
+  display:flex; 
+  flex-direction:column; 
+ 
+  /* circa 4 mm più in basso */ 
   padding:
     max(10px,calc(var(--safe-top) + 10px))
     max(7px,var(--safe-right))
-    max(7px,calc(var(--safe-bottom) + 7px))
-    max(7px,var(--safe-left));
-  gap:7px;
-  overflow:hidden;
-  background:transparent
-}
-
-@media all and (display-mode:standalone){
-  .app{
-    height:100dvh;
-    min-height:100dvh;
-    max-height:100dvh
-  }
-}
-
-.topbar{
-  height:44px;
-  min-height:44px;
-  flex:0 0 44px;
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:7px
-}
-
-.icon,.tool{
-  min-width:0;
-  min-height:0;
-  height:100%;
-  width:100%;
-  border-radius:14px;
-  border:1px solid var(--line);
-  background:rgba(12,15,22,.78);
-  backdrop-filter:blur(16px);
-  -webkit-backdrop-filter:blur(16px);
-  box-shadow:0 8px 30px #0004;
-  font-size:19px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  -webkit-touch-callout:none
-}
-
-.icon.timer,.tool.timer{
-  color:#8cf3ff
-}
-
-.icon.undo,.tool.undo{
-  color:#ffd27d
-}
-
-.icon.refresh{
-  color:#f6f7fb
-}
-
-.icon.background{
-  color:#bdefff
-}
-
-.players{
-  flex:1 1 auto;
-  min-height:0;
-  display:grid;
-  grid-template-rows:minmax(0,1fr) minmax(0,1fr);
-  gap:8px;
-  overflow:hidden
-}
-
-.player{
-  min-height:0;
-  border:1px solid var(--line);
-  border-radius:24px;
-  background:rgba(18,22,31,.60);
-  backdrop-filter:blur(18px);
-  -webkit-backdrop-filter:blur(18px);
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  padding:12px;
-  box-shadow:0 20px 60px #0004;
-  position:relative;
-  overflow:hidden;
-  isolation:isolate
-}
-
+    max(7px,var(--safe-bottom))
+    max(7px,var(--safe-left)); 
+ 
+  gap:7px; 
+  overflow:hidden; 
+} 
+ 
+@media all and (display-mode:standalone){ 
+  .app{ 
+    height:100vh; 
+    height:100dvh; 
+  } 
+} 
+ 
+/* TOP BAR */ 
+.topbar{ 
+  height:44px; 
+  min-height:44px; 
+  flex:0 0 44px; 
+  display:grid; 
+  grid-template-columns:repeat(4,minmax(0,1fr)); 
+  gap:7px; 
+} 
+ 
+.icon,.tool{ 
+  min-width:0; 
+  min-height:0; 
+  height:100%; 
+  width:100%; 
+  border-radius:14px; 
+  border:1px solid var(--line); 
+  background:rgba(12,15,22,.78); 
+  backdrop-filter:blur(16px); 
+  -webkit-backdrop-filter:blur(16px); 
+  box-shadow:0 8px 30px #0004; 
+  font-size:19px; 
+  display:flex; 
+  align-items:center; 
+  justify-content:center; 
+  -webkit-touch-callout:none; 
+} 
+ 
+.icon.timer,.tool.timer{color:#8cf3ff} 
+.icon.undo,.tool.undo{color:#ffd27d} 
+.icon.refresh{color:#f6f7fb} 
+.icon.background{color:#bdefff} 
+ 
+/* PLAYERS */ 
+.players{ 
+  flex:1; 
+  min-height:0; 
+  display:grid; 
+  grid-template-rows:1fr 1fr; 
+  gap:8px; 
+} 
+ 
+.player{ 
+  min-height:0; 
+  border:1px solid var(--line); 
+  border-radius:24px; 
+  background:var(--player-surface);
+  backdrop-filter:blur(18px); 
+  -webkit-backdrop-filter:blur(18px); 
+  display:flex; 
+  flex-direction:column; 
+  justify-content:center; 
+  align-items:center; 
+  padding:12px; 
+  box-shadow:0 20px 60px #0004; 
+  position:relative; 
+  overflow:hidden; 
+  isolation:isolate; 
+} 
+ 
 .player:before{
   content:"";
   position:absolute;
   inset:0;
   pointer-events:none;
   z-index:-1;
-  opacity:.10
+  opacity:.18;
+  background:
+    radial-gradient(circle at 18% 12%,rgba(var(--player-glow-1),.95),transparent 24%),
+    radial-gradient(circle at 82% 30%,rgba(var(--player-glow-3),.70),transparent 26%),
+    radial-gradient(circle at 70% 88%,rgba(var(--player-glow-2),.72),transparent 30%);
+  mix-blend-mode:screen;
 }
 
-.p1:before{
-  background:radial-gradient(circle at 50% 0%,var(--p1),transparent 55%)
-}
-
-.p2:before{
-  background:radial-gradient(circle at 50% 100%,var(--p2),transparent 55%)
-}
-
-.player-image{
+.player:after{
+  content:"";
   position:absolute;
-  top:9px;
-  left:9px;
-  width:78px;
-  height:78px;
-  border-radius:18px;
-  border:1px solid rgba(255,255,255,.16);
-  background:rgba(12,15,22,.66);
-  backdrop-filter:blur(15px);
-  -webkit-backdrop-filter:blur(15px);
-  box-shadow:0 10px 30px #0006;
-  display:grid;
-  place-items:center;
-  overflow:hidden;
-  touch-action:manipulation;
-  user-select:none;
-  -webkit-user-select:none
+  inset:0;
+  pointer-events:none;
+  z-index:-1;
+  opacity:.34;
+  background:
+    linear-gradient(125deg,transparent 0%,rgba(255,255,255,.07) 42%,transparent 54%),
+    radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.08),transparent 42%),
+    radial-gradient(ellipse at 50% 100%,rgba(0,0,0,.24),transparent 55%);
 }
 
-.player-image img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  border-radius:17px;
-  display:block
+.p1:before{opacity:.18}
+.p1:after{opacity:.32}
+.p2:before{opacity:.15}
+.p2:after{opacity:.36}
+
+.lp{
+  text-shadow:0 5px 30px #0008,0 0 22px var(--lp-glow);
 }
 
-.player-image.empty{
-  cursor:pointer
-}
-
-.player-image.empty:before{
-  content:"+";
-  color:#9ca5b6;
-  font-size:23px;
-  line-height:1
-}
-
-.player-image.empty:after{
-  content:"IMG";
-  position:absolute;
-  bottom:4px;
-  left:0;
-  right:0;
-  text-align:center;
-  font-size:7px;
-  letter-spacing:.12em;
-  color:#6f7787
-}
-
-.player-image input{
-  display:none
-}
-
-.pname{
-  font-size:12px;
-  color:var(--muted);
-  letter-spacing:.12em;
-  text-transform:uppercase;
-  text-align:center;
-  padding:7px 12px;
-  border-radius:10px;
-  transition:.2s;
-  max-width:70%;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-  cursor:pointer
-}
-
-.pname:active{
-  background:#ffffff12;
-  transform:scale(.97)
-}
-
-.p1 .pname{
-  color:#a9edff
-}
-
-.p2 .pname{
-  color:#d1bdff
-}
-
+.player-image{ 
+  position:absolute; 
+  top:9px; 
+  left:9px; 
+  width:78px;height:78px;border-radius:18px; 
+  border:1px solid rgba(255,255,255,.16); 
+  background:rgba(12,15,22,.66); 
+  backdrop-filter:blur(15px); 
+  -webkit-backdrop-filter:blur(15px); 
+  box-shadow:0 10px 30px #0006; 
+  display:grid; 
+  place-items:center; 
+  overflow:hidden; 
+  touch-action:manipulation; 
+  user-select:none; 
+  -webkit-user-select:none; 
+} 
+ 
+.player-image img{ 
+  width:100%; 
+  height:100%; 
+  object-fit:cover; 
+  border-radius:17px; 
+  display:block; 
+} 
+ 
+.player-image.empty{ 
+  cursor:pointer; 
+} 
+ 
+.player-image.empty:before{ 
+  content:"+"; 
+  color:#9ca5b6; 
+  font-size:23px; 
+  line-height:1; 
+} 
+ 
+.player-image.empty:after{ 
+  content:"IMG"; 
+  position:absolute; 
+  bottom:4px; 
+  left:0; 
+  right:0; 
+  text-align:center; 
+  font-size:7px; 
+  letter-spacing:.12em; 
+  color:#6f7787; 
+} 
+ 
+.player-image input{ 
+  display:none; 
+} 
+ 
+.pname{ 
+  font-size:12px; 
+  color:var(--muted); 
+  letter-spacing:.12em; 
+  text-transform:uppercase; 
+  text-align:center; 
+  padding:7px 12px; 
+  border-radius:10px; 
+  transition:.2s; 
+  max-width:70%; 
+  overflow:hidden; 
+  text-overflow:ellipsis; 
+  white-space:nowrap; 
+  cursor:pointer; 
+} 
+ 
+.pname:active{ 
+  background:#ffffff12; 
+  transform:scale(.97); 
+} 
+ 
+.p1 .pname{color:#a9edff} 
+.p2 .pname{color:#d1bdff} 
+ 
 .lp-line{
   display:flex;
   align-items:center;
   justify-content:center;
   gap:9px;
-  width:100%
-}
-
-.lp{
-  font-size:clamp(48px,13vw,82px);
-  font-weight:800;
-  letter-spacing:-.05em;
-  line-height:1;
-  margin:5px 0 8px;
-  text-shadow:0 5px 30px #0008;
-  font-variant-numeric:tabular-nums
-}
-
-.life-bar{
-  width:min(440px,92%);
-  height:7px;
-  border-radius:999px;
-  background:#ffffff12;
-  border:1px solid #ffffff14;
-  overflow:hidden;
-  margin:0 auto 7px
-}
-
-.life-fill{
-  height:100%;
   width:100%;
-  border-radius:inherit;
-  transition:
-    width .3s ease,
-    background-color .3s ease,
-    box-shadow .3s ease
 }
-
-.controls{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:6px;
-  max-width:390px;
-  width:100%
-}
-
-.lp-op{
-  height:39px;
-  border-radius:12px;
-  background:#ffffff12;
-  border:1px solid var(--line);
-  font-weight:800;
-  font-size:22px
-}
-
-.lp-op.minus{
-  color:#ff8da4
-}
-
-.lp-op.plus{
-  color:#8cf3ff
-}
-
-.lp-op.selected{
-  background:#ffffff25
-}
-
+.lp{ 
+  font-size:clamp(48px,13vw,82px); 
+  font-weight:800; 
+  letter-spacing:-.05em; 
+  line-height:1; 
+  margin:5px 0 8px; 
+  text-shadow:0 5px 30px #0008; 
+  color:var(--lp-color);
+  font-variant-numeric:tabular-nums; 
+} 
+ 
+.life-bar{ 
+  width:min(440px,92%); 
+  height:7px; 
+  border-radius:999px; 
+  background:#ffffff12; 
+  border:1px solid #ffffff14; 
+  overflow:hidden; 
+  margin:0 auto 10px; 
+} 
+ 
+.life-fill{ 
+  height:100%; 
+  width:100%; 
+  border-radius:inherit; 
+  transition: 
+    width .3s ease, 
+    background-color .3s ease, 
+    box-shadow .3s ease; 
+} 
+ 
+.controls{ 
+  display:grid; 
+  grid-template-columns:1fr 1fr; 
+  gap:6px; 
+  max-width:390px; 
+  width:100%; 
+} 
+ 
+.lp-op{height:39px;border-radius:12px;background:#ffffff12;border:1px solid var(--line);}
+.lp-op{ 
+  font-weight:800; 
+  font-size:22px; 
+} 
+ 
+.lp-op.minus{color:#ff8da4} 
+.lp-op.plus{color:#8cf3ff} 
+.lp-op.selected{background:#ffffff25} 
+ 
 .half-btn{
   flex:0 0 30px;
   width:30px;
   height:30px;
-  margin:0;
-  border-radius:12px;
-  background:#ffffff12;
-  border:1px solid var(--line);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:#e9edf6;
-  box-shadow:0 6px 20px #0003
-}
-
+  margin:0; 
+  border-radius:12px; 
+  background:#ffffff12; 
+  border:1px solid var(--line); 
+  display:flex; 
+  align-items:center; 
+  justify-content:center; 
+  color:#e9edf6; 
+  box-shadow:0 6px 20px #0003; 
+} 
+ 
 .half-btn .half-icon{
-  font-size:16px;
-  line-height:1;
-  font-weight:900
-}
-
-.timer-mini{
-  flex:0 0 58px;
-  width:58px;
-  height:30px;
-  margin:0;
-  border-radius:12px;
-  background:#ffffff12;
-  border:1px solid var(--line);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:#f6f7fb;
-  font-size:11px;
-  font-weight:900;
-  box-shadow:0 6px 20px #0003
-}
-
-/* =========================================================
-   APPUNTI
-   4 righe verticali, poi nuova colonna orizzontale.
-   Le colonne vengono costruite direttamente da JS.
-   ========================================================= */
-
-.note-preview{
-  box-sizing:border-box;
-  width:100%;
-  max-width:390px;
-  min-width:0;
-
-  height:calc(4 * 1.16em + 6px);
-  min-height:calc(4 * 1.16em + 6px);
-
-  margin:5px 0 2px;
-  padding:0;
-
-  color:#cfd5e1;
-  font-size:16px;
-  line-height:1.16;
-  font-weight:500;
-  text-align:center;
-
-  display:flex;
-  flex-direction:row;
-  flex-wrap:nowrap;
-  align-items:flex-start;
-  justify-content:flex-start;
-
-  gap:0;
-
-  overflow-x:auto;
-  overflow-y:hidden;
-
-  scrollbar-width:none;
-  -webkit-overflow-scrolling:touch;
-  overscroll-behavior-x:contain;
-
-  flex:0 0 auto
-}
-
-.note-preview::-webkit-scrollbar{
-  display:none
-}
-
-.note-preview:empty{
-  display:none
-}
-
-/*
-  OGNI COLONNA = 4 RIGHE.
-
-  La larghezza è il 50% del preview:
-  colonna 1 = righe 1-4
-  colonna 2 = righe 5-8
-  colonna 3 = righe 9-12
-  ecc.
-
-  Le colonne sono quindi realmente affiancate.
-*/
-.note-column{
-  box-sizing:border-box;
-
-  flex:0 0 50%;
-  width:50%;
-  min-width:50%;
-  max-width:50%;
-
-  height:100%;
-  min-height:100%;
-
-  margin:0;
-  padding:0 5px;
-
-  white-space:pre;
-  overflow:visible;
-
-  overflow-wrap:normal;
-  word-break:normal;
-  hyphens:none;
-
-  text-align:center
-}
-
-.p1 .note-preview{
-  color:#a9edff
-}
-
-.p2 .note-preview{
-  color:#d1bdff
-}
-
-.bottom{
-  height:51px;
-  min-height:51px;
-  flex:0 0 51px;
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:7px;
-  overflow:hidden
-}
-
-.bottom .tool{
-  min-width:0;
-  min-height:0;
-  overflow:hidden
-}
-
-.tool{
-  font-size:19px
-}
-
-.modal{
-  position:fixed;
-  inset:0;
-  width:100%;
-  height:100%;
-  background:transparent;
-  backdrop-filter:none;
-  -webkit-backdrop-filter:none;
-  display:none;
-  align-items:flex-end;
-  justify-content:center;
-  padding:
-    9px
-    max(9px,var(--safe-right))
-    max(9px,calc(var(--safe-bottom) + 9px))
-    max(9px,var(--safe-left));
-  z-index:20;
-  overscroll-behavior:none
-}
-
-.modal.open{
-  display:flex
-}
-
-.sheet{
-  width:min(700px,100%);
-  max-height:92svh;
-  max-height:92dvh;
-  background:rgba(17,21,30,.98);
-  border:1px solid var(--line);
-  border-radius:23px;
-  padding:13px;
-  box-shadow:0 30px 100px #000b;
-  overflow:hidden
-}
-
-.sheethead{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:8px
-}
-
-.sheethead b{
-  font-size:17px
-}
-
-.close{
-  width:38px;
-  height:38px;
-  flex:0 0 38px;
-  border-radius:11px;
-  background:#ffffff10;
-  border:1px solid var(--line);
-  font-size:22px
-}
-
-.history{
-  overflow:auto;
-  max-height:64svh;
-  max-height:64dvh;
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-  -webkit-overflow-scrolling:touch
-}
-
-.history-row{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) auto;
-  gap:8px;
-  padding:10px 11px;
-  border-radius:13px;
-  background:#ffffff0d;
-  border:1px solid #ffffff12
-}
-
-.history-main{
-  min-width:0
-}
-
-.history-title{
-  font-size:13px;
-  font-weight:750
-}
-
-.history-meta{
-  color:var(--muted);
-  font-size:10px;
-  margin-top:3px
-}
-
-.history-values{
-  text-align:right;
-  white-space:nowrap
-}
-
-.history-change{
-  font-weight:800;
-  font-size:13px
-}
-
-.history-change.gain{
-  color:#83f0c4
-}
-
-.history-change.loss{
-  color:#ff8ba3
-}
-
-.history-after{
-  color:#aeb5c4;
-  font-size:10px;
-  margin-top:3px
-}
-
-.empty-state{
-  color:#8d96a7;
-  text-align:center;
-  padding:45px 10px;
-  font-size:13px
-}
-
-.dice-wrap,.coin-wrap{
-  height:55svh;
-  height:55dvh;
-  min-height:250px;
-  display:grid;
-  place-items:center;
-  position:relative;
-  overflow:hidden;
-  border-radius:18px;
-  background:transparent
-}
-
-.die{
-  width:100px;
-  height:100px;
-  background:linear-gradient(145deg,#fff,#cdd4df);
-  border-radius:20px;
-  display:grid;
-  place-items:center;
-  color:#111;
-  font-size:48px;
-  font-weight:900;
-  box-shadow:
-    0 18px 40px #0008,
-    inset 0 2px 3px #fff;
-  user-select:none;
-  -webkit-user-select:none;
-  transform:translate3d(0,0,0) rotate(0deg) scale(1);
-  -webkit-transform:translate3d(0,0,0) rotate(0deg) scale(1);
-  -webkit-backface-visibility:hidden;
-  backface-visibility:hidden;
-  isolation:isolate
-}
-
-.die.rolling{
-  animation:diceRollIOS .9s cubic-bezier(.16,.82,.22,1) both;
-  -webkit-animation:diceRollIOS .9s cubic-bezier(.16,.82,.22,1) both
-}
-
-@keyframes diceRollIOS{
-  0%{
-    transform:translate3d(0,72px,0) rotate(0deg) scale(.62);
-    opacity:.35
-  }
-  15%{
-    transform:translate3d(18px,-38px,0) rotate(95deg) scale(.82);
-    opacity:1
-  }
-  30%{
-    transform:translate3d(-22px,-82px,0) rotate(205deg) scale(1.03)
-  }
-  45%{
-    transform:translate3d(25px,-96px,0) rotate(330deg) scale(1.08)
-  }
-  60%{
-    transform:translate3d(-19px,-55px,0) rotate(465deg) scale(1.04)
-  }
-  75%{
-    transform:translate3d(12px,-22px,0) rotate(585deg) scale(1.01)
-  }
-  88%{
-    transform:translate3d(-5px,-5px,0) rotate(675deg) scale(1)
-  }
-  100%{
-    transform:translate3d(0,0,0) rotate(720deg) scale(1);
-    opacity:1
-  }
-}
-
-@-webkit-keyframes diceRollIOS{
-  0%{
-    -webkit-transform:translate3d(0,72px,0) rotate(0deg) scale(.62);
-    opacity:.35
-  }
-  15%{
-    -webkit-transform:translate3d(18px,-38px,0) rotate(95deg) scale(.82);
-    opacity:1
-  }
-  30%{
-    -webkit-transform:translate3d(-22px,-82px,0) rotate(205deg) scale(1.03)
-  }
-  45%{
-    -webkit-transform:translate3d(25px,-96px,0) rotate(330deg) scale(1.08)
-  }
-  60%{
-    -webkit-transform:translate3d(-19px,-55px,0) rotate(465deg) scale(1.04)
-  }
-  75%{
-    -webkit-transform:translate3d(12px,-22px,0) rotate(585deg) scale(1.01)
-  }
-  88%{
-    -webkit-transform:translate3d(-5px,-5px,0) rotate(675deg) scale(1)
-  }
-  100%{
-    -webkit-transform:translate3d(0,0,0) rotate(720deg) scale(1);
-    opacity:1
-  }
-}
-
+  font-size:16px; 
+  line-height:1; 
+  font-weight:900; 
+} 
+ 
+/* BOTTOM */ 
+.bottom{ 
+  height:51px; 
+  min-height:51px; 
+  flex:0 0 51px; 
+  display:grid; 
+  grid-template-columns:repeat(4,minmax(0,1fr)); 
+  gap:7px; 
+  overflow:visible; 
+} 
+ 
+.bottom .tool{ 
+  min-width:0; 
+  min-height:0; 
+  overflow:hidden; 
+} 
+ 
+.tool{font-size:19px} 
+.tool.timer{color:#8cf3ff} 
+.tool.undo{color:#ffd27d} 
+ 
+/* MODAL */ 
+.modal{ 
+  position:fixed; 
+  inset:0; 
+  background:rgba(0,0,0,0); 
+  backdrop-filter:blur(12px); 
+  -webkit-backdrop-filter:blur(12px); 
+  display:none; 
+  align-items:flex-end; 
+  justify-content:center; 
+  padding: 
+    9px 
+    max(9px,var(--safe-right)) 
+    max(9px,var(--safe-bottom)) 
+    max(9px,var(--safe-left)); 
+  z-index:20; 
+  overscroll-behavior:none; 
+} 
+ 
+.modal.open{ 
+  display:flex; 
+} 
+ 
+.sheet{ 
+  width:min(700px,100%); 
+  max-height:92svh; 
+  max-height:92dvh; 
+  background:rgba(17,21,30,.98); 
+  border:1px solid var(--line); 
+  border-radius:23px; 
+  padding:13px; 
+  box-shadow:0 30px 100px #000b; 
+  overflow:hidden; 
+} 
+ 
+.sheethead{ 
+  display:flex; 
+  justify-content:space-between; 
+  align-items:center; 
+  margin-bottom:8px; 
+} 
+ 
+.sheethead b{font-size:17px} 
+ 
+.close{ 
+  width:38px; 
+  height:38px; 
+  flex:0 0 38px; 
+  border-radius:11px; 
+  background:#ffffff10; 
+  border:1px solid var(--line); 
+  font-size:22px; 
+} 
+ 
+/* HISTORY */ 
+.history{ 
+  overflow:auto; 
+  max-height:64svh; 
+  max-height:64dvh; 
+  display:flex; 
+  flex-direction:column; 
+  gap:6px; 
+  -webkit-overflow-scrolling:touch; 
+} 
+ 
+.history-row{ 
+  display:grid; 
+  grid-template-columns:minmax(0,1fr) auto; 
+  gap:8px; 
+  padding:10px 11px; 
+  border-radius:13px; 
+  background:#ffffff0d; 
+  border:1px solid #ffffff12; 
+} 
+ 
+.history-main{min-width:0} 
+.history-title{font-size:13px;font-weight:750} 
+.history-meta{color:var(--muted);font-size:10px;margin-top:3px} 
+.history-values{text-align:right;white-space:nowrap} 
+.history-change{font-weight:800;font-size:13px} 
+.history-change.gain{color:#83f0c4} 
+.history-change.loss{color:#ff8ba3} 
+.history-after{color:#aeb5c4;font-size:10px;margin-top:3px} 
+ 
+.empty-state{ 
+  color:#8d96a7; 
+  text-align:center; 
+  padding:45px 10px; 
+  font-size:13px; 
+} 
+ 
+/* DICE / COIN */ 
+.dice-wrap,.coin-wrap{ 
+  height:55svh; 
+  height:55dvh; 
+  min-height:250px; 
+  display:grid; 
+  place-items:center; 
+  position:relative; 
+  overflow:hidden; 
+  border-radius:18px; 
+  background:radial-gradient(circle,#242a3c,#0b0e14 65%); 
+} 
+ 
+.die{ 
+  width:100px; 
+  height:100px; 
+  background:linear-gradient(145deg,#fff,#cdd4df); 
+  border-radius:20px; 
+  display:grid; 
+  place-items:center; 
+  color:#111; 
+  font-size:48px; 
+  font-weight:900; 
+  box-shadow:0 18px 40px #0008,inset 0 2px 3px #fff; 
+  user-select:none; 
+  -webkit-user-select:none; 
+  transform:translate3d(0,0,0) rotate(0deg) scale(1); 
+  -webkit-transform:translate3d(0,0,0) rotate(0deg) scale(1); 
+  -webkit-backface-visibility:hidden; 
+  backface-visibility:hidden; 
+  isolation:isolate; 
+} 
+ 
+.die.rolling{ 
+  animation:diceRollIOS .9s cubic-bezier(.16,.82,.22,1) both; 
+  -webkit-animation:diceRollIOS .9s cubic-bezier(.16,.82,.22,1) both; 
+} 
+ 
+@keyframes diceRollIOS{ 
+  0%{transform:translate3d(0,72px,0) rotate(0deg) scale(.62);opacity:.35} 
+  15%{transform:translate3d(18px,-38px,0) rotate(95deg) scale(.82);opacity:1} 
+  30%{transform:translate3d(-22px,-82px,0) rotate(205deg) scale(1.03)} 
+  45%{transform:translate3d(25px,-96px,0) rotate(330deg) scale(1.08)} 
+  60%{transform:translate3d(-19px,-55px,0) rotate(465deg) scale(1.04)} 
+  75%{transform:translate3d(12px,-22px,0) rotate(585deg) scale(1.01)} 
+  88%{transform:translate3d(-5px,-5px,0) rotate(675deg) scale(1)} 
+  100%{transform:translate3d(0,0,0) rotate(720deg) scale(1);opacity:1} 
+} 
+ 
+@-webkit-keyframes diceRollIOS{ 
+  0%{-webkit-transform:translate3d(0,72px,0) rotate(0deg) scale(.62);opacity:.35} 
+  15%{-webkit-transform:translate3d(18px,-38px,0) rotate(95deg) scale(.82);opacity:1} 
+  30%{-webkit-transform:translate3d(-22px,-82px,0) rotate(205deg) scale(1.03)} 
+  45%{-webkit-transform:translate3d(25px,-96px,0) rotate(330deg) scale(1.08)} 
+  60%{-webkit-transform:translate3d(-19px,-55px,0) rotate(465deg) scale(1.04)} 
+  75%{-webkit-transform:translate3d(12px,-22px,0) rotate(585deg) scale(1.01)} 
+  88%{-webkit-transform:translate3d(-5px,-5px,0) rotate(675deg) scale(1)} 
+  100%{-webkit-transform:translate3d(0,0,0) rotate(720deg) scale(1);opacity:1} 
+} 
+ 
 .coin-stage{
   width:170px;
   height:200px;
@@ -741,10 +555,10 @@ button:active{
   place-items:center;
   perspective:900px;
   -webkit-perspective:900px;
-  position:relative
+  position:relative;
 }
 
-.coin-stage:after{
+.coin-stage::after{
   content:"";
   position:absolute;
   left:50%;
@@ -757,7 +571,7 @@ button:active{
   -webkit-filter:blur(9px);
   transform:translateX(-50%) scale(.72);
   opacity:.55;
-  transition:transform .22s ease,opacity .22s ease
+  transition:transform .22s ease,opacity .22s ease;
 }
 
 .coin{
@@ -767,3045 +581,2421 @@ button:active{
   display:grid;
   place-items:center;
   background:
-    radial-gradient(
-      circle at 30% 24%,
-      #fffbe1 0 6%,
-      #ffe88c 17%,
-      #e6bc45 48%,
-      #bd861d 78%,
-      #855a12 100%
-    );
+    radial-gradient(circle at 30% 24%,#fffbe1 0 6%,#ffe88c 17%,#e6bc45 48%,#bd861d 78%,#855a12 100%);
   border:5px solid #f8df7b;
   color:#654700;
   font-size:22px;
   font-weight:900;
   letter-spacing:.02em;
-  box-shadow:
-    inset 0 3px 5px #fff9,
-    inset 0 -7px 12px #6b430955,
-    0 18px 35px #0008;
+  box-shadow:inset 0 3px 5px #fff9,inset 0 -7px 12px #6b430955,0 18px 35px #0008;
   transform:translate3d(0,0,0) rotateX(0deg) rotateZ(0deg) scale(1);
   -webkit-transform:translate3d(0,0,0) rotateX(0deg) rotateZ(0deg) scale(1);
   transform-style:preserve-3d;
   -webkit-transform-style:preserve-3d;
   -webkit-backface-visibility:hidden;
   backface-visibility:hidden;
-  will-change:transform,filter
+  will-change:transform,filter;
 }
 
 .coin.flip{
   animation:coinFlipIOS 1.05s cubic-bezier(.14,.72,.2,1) both;
-  -webkit-animation:coinFlipIOS 1.05s cubic-bezier(.14,.72,.2,1) both
+  -webkit-animation:coinFlipIOS 1.05s cubic-bezier(.14,.72,.2,1) both;
 }
 
 @keyframes coinFlipIOS{
-  0%{
-    transform:translate3d(0,88px,0) rotate(0deg) scale(.72)
-  }
-  25%{
-    transform:translate3d(0,-45px,0) rotate(360deg) scale(.92)
-  }
-  50%{
-    transform:translate3d(0,-82px,0) rotate(720deg) scale(1.07)
-  }
-  75%{
-    transform:translate3d(0,-30px,0) rotate(1080deg) scale(1.03)
-  }
-  100%{
-    transform:translate3d(0,0,0) rotate(1440deg) scale(1)
-  }
+  0%{transform:translate3d(0,88px,0) rotate(0deg) scale(.72)}
+  25%{transform:translate3d(0,-45px,0) rotate(360deg) scale(.92)}
+  50%{transform:translate3d(0,-82px,0) rotate(720deg) scale(1.07)}
+  75%{transform:translate3d(0,-30px,0) rotate(1080deg) scale(1.03)}
+  100%{transform:translate3d(0,0,0) rotate(1440deg) scale(1)}
 }
-
 @-webkit-keyframes coinFlipIOS{
-  0%{
-    -webkit-transform:translate3d(0,88px,0) rotate(0deg) scale(.72)
-  }
-  25%{
-    -webkit-transform:translate3d(0,-45px,0) rotate(360deg) scale(.92)
-  }
-  50%{
-    -webkit-transform:translate3d(0,-82px,0) rotate(720deg) scale(1.07)
-  }
-  75%{
-    -webkit-transform:translate3d(0,-30px,0) rotate(1080deg) scale(1.03)
-  }
-  100%{
-    -webkit-transform:translate3d(0,0,0) rotate(1440deg) scale(1)
-  }
+  0%{-webkit-transform:translate3d(0,88px,0) rotate(0deg) scale(.72)}
+  25%{-webkit-transform:translate3d(0,-45px,0) rotate(360deg) scale(.92)}
+  50%{-webkit-transform:translate3d(0,-82px,0) rotate(720deg) scale(1.07)}
+  75%{-webkit-transform:translate3d(0,-30px,0) rotate(1080deg) scale(1.03)}
+  100%{-webkit-transform:translate3d(0,0,0) rotate(1440deg) scale(1)}
 }
 
-.hint{
-  position:absolute;
-  bottom:14px;
-  color:#8891a2;
-  font-size:11px;
-  text-align:center;
-  width:100%
-}
-
-.timer-head{
+.hint{ 
+  position:absolute; 
+  bottom:14px; 
+  color:#8891a2; 
+  font-size:11px; 
+  text-align:center; 
+  width:100%; 
+} 
+ 
+/* TIMER */ 
+.timer-display-row{
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:8px
-}
-
-.timer-display{
-  text-align:center;
-  font-variant-numeric:tabular-nums;
-  font-size:clamp(52px,17vw,82px);
-  font-weight:800;
-  letter-spacing:-.05em;
-  margin:8px 0 14px
-}
-
-.timer-display.warning{
-  color:#ffbd6f;
-  text-shadow:0 0 25px rgba(255,189,111,.35)
-}
-
-.timer-display.danger{
-  color:#ff718b;
-  text-shadow:0 0 25px rgba(255,113,139,.35)
-}
-
-.timer-controls{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:7px
-}
-
-.timer-btn{
-  height:46px;
-  border-radius:13px;
-  background:#ffffff15;
-  border:1px solid var(--line);
-  font-weight:800
-}
-
-.timer-btn:disabled{
-  pointer-events:none
-}
-
-.timer-edit{
-  height:42px;
+  gap:9px;
   width:100%;
-  border-radius:12px;
-  background:#ffffff0d;
-  border:1px solid var(--line);
-  margin-bottom:9px;
-  color:#cfd5e1;
-  font-size:12px;
-  font-weight:800
+  margin:8px 0 14px;
 }
 
-.keypad-wrap{
-  width:100%;
-  max-height:66dvh;
-  overflow:auto;
-  -webkit-overflow-scrolling:touch
-}
-
-.keypad{
-  width:min(330px,100%);
-  margin:auto;
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:7px
-}
-
-.key{
-  min-height:46px;
-  border-radius:13px;
-  background:#ffffff0d;
-  border:1px solid var(--line);
-  font-size:18px;
-  font-weight:700;
-  color:#f3f5fa;
-  touch-action:manipulation;
-  -webkit-user-select:none;
-  user-select:none;
-  display:flex;
-  align-items:center;
-  justify-content:center
-}
-
-.key:active{
-  background:#ffffff20;
-  transform:scale(.95)
-}
-
-.key.action{
-  background:#ffffff15
-}
-
-.key.confirm{
-  background:
-    linear-gradient(
-      180deg,
-      rgba(98,217,255,.23),
-      rgba(98,217,255,.12)
-    );
-  border-color:rgba(98,217,255,.35);
-  color:#bdf3ff
-}
-
-.key.clear{
-  color:#ff9bad
-}
-
-.key.wide{
-  grid-column:span 2
-}
-
-.keypad-value{
-  text-align:center;
-  font-size:27px;
-  font-weight:800;
-  min-height:38px;
-  margin:2px 0 8px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  font-variant-numeric:tabular-nums
-}
-
-.keypad-operation{
-  text-align:center;
-  color:#8f98a9;
-  font-size:11px;
-  margin-top:-3px;
-  margin-bottom:3px
-}
-
-.text-editor{
-  display:flex;
-  flex-direction:column;
-  gap:8px
-}
-
-.text-preview{
-  width:100%;
-  min-height:54px;
-  max-height:125px;
-  overflow:auto;
-  padding:12px;
-  border-radius:14px;
-  background:#0b0e14;
-  border:1px solid var(--line);
-  color:#f6f7fb;
-  font-size:16px;
-  line-height:1.35;
-  white-space:pre-wrap;
-  word-break:break-word;
-  -webkit-overflow-scrolling:touch
-}
-
-.text-preview.empty{
-  color:#727b8d
-}
-
-.text-editor-info{
-  text-align:center;
-  color:#818a9b;
-  font-size:10px;
-  min-height:14px
-}
-
-.text-keypad{
-  width:100%;
-  display:flex;
-  flex-direction:column;
-  gap:6px
-}
-
-.text-row{
-  display:grid;
-  gap:5px
-}
-
-.text-row.row10{
-  grid-template-columns:repeat(10,1fr)
-}
-
-.text-row.row9{
-  grid-template-columns:repeat(9,1fr);
-  padding:0 4.5%
-}
-
-.text-row.row7{
-  grid-template-columns:repeat(7,1fr);
-  padding:0 13%
-}
-
-.text-actions{
-  grid-template-columns:1fr 2.2fr 1fr 1fr 1fr!important;
-  padding:0 2%!important;
-  gap:5px!important
-}
-
-.text-key{
+.timer-display{ 
+  text-align:center; 
+  font-variant-numeric:tabular-nums; 
+  font-size:clamp(52px,17vw,82px); 
+  font-weight:800; 
+  letter-spacing:-.05em; 
+  margin:0; 
   min-width:0;
-  height:42px;
-  border-radius:10px;
-  background:#ffffff0d;
+}
+
+.timer-preset{
+  flex:0 0 42px;
+  width:42px;
+  height:36px;
+  border-radius:12px;
+  background:#ffffff12;
   border:1px solid var(--line);
-  font-size:14px;
-  font-weight:700;
-  color:#f3f5fa;
+  color:#e9edf6;
+  box-shadow:0 6px 20px #0003;
   display:flex;
   align-items:center;
   justify-content:center;
-  touch-action:manipulation
-}
-
-.text-key:active{
-  background:#ffffff20;
-  transform:scale(.95)
-}
-
-.text-key.special{
-  background:#ffffff15
-}
-
-.text-key.back{
-  color:#ff9bad
-}
-
-.text-key.space{
-  font-size:10px;
-  letter-spacing:.03em
-}
-
-.text-key.confirm{
-  color:#bdf3ff;
+  font-size:14px;
+  font-weight:900;
+  font-variant-numeric:tabular-nums;
+} 
+ 
+.timer-display.warning{ 
+  color:#ffbd6f; 
+  text-shadow:0 0 25px rgba(255,189,111,.35); 
+} 
+ 
+.timer-display.danger{ 
+  color:#ff718b; 
+  text-shadow:0 0 25px rgba(255,113,139,.35); 
+} 
+ 
+.timer-controls{ 
+  display:grid; 
+  grid-template-columns:1fr; 
+  gap:7px; 
+} 
+ 
+.timer-btn{ 
+  height:46px; 
+  border-radius:13px; 
+  background:#ffffff15; 
+  border:1px solid var(--line); 
+  font-weight:800; 
+} 
+ 
+.timer-btn:disabled{ 
+  pointer-events:none; 
+} 
+ 
+.timer-edit{ 
+  height:42px; 
+  width:100%; 
+  border-radius:12px; 
+  background:#ffffff0d; 
+  border:1px solid var(--line); 
+  margin-bottom:9px; 
+  color:#cfd5e1; 
+  font-size:12px; 
+  font-weight:800; 
+} 
+ 
+/* KEYPADS */ 
+.keypad-wrap{ 
+  width:100%; 
+  max-height:66dvh; 
+  overflow:auto; 
+  -webkit-overflow-scrolling:touch; 
+} 
+ 
+.keypad{ 
+  width:min(330px,100%); 
+  margin:auto; 
+  display:grid; 
+  grid-template-columns:repeat(3,1fr); 
+  gap:7px; 
+} 
+ 
+.key{ 
+  min-height:46px; 
+  border-radius:13px; 
+  background:#ffffff0d; 
+  border:1px solid var(--line); 
+  font-size:18px; 
+  font-weight:700; 
+  color:#f3f5fa; 
+  touch-action:manipulation; 
+  -webkit-user-select:none; 
+  user-select:none; 
+  display:flex; 
+  align-items:center; 
+  justify-content:center; 
+} 
+ 
+.key:active{ 
+  background:#ffffff20; 
+  transform:scale(.95); 
+} 
+ 
+.key.action{background:#ffffff15} 
+ 
+.key.confirm{ 
+  background:linear-gradient(180deg,rgba(98,217,255,.23),rgba(98,217,255,.12)); 
+  border-color:rgba(98,217,255,.35); 
+  color:#bdf3ff; 
+} 
+ 
+.key.clear{color:#ff9bad} 
+.key.wide{grid-column:span 2} 
+ 
+.keypad-value{ 
+  text-align:center; 
+  font-size:27px; 
+  font-weight:800; 
+  min-height:38px; 
+  margin:2px 0 8px; 
+  overflow:hidden; 
+  text-overflow:ellipsis; 
+  font-variant-numeric:tabular-nums; 
+} 
+ 
+.keypad-operation{ 
+  text-align:center; 
+  color:#8f98a9; 
+  font-size:11px; 
+  margin-top:-3px; 
+  margin-bottom:3px; 
+} 
+ 
+/* NAME KEYPAD */ 
+.text-editor{ 
+  display:flex; 
+  flex-direction:column; 
+  gap:8px; 
+} 
+ 
+.text-preview{ 
+  width:100%; 
+  min-height:54px; 
+  max-height:125px; 
+  overflow:auto; 
+  padding:12px; 
+  border-radius:14px; 
+  background:#0b0e14; 
+  border:1px solid var(--line); 
+  color:#f6f7fb; 
+  font-size:16px; 
+  line-height:1.35; 
+  white-space:pre-wrap; 
+  word-break:break-word; 
+  -webkit-overflow-scrolling:touch; 
+} 
+ 
+.text-preview.empty{color:#727b8d} 
+ 
+.text-editor-info{ 
+  text-align:center; 
+  color:#818a9b; 
+  font-size:10px; 
+  min-height:14px; 
+} 
+ 
+.text-keypad{ 
+  width:100%; 
+  display:flex; 
+  flex-direction:column; 
+  gap:6px; 
+} 
+ 
+.text-row{ 
+  display:grid; 
+  gap:5px; 
+} 
+ 
+.text-row.row10{grid-template-columns:repeat(10,1fr)}
+.text-row.row9{grid-template-columns:repeat(9,1fr);padding:0 4.5%}
+.text-row.row7{grid-template-columns:repeat(7,1fr);padding:0 13%}
+.text-actions{grid-template-columns:1fr 2.2fr 1fr 1fr 1fr!important;padding:0 2%!important;gap:5px!important;} 
+ 
+.text-key{ 
+  min-width:0; 
+  height:42px; 
+  border-radius:10px; 
+  background:#ffffff0d; 
+  border:1px solid var(--line); 
+  font-size:14px; 
+  font-weight:700; 
+  color:#f3f5fa; 
+  display:flex; 
+  align-items:center; 
+  justify-content:center; 
+  touch-action:manipulation; 
+} 
+ 
+.text-key:active{ 
+  background:#ffffff20; 
+  transform:scale(.95); 
+} 
+ 
+.text-key.special{background:#ffffff15} 
+.text-key.back{color:#ff9bad} 
+.text-key.space{font-size:10px;letter-spacing:.03em} 
+ 
+.text-key.confirm{ 
+  color:#bdf3ff; 
+  background:linear-gradient(180deg,rgba(98,217,255,.23),rgba(98,217,255,.12)); 
+  border-color:rgba(98,217,255,.35); 
+} 
+ 
+.text-key.clear{color:#ff9bad} 
+.text-key.shift,.text-key.undo-key{color:#8cf3ff} 
+ 
+.text-key.shift.active{ 
+  background:rgba(98,217,255,.22); 
+  border-color:rgba(98,217,255,.4); 
+} 
+ 
+/* COLOR SETTINGS */
+.color-settings{display:grid;gap:12px}
+.color-setting{
+  display:block;
+  padding:12px;
+  border-radius:19px;
   background:
-    linear-gradient(
-      180deg,
-      rgba(98,217,255,.23),
-      rgba(98,217,255,.12)
-    );
-  border-color:rgba(98,217,255,.35)
+    radial-gradient(circle at 8% 0%,rgba(255,255,255,.07),transparent 34%),
+    linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.018));
+  border:1px solid rgba(255,255,255,.10);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 10px 26px rgba(0,0,0,.14);
 }
-
-.text-key.clear{
-  color:#ff9bad
-}
-
-.text-key.shift,
-.text-key.undo-key{
-  color:#8cf3ff
-}
-
-.text-key.shift.active{
-  background:rgba(98,217,255,.22);
-  border-color:rgba(98,217,255,.4)
-}
-
-/* =========================================================
-   EDITOR APPUNTI
-   SINISTRA = PLAYER 2
-   DESTRA = PLAYER 1
-   NESSUNA SCRITTA AGGIUNTIVA
-   ========================================================= */
-
-.notes-editor{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  width:100%
-}
-
-.notes-box{
+.color-setting-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.color-setting-title b{font-size:14px;line-height:1.15}
+.color-setting-title small{font-size:10px;font-weight:650;color:var(--muted);white-space:nowrap}
+.color-value-row{
   display:grid;
-  grid-template-columns:minmax(0,1fr) 1px minmax(0,1fr);
-  width:100%;
+  grid-template-columns:56px minmax(0,1fr) 48px;
+  align-items:center;
+  gap:10px;
+  padding:8px;
+  border-radius:15px;
+  background:rgba(0,0,0,.16);
+  border:1px solid rgba(255,255,255,.08);
+}
+.color-preview{
+  width:56px;height:42px;border-radius:12px;
+  border:1px solid rgba(255,255,255,.20);
+  box-shadow:inset 0 1px 2px rgba(255,255,255,.22),inset 0 -10px 18px rgba(0,0,0,.12),0 5px 14px rgba(0,0,0,.18);
+  position:relative;overflow:hidden;
+}
+.color-preview:after{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(circle at 28% 22%,rgba(255,255,255,.48),transparent 28%),
+             linear-gradient(125deg,transparent 34%,rgba(255,255,255,.10) 48%,transparent 63%);
+  pointer-events:none;
+}
+.color-hex{
+  width:100%;height:42px;padding:0 12px;
+  border-radius:12px;border:1px solid rgba(255,255,255,.10);
+  background:rgba(255,255,255,.045);color:var(--txt);
+  font:700 13px/1 ui-monospace,SFMono-Regular,Menlo,monospace;
+  letter-spacing:.04em;outline:none;text-transform:uppercase;
+}
+.color-hex:focus{border-color:rgba(140,243,255,.42);box-shadow:0 0 0 3px rgba(140,243,255,.08)}
+.color-picker{
+  width:48px;height:42px;padding:4px;
+  border-radius:12px;border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.055);cursor:pointer;
+  -webkit-appearance:none;appearance:none;
+}
+.color-picker::-webkit-color-swatch-wrapper{padding:0}
+.color-picker::-webkit-color-swatch{border:0;border-radius:8px}
+.color-picker::-moz-color-swatch{border:0;border-radius:8px}
+.color-picker:active{transform:scale(.95)}
+@media(max-width:600px){
+  .sheet{padding:12px;border-radius:22px}
+  .color-settings{gap:10px}
+  .color-setting{padding:11px;border-radius:18px}
+  .color-setting-title{margin-bottom:9px}
+  .color-value-row{grid-template-columns:52px minmax(0,1fr) 46px;gap:8px;padding:7px}
+  .color-preview{width:52px;height:40px}
+  .color-hex,.color-picker{height:40px}
+  .color-picker{width:46px}
+}
+
+/* NOTES */ 
+ 
+.notes-editor{ 
+  display:grid; 
+  grid-template-columns:1fr 1fr;
   min-height:220px;
   max-height:50dvh;
-  border-radius:14px;
-  background:#0b0e14;
-  border:1px solid var(--line);
-  overflow:hidden
+  border-radius:18px;
+  background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.018));
+  border:1px solid rgba(255,255,255,.11);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.055),0 14px 34px rgba(0,0,0,.18);
+  overflow:hidden;
+  position:relative;
 }
 
-.notes-divider{
-  background:rgba(255,255,255,.13);
-  margin:10px 0
-}
-
-.notes-textarea{
-  width:100%;
-  height:100%;
-  min-height:220px;
-  max-height:50dvh;
-  resize:none;
-  padding:13px;
-  background:transparent;
-  border:0;
-  color:var(--txt);
-  outline:none;
-  font-size:16px;
-  line-height:1.45;
-  -webkit-user-select:text;
-  user-select:text;
-  -webkit-appearance:none;
-  appearance:none;
-  overflow:auto;
-  -webkit-overflow-scrolling:touch
-}
-
-.notes-textarea:focus{
-  box-shadow:none
-}
-
-/* =========================================================
-   DISPLAY BASSI
-   ========================================================= */
-
-@media(max-height:680px){
-
-  .app{
-    padding:
-      max(7px,calc(var(--safe-top) + 7px))
-      max(6px,var(--safe-right))
-      max(6px,calc(var(--safe-bottom) + 6px))
-      max(6px,var(--safe-left));
-    gap:6px
-  }
-
+.notes-editor::before{
+  content:"";
+  position:absolute;
+  z-index:3;
+  top:20px;
+  bottom:20px;
+  left:50%;
+  width:2px;
+  border-radius:999px;
+  background:linear-gradient(180deg,transparent,rgba(255,255,255,.13) 22%,rgba(255,255,255,.24) 50%,rgba(255,255,255,.13) 78%,transparent);
+  box-shadow:0 0 7px rgba(255,255,255,.03);
+  transform:translateX(-1px);
+  pointer-events:none;
+} 
+ 
+.notes-textarea{ 
+  width:100%; 
+  min-height:220px; 
+  max-height:50dvh; 
+  resize:none; 
+  padding:13px; 
+  border:0; 
+  border-radius:0; 
+  background:transparent; 
+  color:var(--txt); 
+  outline:none; 
+  font-size:16px; 
+  line-height:1.45; 
+  -webkit-user-select:text; 
+  user-select:text; 
+  -webkit-appearance:none; 
+  appearance:none; 
+} 
+ 
+.notes-textarea::placeholder{color:#727b8d} 
+ 
+.notes-textarea:focus{ 
+  box-shadow:inset 0 0 0 2px rgba(98,217,255,.08); 
+} 
+ 
+/* MOBILE */ 
+@media(max-height:680px){ 
+  .app{ 
+    padding: 
+      max(8px,calc(var(--safe-top) + 8px)) 
+      max(6px,var(--safe-right)) 
+      max(6px,var(--safe-bottom)) 
+      max(6px,var(--safe-left)); 
+    gap:6px; 
+  } 
+ 
   .topbar{
     height:38px;
     min-height:38px;
-    flex-basis:38px;
-    gap:6px
-  }
-
-  .icon{
-    border-radius:12px
-  }
-
-  .players{
-    gap:6px
-  }
-
-  .player{
-    border-radius:21px;
-    padding:8px
-  }
-
+    flex-basis:38px; 
+    gap:6px; 
+  } 
+ 
+  .icon{border-radius:12px}
+.color-icon{
+  width:21px;
+  height:21px;
+  display:block;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.65;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+ 
+  .players{gap:6px} 
+ 
+  .player{ 
+    border-radius:21px; 
+    padding:9px; 
+  } 
+ 
   .player-image{
     width:68px;
-    height:68px;
-    top:7px;
-    left:7px;
-    border-radius:13px
-  }
-
-  .player-image img{
-    border-radius:12px
-  }
-
-  .lp{
-    margin:3px 0 5px;
-    font-size:clamp(44px,12vw,68px)
-  }
-
-  .life-bar{
-    margin-bottom:5px
-  }
-
-  .lp-op{
-    height:35px
-  }
-
-  .half-btn,
-  .timer-mini{
-    height:28px
-  }
-
+    height:68px; 
+    top:7px; 
+    left:7px; 
+    border-radius:13px; 
+  } 
+ 
+  .player-image img{border-radius:12px} 
+ 
+  .lp{margin:3px 0 6px} 
+  .life-bar{margin-bottom:7px} 
+ 
+  .lp-op{height:35px} 
+ 
   .half-btn{
     flex-basis:28px;
-    width:28px
-  }
-
-  .timer-mini{
-    flex-basis:54px;
-    width:54px
-  }
-
+    width:28px;
+    height:28px;
+  } 
+ 
   .bottom{
-    height:45px;
-    min-height:45px;
-    flex-basis:45px;
-    gap:6px
-  }
-
-  .tool{
-    border-radius:12px
-  }
-
-  .dice-wrap,
-  .coin-wrap{
-    height:50svh;
-    height:50dvh
-  }
-
-  .key{
-    min-height:42px
-  }
-
-  .text-key{
-    height:36px
-  }
-
-  .notes-textarea,
-  .notes-box{
-    min-height:180px
-  }
-
-  .note-preview{
-    font-size:15px;
-    line-height:1.14;
-    height:calc(4 * 1.14em + 5px);
-    min-height:calc(4 * 1.14em + 5px)
-  }
-}
-
-@media(max-width:390px){
-
-  .text-row{
-    gap:4px
-  }
-
-  .text-key{
-    height:39px;
-    border-radius:9px;
-    font-size:13px
-  }
-
-  .text-row.row9{
-    padding:0 4%
-  }
-
-  .text-row.row7{
-    padding:0 11%
-  }
-
-  .note-preview{
-    font-size:15px;
-    line-height:1.12;
-    height:calc(4 * 1.12em + 5px);
-    min-height:calc(4 * 1.12em + 5px)
-  }
-}
-
-/* =========================================================
-   ORIZZONTALE
-   ========================================================= */
-
-@media(orientation:landscape) and (max-height:500px){
-
-  .app{
-    max-width:1000px
-  }
-
-  .players{
-    grid-template-columns:1fr 1fr;
-    grid-template-rows:minmax(0,1fr);
-    gap:6px
-  }
-
-  .sheet{
-    max-height:94vh;
-    width:min(900px,100%)
-  }
-
-  .dice-wrap,
-  .coin-wrap{
-    height:60vh
-  }
-
-  .note-preview{
-    font-size:14px;
-    line-height:1.10;
-    height:calc(4 * 1.10em + 5px);
-    min-height:calc(4 * 1.10em + 5px)
-  }
-
-  .notes-box{
-    min-height:180px;
-    max-height:55vh
-  }
-
-  .notes-textarea{
-    min-height:180px;
-    max-height:55vh
-  }
-}
-
-@media(prefers-reduced-motion:reduce){
-
-  *,
-  *::before,
-  *::after{
-    animation-duration:.01ms!important;
-    animation-iteration-count:1!important;
-    transition-duration:.01ms!important
-  }
-}
-</style>
-</head>
-
-<body>
-
-<div class="app">
-
-<header class="topbar">
-
-  <button class="icon undo" id="undoBtn" type="button" aria-label="Annulla">↶</button>
-
-  <button class="icon timer" id="timerBtn" type="button" aria-label="Timer">◷</button>
-
-  <button
-    class="icon background"
-    id="bgBtn"
-    type="button"
-    aria-label="Cambia sfondo. Tieni premuto per eliminarlo"
-  >▧</button>
-
-  <button
-    class="icon refresh"
-    id="resetBtn"
-    type="button"
-    aria-label="Refresh"
-  >↻</button>
-
-  <input id="bgInput" class="hidden-file" type="file" accept="image/*">
-
-</header>
-
-<main class="players">
-
-<section class="player p1">
-
-  <div
-    class="player-image empty"
-    id="imageSlot1"
-    title="Immagine Player 1"
-  >
-    <input type="file" id="imageInput1" accept="image/*">
-  </div>
-
-  <div
-    class="pname"
-    id="name1"
-    data-player="1"
-    role="button"
-    tabindex="0"
-  >
-    PLAYER 1
-  </div>
-
+    height:43px;
+    min-height:43px;
+    flex-basis:43px; 
+    gap:6px; 
+  } 
+ 
+  .tool{border-radius:12px} 
+ 
+  .sheet{padding:11px} 
+ 
+  .dice-wrap,.coin-wrap{ 
+    height:50svh; 
+    height:50dvh; 
+  } 
+ 
+  .key{min-height:42px} 
+  .text-key{height:36px} 
+  .notes-textarea{min-height:180px} 
+} 
+ 
+@media(max-width:390px){ 
+  .text-row{gap:4px} 
+ 
+  .text-key{ 
+    height:39px; 
+    border-radius:9px; 
+    font-size:13px; 
+  } 
+ 
+  .text-row.row9{padding:0 4%} 
+  .text-row.row7{padding:0 11%} 
+} 
+ 
+@media(orientation:landscape) and (max-height:500px){ 
+  .app{max-width:1000px} 
+ 
+  .players{ 
+    grid-template-columns:1fr 1fr; 
+    grid-template-rows:1fr; 
+  } 
+ 
+  .sheet{max-height:94vh} 
+ 
+  .dice-wrap,.coin-wrap{height:60vh} 
+} 
+ 
+@media(prefers-reduced-motion:reduce){ 
+  *,*::before,*::after{ 
+    animation-duration:.01ms!important; 
+    animation-iteration-count:1!important; 
+    transition-duration:.01ms!important; 
+  } 
+} 
+</style> 
+</head> 
+ 
+<body> 
+ 
+<div class="app"> 
+ 
+<header class="topbar"> 
+ 
+  <button class="icon undo" id="undoBtn" type="button" aria-label="Annulla">↶</button> 
+ 
+  <button class="icon timer" id="timerBtn" type="button" aria-label="Timer">◷</button> 
+ 
+  <button class="icon background" id="bgBtn" type="button" aria-label="Personalizza colori player. Tieni premuto per ripristinare i colori originali">
+    <svg class="color-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M12 3.5c-4.75 0-8.5 3.05-8.5 7.05 0 3.35 2.55 5.95 5.7 5.95h1.55c.75 0 1.35.6 1.35 1.35 0 .9.7 1.65 1.6 1.65 3.2 0 6.8-3.2 6.8-7.45C20.5 7.15 16.7 3.5 12 3.5Z"/>
+      <path d="M7.5 10h.01M10.5 7.5h.01M14.5 7.5h.01M17 10.5h.01" stroke-width="2.2"/>
+    </svg>
+  </button> 
+ 
+  <button class="icon refresh" id="resetBtn" type="button" aria-label="Refresh">↻</button>
+</header> 
+ 
+<main class="players"> 
+ 
+<section class="player p1"> 
+ 
+  <div class="player-image empty" id="imageSlot1" title="Immagine Player 1"> 
+    <input type="file" id="imageInput1" accept="image/*"> 
+  </div> 
+ 
+  <div class="pname" id="name1" data-player="1" role="button" tabindex="0"> 
+    PLAYER 1 
+  </div> 
+ 
   <div class="lp-line">
-
     <div class="lp" id="lp1">8000</div>
-
-    <button
-      class="half-btn"
-      type="button"
-      data-half-player="1"
-      aria-label="Dimezza Life Points"
-    >
-      <span class="half-icon">½</span>
-    </button>
-
+    <button class="half-btn" type="button" data-half-player="1" aria-label="Dimezza Life Points"><span class="half-icon">½</span></button>
   </div>
 
-  <div class="life-bar">
-    <div class="life-fill" id="lifeFill1"></div>
-  </div>
-
-  <div class="controls">
-
-    <button
-      class="lp-op minus selected"
-      type="button"
-      data-p="1"
-      data-sign="-1"
-    >−</button>
-
-    <button
-      class="lp-op plus"
-      type="button"
-      data-p="1"
-      data-sign="1"
-    >+</button>
-
-  </div>
-
-  <div class="note-preview" id="notePreview1"></div>
-
-</section>
-
-<section class="player p2">
-
-  <div
-    class="player-image empty"
-    id="imageSlot2"
-    title="Immagine Player 2"
-  >
-    <input type="file" id="imageInput2" accept="image/*">
-  </div>
-
-  <div
-    class="pname"
-    id="name2"
-    data-player="2"
-    role="button"
-    tabindex="0"
-  >
-    PLAYER 2
-  </div>
-
+  <div class="life-bar"> 
+    <div class="life-fill" id="lifeFill1"></div> 
+  </div> 
+ 
+  <div class="controls"> 
+ 
+    <button class="lp-op minus selected" type="button" data-p="1" data-sign="-1">−</button> 
+<button class="lp-op plus" type="button" data-p="1" data-sign="1">+</button> 
+ 
+  </div> 
+ 
+ 
+</section> 
+ 
+<section class="player p2"> 
+ 
+  <div class="player-image empty" id="imageSlot2" title="Immagine Player 2"> 
+    <input type="file" id="imageInput2" accept="image/*"> 
+  </div> 
+ 
+  <div class="pname" id="name2" data-player="2" role="button" tabindex="0"> 
+    PLAYER 2 
+  </div> 
+ 
   <div class="lp-line">
-
     <div class="lp" id="lp2">8000</div>
-
-    <button
-      class="half-btn"
-      type="button"
-      data-half-player="2"
-      aria-label="Dimezza Life Points"
-    >
-      <span class="half-icon">½</span>
-    </button>
-
+    <button class="half-btn" type="button" data-half-player="2" aria-label="Dimezza Life Points"><span class="half-icon">½</span></button>
   </div>
 
-  <div class="life-bar">
-    <div class="life-fill" id="lifeFill2"></div>
-  </div>
-
-  <div class="controls">
-
-    <button
-      class="lp-op minus selected"
-      type="button"
-      data-p="2"
-      data-sign="-1"
-    >−</button>
-
-    <button
-      class="lp-op plus"
-      type="button"
-      data-p="2"
-      data-sign="1"
-    >+</button>
-
-  </div>
-
-  <div class="note-preview" id="notePreview2"></div>
-
-</section>
-
-</main>
-
-<nav class="bottom" aria-label="Strumenti">
-
-  <button class="tool" id="diceBtn" type="button" aria-label="Dado">⚄</button>
-
-  <button class="tool" id="coinBtn" type="button" aria-label="Moneta">◉</button>
-
-  <button class="tool" id="historyBtn" type="button" aria-label="Storico">☷</button>
-
-  <button class="tool" id="notesBtn" type="button" aria-label="Appunti">✎</button>
-
-</nav>
-
-</div>
-
-<div class="modal" id="modal">
-
-  <div class="sheet">
-
-    <div class="sheethead">
-
-      <b id="modalTitle"></b>
-
-      <button
-        class="close"
-        id="close"
-        type="button"
-        aria-label="Chiudi"
-      >×</button>
-
-    </div>
-
-    <div id="modalBody"></div>
-
-  </div>
-
-</div>
-
-<script>
-"use strict";
-
-const $=(s,r=document)=>r.querySelector(s);
-const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
-
-const modal=$("#modal");
-const modalBody=$("#modalBody");
-const modalTitle=$("#modalTitle");
-
-const state={
-  lp:[8000,8000],
-  names:["PLAYER 1","PLAYER 2"],
-  history:[],
-  notesLeft:"",
-  notesRight:"",
-  bg:localStorage.getItem("ygo-bg")||"",
-  images:[
-    localStorage.getItem("ygo-image-1")||"",
-    localStorage.getItem("ygo-image-2")||""
-  ],
-  timerSeconds:2700,
-  timerInitialSeconds:2700
-};
-
-let diceSequenceIndex=0;
-let coinSequenceIndex=0;
-let currentAmountPlayer=null;
-let currentAmountSign=-1;
-let keypadValue="";
-let diceRolling=false;
-let coinBusy=false;
-let timerInterval=null;
-let timerRunning=false;
-let timerLastTick=0;
-
-let imageLongPressTimers={};
-let imageLongPressTriggered={};
-let resetClicks=0;
-let resetClickTimer=null;
-
-function resetRandomSequences(){
-  diceSequenceIndex=0;
-  coinSequenceIndex=0
-}
-
-function nextDieResult(){
-
-  if(diceSequenceIndex===0){
-    diceSequenceIndex++;
-    return 4+secureRandomInt(3)
-  }
-
-  if(diceSequenceIndex===1){
-    diceSequenceIndex++;
-    return 1+secureRandomInt(3)
-  }
-
-  diceSequenceIndex++;
-  return secureDie()
-}
-
-function nextCoinResult(){
-
-  if(coinSequenceIndex===0){
-    coinSequenceIndex++;
-    return "TESTA"
-  }
-
-  if(coinSequenceIndex===1){
-    coinSequenceIndex++;
-    return "TESTA"
-  }
-
-  if(coinSequenceIndex===2){
-    coinSequenceIndex++;
-    return "CROCE"
-  }
-
-  coinSequenceIndex++;
-  return secureCoin()
-}
-
-function safeSet(k,v){
-  try{
-    localStorage.setItem(k,v);
-    return true
-  }catch(e){
-    console.warn(e);
-    return false
-  }
-}
-
-function save(){
-
-  safeSet(
-    "ygo-state",
-    JSON.stringify({
-      lp:state.lp,
-      names:state.names,
-      history:state.history,
-      notesLeft:state.notesLeft,
-      notesRight:state.notesRight,
-      notes:state.notesLeft,
-      timerSeconds:state.timerSeconds,
-      timerInitialSeconds:state.timerInitialSeconds
-    })
-  );
-
-  if(state.bg){
-    safeSet("ygo-bg",state.bg)
+  <div class="life-bar"> 
+    <div class="life-fill" id="lifeFill2"></div> 
+  </div> 
+ 
+  <div class="controls"> 
+ 
+    <button class="lp-op minus selected" type="button" data-p="2" data-sign="-1">−</button> 
+<button class="lp-op plus" type="button" data-p="2" data-sign="1">+</button> 
+ 
+  </div> 
+ 
+ 
+</section> 
+ 
+</main> 
+ 
+<nav class="bottom" aria-label="Strumenti"> 
+ 
+  <button class="tool" id="diceBtn" type="button" aria-label="Dado">⚄</button> 
+  <button class="tool" id="coinBtn" type="button" aria-label="Moneta">◉</button> 
+  <button class="tool" id="historyBtn" type="button" aria-label="Storico">☷</button> 
+  <button class="tool" id="notesBtn" type="button" aria-label="Appunti">✎</button> 
+ 
+</nav> 
+ 
+</div> 
+ 
+<div class="modal" id="modal"> 
+ 
+  <div class="sheet"> 
+ 
+    <div class="sheethead"> 
+ 
+      <b id="modalTitle"></b> 
+ 
+      <button class="close" id="close" type="button" aria-label="Chiudi">×</button> 
+ 
+    </div> 
+ 
+    <div id="modalBody"></div> 
+ 
+  </div> 
+ 
+</div> 
+ 
+<script> 
+"use strict"; 
+ 
+const $=(s,r=document)=>r.querySelector(s); 
+const $$=(s,r=document)=>Array.from(r.querySelectorAll(s)); 
+ 
+const modal=$("#modal"); 
+const modalBody=$("#modalBody"); 
+const modalTitle=$("#modalTitle"); 
+ 
+const state={ 
+  lp:[8000,8000], 
+  names:["PLAYER 1","PLAYER 2"], 
+  history:[], 
+  notes:["", ""], 
+  bg:"",
+  playerBg:localStorage.getItem("ygo-player-bg")||"",
+  lpColor:localStorage.getItem("ygo-lp-color")||"",
+  images:[ 
+    localStorage.getItem("ygo-image-1")||"", 
+    localStorage.getItem("ygo-image-2")||"" 
+  ], 
+  timerSeconds:2700, 
+  timerInitialSeconds:2700,
+  timerQuickTarget:40 
+}; 
+ 
+let diceSequenceIndex=0; 
+let coinSequenceIndex=0; 
+ 
+function resetRandomSequences(){ 
+  diceSequenceIndex=0; 
+  coinSequenceIndex=0; 
+} 
+ 
+function nextDieResult(){ 
+  if(diceSequenceIndex===0){ 
+    diceSequenceIndex++; 
+    return 4+secureRandomInt(3); 
+  } 
+  if(diceSequenceIndex===1){ 
+    diceSequenceIndex++; 
+    return 1+secureRandomInt(3); 
+  } 
+  diceSequenceIndex++; 
+  return secureDie(); 
+} 
+ 
+function nextCoinResult(){ 
+  if(coinSequenceIndex===0){ 
+    coinSequenceIndex++; 
+    return "TESTA"; 
+  } 
+  if(coinSequenceIndex===1){ 
+    coinSequenceIndex++; 
+    return "TESTA"; 
+  } 
+  if(coinSequenceIndex===2){ 
+    coinSequenceIndex++; 
+    return "CROCE"; 
+  } 
+  coinSequenceIndex++; 
+  return secureCoin(); 
+} 
+ 
+let currentAmountPlayer=null; 
+let currentAmountSign=-1; 
+let keypadValue=""; 
+ 
+let diceRolling=false; 
+let coinBusy=false; 
+ 
+let timerInterval=null; 
+let timerRunning=false; 
+let timerLastTick=0; 
+ 
+const imageLongPressTimers={}; 
+const imageLongPressTriggered={}; 
+ 
+function safeSet(k,v){ 
+  try{ 
+    localStorage.setItem(k,v); 
+    return true; 
+  }catch(e){ 
+    console.warn(e); 
+    return false; 
+  } 
+} 
+ 
+function save(){ 
+ 
+  safeSet("ygo-state",JSON.stringify({ 
+    lp:state.lp, 
+    names:state.names, 
+    history:state.history, 
+    notes:state.notes, 
+    timerSeconds:state.timerSeconds, 
+    timerInitialSeconds:state.timerInitialSeconds,
+    timerQuickTarget:state.timerQuickTarget,
+    playerBg:state.playerBg,
+    lpColor:state.lpColor
+  })); 
+ 
+  if(state.playerBg){
+    safeSet("ygo-player-bg",state.playerBg);
   }else{
-    localStorage.removeItem("ygo-bg")
+    localStorage.removeItem("ygo-player-bg");
   }
 
-  state.images.forEach((x,i)=>
-    x
-      ?safeSet("ygo-image-"+(i+1),x)
-      :localStorage.removeItem("ygo-image-"+(i+1))
-  )
-}
-
-function loadState(){
-
-  try{
-
-    const x=JSON.parse(
-      localStorage.getItem("ygo-state")||"null"
-    );
-
-    if(!x)return;
-
-    if(Array.isArray(x.lp)&&x.lp.length===2){
-      state.lp=x.lp.map(v=>
-        Math.max(0,Number(v)||0)
-      )
-    }
-
-    if(Array.isArray(x.names)&&x.names.length===2){
-      state.names=x.names.map((v,i)=>
-        String(v||"PLAYER "+(i+1))
-      )
-    }
-
-    if(Array.isArray(x.history)){
-      state.history=x.history
-    }
-
-    if(typeof x.notesLeft==="string"){
-      state.notesLeft=x.notesLeft
+  if(state.lpColor){
+    safeSet("ygo-lp-color",state.lpColor);
+  }else{
+    localStorage.removeItem("ygo-lp-color");
+  } 
+ 
+  state.images.forEach((x,i)=>{ 
+    if(x){ 
+      safeSet("ygo-image-"+(i+1),x); 
+    }else{ 
+      localStorage.removeItem("ygo-image-"+(i+1)); 
+    } 
+  }); 
+} 
+ 
+function loadState(){ 
+ 
+  try{ 
+ 
+    const x=JSON.parse(localStorage.getItem("ygo-state")||"null"); 
+ 
+    if(!x)return; 
+ 
+    if(Array.isArray(x.lp)&&x.lp.length===2){ 
+      state.lp=x.lp.map(v=>Math.max(0,Number(v)||0)); 
+    } 
+ 
+    if(Array.isArray(x.names)&&x.names.length===2){ 
+      state.names=x.names.map((v,i)=>String(v||"PLAYER "+(i+1))); 
+    } 
+ 
+    if(Array.isArray(x.history)){ 
+      state.history=x.history; 
+    } 
+ 
+    if(Array.isArray(x.notes)&&x.notes.length===2){
+      state.notes=x.notes.map(v=>String(v||"").slice(0,1000));
     }else if(typeof x.notes==="string"){
-      state.notesLeft=x.notes
+      state.notes=[String(x.notes).slice(0,1000),""];
+    } 
+ 
+    if(Number.isFinite(Number(x.timerSeconds))){ 
+      state.timerSeconds=Math.max(0,Number(x.timerSeconds)); 
+    } 
+ 
+    if(Number.isFinite(Number(x.timerInitialSeconds))){ 
+      state.timerInitialSeconds=Math.max(1,Number(x.timerInitialSeconds)); 
     }
 
-    if(typeof x.notesRight==="string"){
-      state.notesRight=x.notesRight
+    if(Number(x.timerQuickTarget)===45){
+      state.timerQuickTarget=45;
+    }else{
+      state.timerQuickTarget=40;
     }
 
-    if(Number.isFinite(Number(x.timerSeconds))){
-      state.timerSeconds=Math.max(
-        0,
-        Number(x.timerSeconds)
-      )
+    if(typeof x.playerBg==="string"&&/^#[0-9a-fA-F]{6}$/.test(x.playerBg)){
+      state.playerBg=x.playerBg;
+    }else if(typeof x.bg==="string"&&/^#[0-9a-fA-F]{6}$/.test(x.bg)){
+      state.playerBg=x.bg;
     }
-
-    if(Number.isFinite(Number(x.timerInitialSeconds))){
-      state.timerInitialSeconds=Math.max(
-        1,
-        Number(x.timerInitialSeconds)
-      )
-    }
-
-  }catch(e){
-    console.warn("Stato locale non valido",e)
-  }
+    if(typeof x.lpColor==="string"&&/^#[0-9a-fA-F]{6}$/.test(x.lpColor)){
+      state.lpColor=x.lpColor;
+    } 
+ 
+  }catch(e){ 
+    console.warn("Stato locale non valido",e); 
+  } 
+} 
+ 
+function hexRgb(hex){
+  const m=String(hex||"").match(/^#([0-9a-f]{6})$/i);
+  if(!m)return null;
+  const n=parseInt(m[1],16);
+  return {r:(n>>16)&255,g:(n>>8)&255,b:n&255};
 }
+
+function mixRgb(a,b,t){
+  return {
+    r:Math.round(a.r+(b.r-a.r)*t),
+    g:Math.round(a.g+(b.g-a.g)*t),
+    b:Math.round(a.b+(b.b-a.b)*t)
+  };
+}
+
+function rgbString(c){return `${c.r},${c.g},${c.b}`}
 
 function applyBackground(){
-
-  if(state.bg){
-
-    document.body.style.setProperty(
-      "--user-bg",
-      `url("${state.bg}")`
-    )
-
+  const root=document.documentElement;
+  const base=hexRgb(state.playerBg);
+  if(!base){
+    root.style.setProperty("--player-bg","rgba(18,22,31,.60)");
+    root.style.setProperty("--player-surface","rgba(18,22,31,.60)");
+    root.style.setProperty("--player-base-rgb","18,22,31");
+    root.style.setProperty("--player-light-rgb","42,49,66");
+    root.style.setProperty("--player-dark-rgb","7,9,14");
+    root.style.setProperty("--player-glow-1","98,217,255");
+    root.style.setProperty("--player-glow-2","181,140,255");
+    root.style.setProperty("--player-glow-3","110,231,167");
   }else{
-
-    document.body.style.setProperty(
-      "--user-bg",
-      "none"
-    )
+    const light=mixRgb(base,{r:255,g:255,b:255},.22);
+    const light2=mixRgb(base,{r:255,g:255,b:255},.10);
+    const dark=mixRgb(base,{r:0,g:0,b:0},.52);
+    const glow1=mixRgb(base,{r:255,g:255,b:255},.52);
+    const glow2=mixRgb(base,{r:181,g:140,b:255},.34);
+    const glow3=mixRgb(base,{r:98,g:217,b:255},.28);
+    root.style.setProperty("--player-bg",`rgba(${rgbString(base)},.60)`);
+    root.style.setProperty("--player-surface",`
+      radial-gradient(circle at 18% 10%,rgba(${rgbString(light)},.28),transparent 30%),
+      radial-gradient(circle at 84% 24%,rgba(${rgbString(glow3)},.16),transparent 28%),
+      radial-gradient(circle at 72% 88%,rgba(${rgbString(glow2)},.14),transparent 34%),
+      linear-gradient(145deg,rgba(${rgbString(light)},.74) 0%,rgba(${rgbString(light2)},.62) 30%,rgba(${rgbString(base)},.66) 58%,rgba(${rgbString(dark)},.76) 100%),
+      rgba(${rgbString(base)},.60)`);
+    root.style.setProperty("--player-base-rgb",rgbString(base));
+    root.style.setProperty("--player-light-rgb",rgbString(light));
+    root.style.setProperty("--player-dark-rgb",rgbString(dark));
+    root.style.setProperty("--player-glow-1",rgbString(glow1));
+    root.style.setProperty("--player-glow-2",rgbString(glow2));
+    root.style.setProperty("--player-glow-3",rgbString(glow3));
   }
+  const lp=hexRgb(state.lpColor)||{r:246,g:247,b:251};
+  const lpGlow=mixRgb(lp,{r:255,g:255,b:255},.32);
+  root.style.setProperty("--lp-color",state.lpColor||"#f6f7fb");
+  root.style.setProperty("--lp-glow",`rgba(${rgbString(lpGlow)},.34)`);
 }
-
-function lifeColor(v){
-
-  v=Math.max(0,Number(v)||0);
-
-  const s=[
-    [8000,92,235,138],
-    [7000,105,228,126],
-    [6000,151,225,91],
-    [5000,196,222,70],
-    [4000,232,218,58],
-    [3000,245,181,50],
-    [2000,245,133,48],
-    [1000,239,91,67],
-    [0,205,42,67]
-  ];
-
-  if(v>=8000){
-    return[
-      "rgb(92,235,138)",
-      "rgba(92,235,138,.38)"
-    ]
-  }
-
-  for(let i=0;i<s.length-1;i++){
-
-    let h=s[i];
-    let l=s[i+1];
-
-    if(v<=h[0]&&v>=l[0]){
-
-      let p=(h[0]-v)/(h[0]-l[0]);
-
-      let r=Math.round(
-        h[1]+(l[1]-h[1])*p
-      );
-
-      let g=Math.round(
-        h[2]+(l[2]-h[2])*p
-      );
-
-      let b=Math.round(
-        h[3]+(l[3]-h[3])*p
-      );
-
-      return[
-        `rgb(${r},${g},${b})`,
-        `rgba(${r},${g},${b},.30)`
-      ]
-    }
-  }
-
-  return[
-    "rgb(205,42,67)",
-    "rgba(205,42,67,.35)"
-  ]
-}
-
-function updateLifeBar(p){
-
-  let v=Math.max(
-    0,
-    Number(state.lp[p-1])||0
-  );
-
-  let f=$("#lifeFill"+p);
-
-  if(!f)return;
-
-  f.style.width=
-    Math.min(100,v/8000*100)+"%";
-
-  let[c,g]=lifeColor(v);
-
-  f.style.backgroundColor=c;
-  f.style.boxShadow=`0 0 11px ${g}`
-}
-
-
-/* =========================================================
-   APPUNTI
-
-   notePreview1 = PLAYER 1 = notesRight
-   notePreview2 = PLAYER 2 = notesLeft
-
-   Ogni 4 A CAPO ESPLICITI viene creata una nuova colonna.
-   ========================================================= */
-
-function renderNotePreview(element,text){
-
-  if(!element)return;
-
-  element.innerHTML="";
-
-  if(!text)return;
-
-  const normalized=String(text)
-    .replace(/\r\n/g,"\n")
-    .replace(/\r/g,"\n");
-
-  const lines=normalized.split("\n");
-
-  for(let i=0;i<lines.length;i+=4){
-
-    const column=document.createElement("div");
-
-    column.className="note-column";
-
-    const chunk=lines.slice(i,i+4);
-
-    column.textContent=chunk.join("\n");
-
-    element.appendChild(column);
-  }
-}
-
-function renderNotes(){
-
-  renderNotePreview(
-    $("#notePreview1"),
-    state.notesRight||""
-  );
-
-  renderNotePreview(
-    $("#notePreview2"),
-    state.notesLeft||""
-  );
-}
-
-function compressImage(
-  file,
-  maxSide=1200,
-  quality=.86
-){
-
-  return new Promise((resolve,reject)=>{
-
-    const r=new FileReader();
-
-    r.onerror=()=>
-      reject(
-        r.error||
-        new Error("Lettura fallita")
-      );
-
-    r.onload=()=>{
-
-      const img=new Image();
-
-      img.onerror=()=>
-        reject(
-          new Error("Immagine non valida")
-        );
-
-      img.onload=()=>{
-
-        const scale=Math.min(
-          1,
-          maxSide/
-          Math.max(
-            img.naturalWidth||1,
-            img.naturalHeight||1
-          )
-        );
-
-        const c=document.createElement("canvas");
-
-        c.width=Math.max(
-          1,
-          Math.round(
-            (img.naturalWidth||1)*scale
-          )
-        );
-
-        c.height=Math.max(
-          1,
-          Math.round(
-            (img.naturalHeight||1)*scale
-          )
-        );
-
-        const ctx=c.getContext("2d");
-
-        if(!ctx){
-          return resolve(r.result)
-        }
-
-        ctx.fillStyle="#0b0d12";
-
-        ctx.fillRect(
-          0,
-          0,
-          c.width,
-          c.height
-        );
-
-        ctx.drawImage(
-          img,
-          0,
-          0,
-          c.width,
-          c.height
-        );
-
-        let out=c.toDataURL(
-          "image/jpeg",
-          quality
-        );
-
-        if(out.length>3500000){
-
-          out=c.toDataURL(
-            "image/jpeg",
-            .68
-          )
-        }
-
-        resolve(out)
-      };
-
-      img.src=r.result
-    };
-
-    r.readAsDataURL(file)
-  })
-}
-
-function renderImages(){
-
-  for(let p=1;p<=2;p++){
-
-    let slot=$("#imageSlot"+p);
-
-    if(!slot)continue;
-
-    let old=slot.querySelector("img");
-
-    if(old)old.remove();
-
-    if(!state.images[p-1]){
-
-      slot.classList.add("empty");
-      continue
-    }
-
-    slot.classList.remove("empty");
-
-    let img=document.createElement("img");
-
-    img.src=state.images[p-1];
-    img.alt="Immagine Player "+p;
-    img.draggable=false;
-
-    slot.appendChild(img)
-  }
-}
-
-function setupImageSlot(p){
-
-  const slot=$("#imageSlot"+p);
-  const input=$("#imageInput"+p);
-
-  if(!slot||!input)return;
-
-  slot.addEventListener("click",e=>{
-
-    if(imageLongPressTriggered[p]){
-
-      imageLongPressTriggered[p]=false;
-      e.preventDefault();
-      return
-    }
-
-    input.click()
-  });
-
-  input.addEventListener(
-    "change",
-    async e=>{
-
-      let f=e.target.files?.[0];
-
-      if(!f)return;
-
-      try{
-
-        if(!f.type.startsWith("image/")){
-          throw new Error("file")
-        }
-
-        state.images[p-1]=
-          await compressImage(f);
-
-        renderImages();
-        save()
-
-      }catch(err){
-
-        console.error(err);
-
-        alert(
-          "Non è stato possibile caricare l'immagine."
-        )
-
-      }finally{
-
-        input.value=""
-      }
-    }
-  );
-
-  slot.addEventListener(
-    "pointerdown",
-    e=>{
-
-      if(
-        !state.images[p-1]||
-        e.target.tagName!=="IMG"
-      )return;
-
-      imageLongPressTriggered[p]=false;
-
-      clearTimeout(
-        imageLongPressTimers[p]
-      );
-
-      imageLongPressTimers[p]=
-        setTimeout(()=>{
-
-          imageLongPressTriggered[p]=true;
-
-          state.images[p-1]="";
-
-          renderImages();
-          save()
-
-        },650)
-    }
-  );
-
-  [
-    "pointerup",
-    "pointercancel",
-    "pointerleave"
-  ].forEach(t=>
-    slot.addEventListener(
-      t,
-      ()=>{
-        clearTimeout(
-          imageLongPressTimers[p]
-        );
-
-        imageLongPressTimers[p]=null
-      }
-    )
-  )
-}
-
-function render(){
-
-  state.lp.forEach((v,i)=>{
-
-    $("#lp"+(i+1)).textContent=
-      Number(v).toLocaleString("it-IT");
-
-    updateLifeBar(i+1)
-  });
-
-  state.names.forEach((n,i)=>
-    $("#name"+(i+1)).textContent=n
-  );
-
-  renderImages();
-  renderNotes();
-  updateTimerButtonIcon();
-  save()
-}
-
-function addHistory(
-  player,
-  n,
-  before,
-  after,
-  action
-){
-
-  state.history.unshift({
-    id:Date.now()+Math.random(),
-    time:new Date().toLocaleTimeString(
-      "it-IT",
-      {
-        hour:"2-digit",
-        minute:"2-digit",
-        second:"2-digit"
-      }
-    ),
-    player,
-    n,
-    before,
-    after,
-    action:action||""
-  })
-}
-
-function change(
-  player,
-  amount,
-  action=""
-){
-
-  let before=Math.max(
-    0,
-    Number(state.lp[player-1])||0
-  );
-
-  let after=Math.max(
-    0,
-    before+amount
-  );
-
-  state.lp[player-1]=after;
-
-  addHistory(
-    player,
-    amount,
-    before,
-    after,
-    action
-  );
-
-  render()
-}
-
-function halveLP(player){
-
-  let before=Math.max(
-    0,
-    Number(state.lp[player-1])||0
-  );
-
-  let after=Math.floor(
-    before/2
-  );
-
-  state.lp[player-1]=after;
-
-  addHistory(
-    player,
-    after-before,
-    before,
-    after,
-    "Dimezza LP"
-  );
-
-  render()
-}
-
-$$(".lp-op").forEach(b=>
-
-  b.addEventListener(
-    "pointerdown",
-    e=>{
-
-      e.preventDefault();
-
-      currentAmountPlayer=
-        Number(b.dataset.p);
-
-      currentAmountSign=
-        Number(b.dataset.sign);
-
-      openKeypad()
-    }
-  )
-);
-
-$$(".half-btn").forEach(b=>
-
-  b.addEventListener(
-    "pointerdown",
-    e=>{
-
-      e.preventDefault();
-
-      halveLP(
-        Number(
-          b.dataset.halfPlayer
-        )
-      )
-    }
-  )
-);
-
-function openModal(title,content){
-
-  modalTitle.textContent=title;
-  modalBody.innerHTML=content;
-  modal.classList.add("open")
-}
-
-function closeModal(){
-
-  modal.classList.remove("open");
-  modalBody.innerHTML=""
-}
-
-$("#close").addEventListener(
-  "pointerdown",
-  e=>{
-    e.preventDefault();
-    closeModal()
-  }
-);
-
-modal.addEventListener(
-  "pointerdown",
-  e=>{
-
-    if(e.target===modal){
-
-      e.preventDefault();
-      closeModal()
-    }
-  }
-);
-
-function openKeypad(){
-
-  keypadValue="";
-
-  let sign=
-    currentAmountSign<0
-      ?"SOTTRAI"
-      :"AGGIUNGI";
+ 
+/* LIFE POINTS */ 
+ 
+function lifeColor(v){ 
+ 
+  v=Math.max(0,Number(v)||0); 
+ 
+  const s=[ 
+    [8000,92,235,138], 
+    [7000,105,228,126], 
+    [6000,151,225,91], 
+    [5000,196,222,70], 
+    [4000,232,218,58], 
+    [3000,245,181,50], 
+    [2000,245,133,48], 
+    [1000,239,91,67], 
+    [0,205,42,67] 
+  ]; 
+ 
+  if(v>=8000){ 
+    return["rgb(92,235,138)","rgba(92,235,138,.38)"]; 
+  } 
+ 
+  for(let i=0;i<s.length-1;i++){ 
+ 
+    const h=s[i]; 
+    const l=s[i+1]; 
+ 
+    if(v<=h[0]&&v>=l[0]){ 
+ 
+      const p=(h[0]-v)/(h[0]-l[0]); 
+ 
+      const r=Math.round(h[1]+(l[1]-h[1])*p); 
+      const g=Math.round(h[2]+(l[2]-h[2])*p); 
+      const b=Math.round(h[3]+(l[3]-h[3])*p); 
+ 
+      return[ 
+        `rgb(${r},${g},${b})`, 
+        `rgba(${r},${g},${b},.30)` 
+      ]; 
+    } 
+  } 
+ 
+  return["rgb(205,42,67)","rgba(205,42,67,.35)"]; 
+} 
+ 
+function updateLifeBar(p){ 
+ 
+  const v=Math.max(0,Number(state.lp[p-1])||0); 
+  const f=$("#lifeFill"+p); 
+ 
+  if(!f)return; 
+ 
+  f.style.width=Math.min(100,v/8000*100)+"%"; 
+ 
+  const[c,g]=lifeColor(v); 
+ 
+  f.style.backgroundColor=c; 
+  f.style.boxShadow=`0 0 11px ${g}`; 
+} 
+ 
+/* IMAGES */ 
+ 
+function compressImage(file,maxSide=1200,quality=.86){ 
+ 
+  return new Promise((resolve,reject)=>{ 
+ 
+    const r=new FileReader(); 
+ 
+    r.onerror=()=>reject(r.error||new Error("Lettura fallita")); 
+ 
+    r.onload=()=>{ 
+ 
+      const img=new Image(); 
+ 
+      img.onerror=()=>reject(new Error("Immagine non valida")); 
+ 
+      img.onload=()=>{ 
+ 
+        const scale=Math.min( 
+          1, 
+          maxSide/Math.max( 
+            img.naturalWidth||1, 
+            img.naturalHeight||1 
+          ) 
+        ); 
+ 
+        const c=document.createElement("canvas"); 
+ 
+        c.width=Math.max(1,Math.round((img.naturalWidth||1)*scale)); 
+        c.height=Math.max(1,Math.round((img.naturalHeight||1)*scale)); 
+ 
+        const ctx=c.getContext("2d"); 
+ 
+        if(!ctx)return resolve(r.result); 
+ 
+        ctx.fillStyle="#0b0d12"; 
+        ctx.fillRect(0,0,c.width,c.height); 
+ 
+        ctx.drawImage(img,0,0,c.width,c.height); 
+ 
+        let out=c.toDataURL("image/jpeg",quality); 
+ 
+        if(out.length>3500000){ 
+          out=c.toDataURL("image/jpeg",.68); 
+        } 
+ 
+        resolve(out); 
+      }; 
+ 
+      img.src=r.result; 
+    }; 
+ 
+    r.readAsDataURL(file); 
+  }); 
+} 
+ 
+function renderImages(){ 
+ 
+  for(let p=1;p<=2;p++){ 
+ 
+    const slot=$("#imageSlot"+p); 
+ 
+    if(!slot)continue; 
+ 
+    const old=slot.querySelector("img"); 
+ 
+    if(old)old.remove(); 
+ 
+    if(!state.images[p-1]){ 
+      slot.classList.add("empty"); 
+      continue; 
+    } 
+ 
+    slot.classList.remove("empty"); 
+ 
+    const img=document.createElement("img"); 
+ 
+    img.src=state.images[p-1]; 
+    img.alt="Immagine Player "+p; 
+    img.draggable=false; 
+ 
+    slot.appendChild(img); 
+  } 
+} 
+ 
+function setupImageSlot(p){ 
+ 
+  const slot=$("#imageSlot"+p); 
+  const input=$("#imageInput"+p); 
+ 
+  if(!slot||!input)return; 
+ 
+  slot.addEventListener("click",e=>{ 
+ 
+    if(imageLongPressTriggered[p]){ 
+      imageLongPressTriggered[p]=false; 
+      e.preventDefault(); 
+      return; 
+    } 
+ 
+    input.click(); 
+  }); 
+ 
+  input.addEventListener("change",async e=>{ 
+ 
+    const f=e.target.files?.[0]; 
+ 
+    if(!f)return; 
+ 
+    try{ 
+ 
+      if(!f.type.startsWith("image/")){ 
+        throw new Error("file"); 
+      } 
+ 
+      state.images[p-1]=await compressImage(f); 
+ 
+      renderImages(); 
+      save(); 
+ 
+    }catch(err){ 
+ 
+      console.error(err); 
+ 
+      alert("Non è stato possibile caricare l'immagine."); 
+ 
+    }finally{ 
+ 
+      input.value=""; 
+    } 
+  }); 
+ 
+  slot.addEventListener("pointerdown",e=>{ 
+ 
+    if(!state.images[p-1]||e.target.tagName!=="IMG")return; 
+ 
+    imageLongPressTriggered[p]=false; 
+ 
+    clearTimeout(imageLongPressTimers[p]); 
+ 
+    imageLongPressTimers[p]=setTimeout(()=>{ 
+ 
+      imageLongPressTriggered[p]=true; 
+      state.images[p-1]=""; 
+      renderImages(); 
+      save(); 
+ 
+    },650); 
+  }); 
+ 
+  ["pointerup","pointercancel","pointerleave"].forEach(t=>{ 
+    slot.addEventListener(t,()=>{ 
+      clearTimeout(imageLongPressTimers[p]); 
+      imageLongPressTimers[p]=null; 
+    }); 
+  }); 
+} 
+ 
+/* RENDER */ 
+ 
+function render(){ 
+ 
+  state.lp.forEach((v,i)=>{ 
+ 
+    const p=i+1; 
+    const el=$("#lp"+p); 
+ 
+    if(el){ 
+      el.textContent=Number(v).toLocaleString("it-IT"); 
+    } 
+ 
+    updateLifeBar(p); 
+  }); 
+ 
+  state.names.forEach((n,i)=>{ 
+ 
+    const e=$("#name"+(i+1)); 
+ 
+    if(e)e.textContent=n; 
+  }); 
+ 
+  renderImages(); 
+  updateTimerButtonIcon(); 
+  save(); 
+} 
+ 
+/* HISTORY / LP */ 
+ 
+function addHistory(player,n,before,after,action){ 
+ 
+  state.history.unshift({ 
+    id:Date.now()+Math.random(), 
+    time:new Date().toLocaleTimeString( 
+      "it-IT", 
+      {hour:"2-digit",minute:"2-digit",second:"2-digit"} 
+    ), 
+    player, 
+    n, 
+    before, 
+    after, 
+    action:action||"" 
+  }); 
+} 
+ 
+function change(player,amount,action=""){ 
+ 
+  const before=Math.max(0,Number(state.lp[player-1])||0); 
+ 
+  const after=Math.max(0,before+amount); 
+ 
+  state.lp[player-1]=after; 
+ 
+  addHistory(player,amount,before,after,action); 
+ 
+  render(); 
+} 
+ 
+function halveLP(player){ 
+ 
+  const before=Math.max(0,Number(state.lp[player-1])||0); 
+ 
+  const after=Math.floor(before/2); 
+ 
+  state.lp[player-1]=after; 
+ 
+  addHistory(player,after-before,before,after,"Dimezza LP"); 
+ 
+  render(); 
+} 
+ 
+function undo(){ 
+ 
+  if(!state.history.length)return; 
+ 
+  const last=state.history.shift(); 
+ 
+  if( 
+    last&& 
+    last.player&& 
+    Number.isFinite(Number(last.before)) 
+  ){ 
+    state.lp[last.player-1]=Math.max(0,Number(last.before)); 
+  } 
+ 
+  render(); 
+} 
+ 
+/* LP CONTROLS */ 
+ 
+$$(".lp-op").forEach(b=>b.addEventListener("pointerdown",e=>{
+  e.preventDefault();
+  currentAmountPlayer=Number(b.dataset.p);
+  currentAmountSign=Number(b.dataset.sign);
+  openKeypad();
+})); 
+ 
+$$(".half-btn").forEach(b=>b.addEventListener("pointerdown",e=>{ 
+ 
+  e.preventDefault(); 
+ 
+  halveLP(Number(b.dataset.halfPlayer)); 
+})); 
+ 
+/* MODAL */ 
+ 
+function openModal(title,content){ 
+ 
+  modalTitle.textContent=title; 
+  modalBody.innerHTML=content; 
+  modal.classList.add("open"); 
+} 
+ 
+function closeModal(){ 
+ 
+  modal.classList.remove("open"); 
+  modalBody.innerHTML=""; 
+} 
+ 
+$("#close").addEventListener("pointerdown",e=>{ 
+  e.preventDefault(); 
+  closeModal(); 
+}); 
+ 
+modal.addEventListener("pointerdown",e=>{ 
+ 
+  if(e.target===modal){ 
+    e.preventDefault(); 
+    closeModal(); 
+  } 
+}); 
+ 
+/* LP KEYPAD */ 
+ 
+function openKeypad(){ 
+ 
+  keypadValue=""; 
+ 
+  const sign=currentAmountSign<0?"SOTTRAI":"AGGIUNGI"; 
+ 
+  openModal("Inserisci LP",` 
+    <div class="keypad-wrap"> 
+ 
+      <div class="keypad-operation"> 
+        PLAYER ${currentAmountPlayer} · ${sign} 
+      </div> 
+ 
+      <div class="keypad-value" id="keypadValue">0</div> 
+ 
+      <div class="keypad"> 
+ 
+        <button class="key" data-key="1" type="button">1</button> 
+        <button class="key" data-key="2" type="button">2</button> 
+        <button class="key" data-key="3" type="button">3</button> 
+ 
+        <button class="key" data-key="4" type="button">4</button> 
+        <button class="key" data-key="5" type="button">5</button> 
+        <button class="key" data-key="6" type="button">6</button> 
+ 
+        <button class="key" data-key="7" type="button">7</button> 
+        <button class="key" data-key="8" type="button">8</button> 
+        <button class="key" data-key="9" type="button">9</button> 
+ 
+        <button class="key clear" data-key="clear" type="button">C</button> 
+        <button class="key" data-key="0" type="button">0</button> 
+        <button class="key action" data-key="back" type="button">⌫</button> 
+ 
+        <button class="key confirm" data-key="confirm" type="button" style="grid-column:1/-1"> 
+          CONFERMA 
+        </button> 
+ 
+      </div> 
+    </div> 
+  `); 
+ 
+  $$(".key",modalBody).forEach(b=>b.addEventListener("pointerdown",e=>{ 
+ 
+    e.preventDefault(); 
+    e.stopPropagation(); 
+ 
+    handleKeypad(b.dataset.key); 
+  })); 
+} 
+ 
+function updateKeypad(){ 
+ 
+  const e=$("#keypadValue"); 
+ 
+  if(e)e.textContent=keypadValue||"0"; 
+} 
+ 
+function handleKeypad(k){ 
+ 
+  if(/^\d$/.test(k)){ 
+ 
+    if(keypadValue.length>=7)return; 
+ 
+    keypadValue=keypadValue==="0"?k:keypadValue+k; 
+ 
+    updateKeypad(); 
+    return; 
+  } 
+ 
+  if(k==="clear"){ 
+    keypadValue=""; 
+    updateKeypad(); 
+    return; 
+  } 
+ 
+  if(k==="back"){ 
+    keypadValue=keypadValue.slice(0,-1); 
+    updateKeypad(); 
+    return; 
+  } 
+ 
+  if(k==="confirm"){ 
+ 
+    const v=Number(keypadValue); 
+ 
+    if(!Number.isInteger(v)||v<=0)return; 
+ 
+    change(currentAmountPlayer,currentAmountSign*v); 
+ 
+    closeModal(); 
+  } 
+} 
+ 
+/* NAME KEYPAD */ 
+ 
+const TEXT_ROWS=[ 
+  ["Q","W","E","R","T","Y","U","I","O","P"], 
+  ["A","S","D","F","G","H","J","K","L"], 
+  ["Z","X","C","V","B","N","M"] 
+]; 
+ 
+const TEXT_SYMBOLS=[]; 
+ 
+let textBuffer=""; 
+let textMaxLength=18; 
+let textShift=true; 
+let textCursor=0; 
+let textSaveCallback=null; 
+ 
+function renderTextKeyboard(){ 
+ 
+  const preview=$("#textPreview"); 
+ 
+  if(preview){ 
+ 
+    preview.textContent=textBuffer||"Nome giocatore"; 
+ 
+    preview.classList.toggle("empty",!textBuffer); 
+  } 
+ 
+  const count=$("#textCount"); 
+ 
+  if(count){ 
+    count.textContent=`${textBuffer.length}/${textMaxLength}`; 
+  } 
+ 
+  $$(".text-key[data-letter]",modalBody).forEach(key=>{ 
+ 
+    const letter=key.dataset.letter; 
+ 
+    key.textContent=textShift 
+      ?letter 
+      :letter.toLowerCase(); 
+  }); 
+ 
+  const shiftButton=$(".text-key.shift",modalBody); 
+ 
+  if(shiftButton){ 
+    shiftButton.classList.toggle("active",textShift); 
+  } 
+ 
+  const p=$("#textPreview"); 
+ 
+  if(p)p.scrollTop=p.scrollHeight; 
+} 
+ 
+function insertText(value){ 
+ 
+  if(textBuffer.length>=textMaxLength)return; 
+ 
+  const maxAdd=textMaxLength-textBuffer.length; 
+ 
+  value=value.slice(0,maxAdd); 
+ 
+  textBuffer= 
+    textBuffer.slice(0,textCursor)+ 
+    value+ 
+    textBuffer.slice(textCursor); 
+ 
+  textCursor+=value.length; 
+ 
+  renderTextKeyboard(); 
+} 
+ 
+function backspaceText(){ 
+ 
+  if(textCursor<=0)return; 
+ 
+  textBuffer= 
+    textBuffer.slice(0,textCursor-1)+ 
+    textBuffer.slice(textCursor); 
+ 
+  textCursor--; 
+ 
+  renderTextKeyboard(); 
+} 
+ 
+function clearText(){ 
+ 
+  textBuffer=""; 
+  textCursor=0; 
+ 
+  renderTextKeyboard(); 
+} 
+ 
+function openNameKeyboard(player,value){ 
+ 
+  textBuffer=String(value||""); 
+  textMaxLength=18; 
+  textShift=true; 
+  textCursor=textBuffer.length; 
+ 
+  textSaveCallback=newValue=>{ 
+ 
+    state.names[player-1]= 
+      newValue.trim()|| 
+      "PLAYER "+player; 
+ 
+    render(); 
+    closeModal(); 
+  }; 
+ 
+  const numberRow=` 
+    <div class="text-row row10"> 
+      ${"1234567890".split("").map(n=>` 
+        <button class="text-key" data-text="${n}" type="button">${n}</button> 
+      `).join("")} 
+    </div> 
+  `; 
+ 
+  const keyboardRows= 
+    numberRow+ 
+    TEXT_ROWS.map(row=>{ 
+ 
+      const cls= 
+        row.length===10 
+          ?"row10" 
+          :row.length===9 
+            ?"row9" 
+            :"row7"; 
+ 
+      return` 
+        <div class="text-row ${cls}"> 
+          ${row.map(letter=>` 
+            <button class="text-key" data-letter="${letter}" type="button"> 
+              ${letter} 
+            </button> 
+          `).join("")} 
+        </div> 
+      `; 
+    }).join(""); 
+ 
+  const symbolButtons= 
+    TEXT_SYMBOLS.map(symbol=>` 
+      <button class="text-key" data-text="${escapeHtml(symbol)}" type="button"> 
+        ${escapeHtml(symbol)} 
+      </button> 
+    `).join(""); 
+ 
+  openModal("Nome giocatore",` 
+ 
+    <div class="text-editor"> 
+ 
+      <div class="text-preview" id="textPreview"></div> 
+ 
+      <div class="text-editor-info" id="textCount">0/18</div> 
+ 
+      <div class="text-keypad"> 
+ 
+        ${keyboardRows}
+
+        <div class="text-row text-actions">
+          <button class="text-key shift" type="button" data-text-action="shift" aria-label="Maiuscole">⇧</button>
+          <button class="text-key space" type="button" data-text-action="space" aria-label="Spazio">SPAZIO</button>
+          <button class="text-key back" type="button" data-text-action="back" aria-label="Cancella ultimo carattere">⌫</button>
+          <button class="text-key special undo-key" type="button" data-text-action="undo" aria-label="Ripristina nome">↶</button>
+          <button class="text-key confirm" type="button" data-text-action="confirm" aria-label="Conferma">✓</button>
+        </div>
+
+</div> 
+    </div> 
+  `); 
+ 
+  $$(".text-key",modalBody).forEach(button=>{ 
+ 
+    button.addEventListener("pointerdown",e=>{ 
+ 
+      e.preventDefault(); 
+      e.stopPropagation(); 
+ 
+      const letter=button.dataset.letter; 
+ 
+      if(letter){ 
+ 
+        insertText( 
+          textShift 
+            ?letter 
+            :letter.toLowerCase() 
+        ); 
+ 
+        if(textShift){ 
+          textShift=false; 
+          renderTextKeyboard(); 
+        } 
+ 
+        return; 
+      } 
+ 
+      const text=button.dataset.text; 
+ 
+      if(text){ 
+        insertText(text); 
+        return; 
+      } 
+ 
+      const action=button.dataset.textAction; 
+ 
+      if(action==="shift"){ 
+ 
+        textShift=!textShift; 
+        renderTextKeyboard(); 
+ 
+      }else if(action==="back"){ 
+ 
+        backspaceText(); 
+ 
+      }else if(action==="clear"){ 
+ 
+        clearText(); 
+ 
+      }else if(action==="space"){ 
+ 
+        insertText(" "); 
+ 
+      }else if(action==="undo"){ 
+ 
+        const original="PLAYER "+player; 
+ 
+        textBuffer=original; 
+        textCursor=original.length; 
+ 
+        renderTextKeyboard(); 
+ 
+      }else if(action==="confirm"){ 
+ 
+        if(typeof textSaveCallback==="function"){ 
+          textSaveCallback(textBuffer); 
+        } 
+      } 
+    }); 
+  }); 
+ 
+  renderTextKeyboard(); 
+} 
+ 
+function escapeHtml(v){ 
+ 
+  return String(v) 
+    .replaceAll("&","&amp;") 
+    .replaceAll("<","&lt;") 
+    .replaceAll(">","&gt;") 
+    .replaceAll('"',"&quot;") 
+    .replaceAll("'","&#039;"); 
+} 
+ 
+/* NAMES */ 
+ 
+[1,2].forEach(p=>{ 
+ 
+  const e=$("#name"+p); 
+ 
+  e.addEventListener("click",()=>{ 
+    openNameKeyboard(p,state.names[p-1]); 
+  }); 
+ 
+  e.addEventListener("keydown",x=>{ 
+ 
+    if(x.key==="Enter"||x.key===" "){ 
+ 
+      x.preventDefault(); 
+ 
+      openNameKeyboard(p,state.names[p-1]); 
+    } 
+  }); 
+}); 
+ 
+/* HISTORY */ 
+ 
+$("#historyBtn").addEventListener("pointerdown",e=>{ 
+ 
+  e.preventDefault(); 
+ 
+  if(!state.history.length){ 
+ 
+    openModal( 
+      "Storico", 
+      `<div class="empty-state">Nessuna modifica registrata</div>` 
+    ); 
+ 
+    return; 
+  } 
+ 
+  const rows=state.history.map(x=>{ 
+ 
+    const gain=Number(x.n)>=0; 
+ 
+    const action= 
+      x.action|| 
+      (gain?"Aggiunta LP":"Perdita LP"); 
+ 
+    return` 
+      <div class="history-row"> 
+ 
+        <div class="history-main"> 
+ 
+          <div class="history-title"> 
+            ${escapeHtml(action)} 
+            · 
+            ${escapeHtml(state.names[x.player-1])} 
+          </div> 
+ 
+          <div class="history-meta"> 
+            ${escapeHtml(x.time)} 
+            · 
+            ${Number(x.before).toLocaleString("it-IT")} 
+            → 
+            ${Number(x.after).toLocaleString("it-IT")} 
+          </div> 
+ 
+        </div> 
+ 
+        <div class="history-values"> 
+ 
+          <div class="history-change ${gain?"gain":"loss"}"> 
+            ${gain?"+":""}${Number(x.n).toLocaleString("it-IT")} 
+          </div> 
+ 
+          <div class="history-after"> 
+            LP ${Number(x.after).toLocaleString("it-IT")} 
+          </div> 
+ 
+        </div> 
+ 
+      </div> 
+    `; 
+  }).join(""); 
+ 
+  openModal( 
+    "Storico", 
+    `<div class="history">${rows}</div>` 
+  ); 
+}); 
+ 
+$("#undoBtn").addEventListener("pointerdown",e=>{ 
+ 
+  e.preventDefault(); 
+  undo(); 
+}); 
+ 
+/* NOTES
+   - niente focus automatico
+   - niente SALVA
+   - niente CANCELLA
+   - salvataggio automatico
+*/
+
+$("#notesBtn").addEventListener("pointerdown",e=>{
+
+  e.preventDefault();
 
   openModal(
-    "Inserisci LP",
+    "Appunti",
     `
-      <div class="keypad-wrap">
-
-        <div class="keypad-operation">
-          PLAYER ${currentAmountPlayer} · ${sign}
-        </div>
-
-        <div class="keypad-value" id="keypadValue">
-          0
-        </div>
-
-        <div class="keypad">
-
-          <button class="key" data-key="1">1</button>
-          <button class="key" data-key="2">2</button>
-          <button class="key" data-key="3">3</button>
-
-          <button class="key" data-key="4">4</button>
-          <button class="key" data-key="5">5</button>
-          <button class="key" data-key="6">6</button>
-
-          <button class="key" data-key="7">7</button>
-          <button class="key" data-key="8">8</button>
-          <button class="key" data-key="9">9</button>
-
-          <button class="key clear" data-key="clear">C</button>
-          <button class="key" data-key="0">0</button>
-          <button class="key action" data-key="back">⌫</button>
-
-          <button
-            class="key confirm"
-            data-key="confirm"
-            style="grid-column:1/-1"
-          >
-            CONFERMA
-          </button>
-
-        </div>
-      </div>
-    `
-  );
-
-  $$(".key",modalBody).forEach(b=>
-
-    b.addEventListener(
-      "pointerdown",
-      e=>{
-
-        e.preventDefault();
-        e.stopPropagation();
-
-        handleKeypad(
-          b.dataset.key
-        )
-      }
-    )
-  )
-}
-
-function updateKeypad(){
-
-  let e=$("#keypadValue");
-
-  if(e){
-    e.textContent=
-      keypadValue||"0"
-  }
-}
-
-function handleKeypad(k){
-
-  if(/^\d$/.test(k)){
-
-    if(keypadValue.length>=7)return;
-
-    keypadValue=
-      keypadValue==="0"
-        ?k
-        :keypadValue+k;
-
-    updateKeypad();
-
-    return
-  }
-
-  if(k==="clear"){
-
-    keypadValue="";
-
-    updateKeypad();
-
-    return
-  }
-
-  if(k==="back"){
-
-    keypadValue=
-      keypadValue.slice(0,-1);
-
-    updateKeypad();
-
-    return
-  }
-
-  if(k==="confirm"){
-
-    let v=Number(keypadValue);
-
-    if(
-      !Number.isInteger(v)||
-      v<=0
-    )return;
-
-    change(
-      currentAmountPlayer,
-      currentAmountSign*v
-    );
-
-    closeModal()
-  }
-}
-
-const TEXT_ROWS=[
-  ["Q","W","E","R","T","Y","U","I","O","P"],
-  ["A","S","D","F","G","H","J","K","L"],
-  ["Z","X","C","V","B","N","M"]
-];
-
-let textBuffer="";
-let textMaxLength=18;
-let textShift=true;
-let textCursor=0;
-let textSaveCallback=null;
-
-function renderTextKeyboard(){
-
-  let preview=$("#textPreview");
-
-  if(preview){
-
-    preview.textContent=
-      textBuffer||"Nome giocatore";
-
-    preview.classList.toggle(
-      "empty",
-      !textBuffer
-    )
-  }
-
-  let count=$("#textCount");
-
-  if(count){
-
-    count.textContent=
-      `${textBuffer.length}/${textMaxLength}`
-  }
-
-  $$(".text-key[data-letter]",modalBody)
-    .forEach(key=>{
-
-      let letter=key.dataset.letter;
-
-      key.textContent=
-        textShift
-          ?letter
-          :letter.toLowerCase()
-    });
-
-  let shiftButton=
-    $(".text-key.shift",modalBody);
-
-  if(shiftButton){
-
-    shiftButton.classList.toggle(
-      "active",
-      textShift
-    )
-  }
-
-  let p=$("#textPreview");
-
-  if(p){
-    p.scrollTop=p.scrollHeight
-  }
-}
-
-function insertText(value){
-
-  if(textBuffer.length>=textMaxLength)return;
-
-  let maxAdd=
-    textMaxLength-textBuffer.length;
-
-  value=value.slice(0,maxAdd);
-
-  textBuffer=
-    textBuffer.slice(0,textCursor)+
-    value+
-    textBuffer.slice(textCursor);
-
-  textCursor+=value.length;
-
-  renderTextKeyboard()
-}
-
-function backspaceText(){
-
-  if(textCursor<=0)return;
-
-  textBuffer=
-    textBuffer.slice(0,textCursor-1)+
-    textBuffer.slice(textCursor);
-
-  textCursor--;
-
-  renderTextKeyboard()
-}
-
-function clearText(){
-
-  textBuffer="";
-  textCursor=0;
-
-  renderTextKeyboard()
-}
-
-function openNameKeyboard(
-  player,
-  value
-){
-
-  textBuffer=String(value||"");
-  textMaxLength=18;
-  textShift=true;
-  textCursor=textBuffer.length;
-
-  textSaveCallback=
-    newValue=>{
-
-      state.names[player-1]=
-        newValue.trim()||
-        "PLAYER "+player;
-
-      render();
-      closeModal()
-    };
-
-  let numberRow=
-    `
-      <div class="text-row row10">
-
-        ${
-          "1234567890"
-            .split("")
-            .map(n=>
-              `
-                <button
-                  class="text-key"
-                  data-text="${n}"
-                >
-                  ${n}
-                </button>
-              `
-            )
-            .join("")
-        }
-
-      </div>
-    `;
-
-  let keyboardRows=
-    numberRow+
-    TEXT_ROWS.map(row=>{
-
-      let cls=
-        row.length===10
-          ?"row10"
-          :row.length===9
-            ?"row9"
-            :"row7";
-
-      return `
-        <div class="text-row ${cls}">
-
-          ${
-            row.map(letter=>
-              `
-                <button
-                  class="text-key"
-                  data-letter="${letter}"
-                >
-                  ${letter}
-                </button>
-              `
-            ).join("")
-          }
-
-        </div>
-      `
-    }).join("");
-
-  openModal(
-    "Nome giocatore",
-    `
-      <div class="text-editor">
-
-        <div
-          class="text-preview"
-          id="textPreview"
-        ></div>
-
-        <div
-          class="text-editor-info"
-          id="textCount"
-        >
-          0/18
-        </div>
-
-        <div class="text-keypad">
-
-          ${keyboardRows}
-
-          <div class="text-row text-actions">
-
-            <button
-              class="text-key shift"
-              data-text-action="shift"
-            >
-              ⇧
-            </button>
-
-            <button
-              class="text-key space"
-              data-text-action="space"
-            >
-              SPAZIO
-            </button>
-
-            <button
-              class="text-key back"
-              data-text-action="back"
-            >
-              ⌫
-            </button>
-
-            <button
-              class="text-key special undo-key"
-              data-text-action="undo"
-            >
-              ↶
-            </button>
-
-            <button
-              class="text-key confirm"
-              data-text-action="confirm"
-            >
-              ✓
-            </button>
-
-          </div>
-
-        </div>
+      <div class="notes-editor">
+
+        <textarea 
+          id="notesTextarea1"
+          class="notes-textarea" 
+          maxlength="1000" 
+          placeholder="Scrivi qui i tuoi appunti..."
+        >${escapeHtml(state.notes[0]||"")}</textarea>
+
+        <textarea 
+          id="notesTextarea2"
+          class="notes-textarea" 
+          maxlength="1000" 
+          placeholder="Scrivi qui i tuoi appunti..."
+        >${escapeHtml(state.notes[1]||"")}</textarea>
 
       </div>
     `
   );
 
-  $$(".text-key",modalBody)
-    .forEach(button=>
+  const textarea1=$("#notesTextarea1");
+  const textarea2=$("#notesTextarea2");
 
-      button.addEventListener(
-        "pointerdown",
-        e=>{
+  textarea1.addEventListener("input",()=>{
+    state.notes[0]=textarea1.value.slice(0,1000);
+    save();
+  });
 
-          e.preventDefault();
-          e.stopPropagation();
-
-          let letter=
-            button.dataset.letter;
-
-          if(letter){
-
-            insertText(
-              textShift
-                ?letter
-                :letter.toLowerCase()
-            );
-
-            if(textShift){
-
-              textShift=false;
-              renderTextKeyboard()
-            }
-
-            return
-          }
-
-          let text=
-            button.dataset.text;
-
-          if(text){
-
-            insertText(text);
-            return
-          }
-
-          let action=
-            button.dataset.textAction;
-
-          if(action==="shift"){
-
-            textShift=!textShift;
-            renderTextKeyboard()
-
-          }else if(action==="back"){
-
-            backspaceText()
-
-          }else if(action==="space"){
-
-            insertText(" ")
-
-          }else if(action==="undo"){
-
-            let original=
-              "PLAYER "+player;
-
-            textBuffer=original;
-            textCursor=original.length;
-
-            renderTextKeyboard()
-
-          }else if(
-            action==="confirm"&&
-            typeof textSaveCallback==="function"
-          ){
-
-            textSaveCallback(textBuffer)
-          }
-        }
-      )
-    );
-
-  renderTextKeyboard()
-}
-
-function escapeHtml(v){
-
-  return String(v)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;")
-}
-
-[1,2].forEach(p=>{
-
-  let e=$("#name"+p);
-
-  e.addEventListener(
-    "click",
-    ()=>{
-      openNameKeyboard(
-        p,
-        state.names[p-1]
-      )
-    }
-  );
-
-  e.addEventListener(
-    "keydown",
-    x=>{
-
-      if(
-        x.key==="Enter"||
-        x.key===" "
-      ){
-
-        x.preventDefault();
-
-        openNameKeyboard(
-          p,
-          state.names[p-1]
-        )
-      }
-    }
-  )
+  textarea2.addEventListener("input",()=>{
+    state.notes[1]=textarea2.value.slice(0,1000);
+    save();
+  });
 });
 
-$("#historyBtn").addEventListener(
-  "pointerdown",
-  e=>{
-
-    e.preventDefault();
-
-    if(!state.history.length){
-
-      openModal(
-        "Storico",
-        `
-          <div class="empty-state">
-            Nessuna modifica registrata
-          </div>
-        `
-      );
-
-      return
-    }
-
-    let rows=
-      state.history.map(x=>{
-
-        let gain=Number(x.n)>=0;
-
-        let action=
-          x.action||
-          (
-            gain
-              ?"Aggiunta LP"
-              :"Perdita LP"
-          );
-
-        return `
-          <div class="history-row">
-
-            <div class="history-main">
-
-              <div class="history-title">
-                ${escapeHtml(action)}
-                ·
-                ${escapeHtml(
-                  state.names[x.player-1]
-                )}
-              </div>
-
-              <div class="history-meta">
-                ${escapeHtml(x.time)}
-                ·
-                ${Number(x.before).toLocaleString("it-IT")}
-                →
-                ${Number(x.after).toLocaleString("it-IT")}
-              </div>
-
-            </div>
-
-            <div class="history-values">
-
-              <div
-                class="history-change ${gain?"gain":"loss"}"
-              >
-                ${gain?"+":""}
-                ${Number(x.n).toLocaleString("it-IT")}
-              </div>
-
-              <div class="history-after">
-                LP
-                ${Number(x.after).toLocaleString("it-IT")}
-              </div>
-
-            </div>
-
-          </div>
-        `
-      }).join("");
-
-    openModal(
-      "Storico",
-      `
-        <div class="history">
-          ${rows}
-        </div>
-      `
-    )
-  }
-);
-
-$("#undoBtn").addEventListener(
-  "pointerdown",
-  e=>{
-    e.preventDefault();
-    undo()
-  }
-);
-
-function undo(){
-
-  if(!state.history.length)return;
-
-  let last=state.history.shift();
-
-  if(
-    last&&
-    last.player&&
-    Number.isFinite(
-      Number(last.before)
-    )
-  ){
-
-    state.lp[last.player-1]=
-      Math.max(
-        0,
-        Number(last.before)
-      )
-  }
-
-  render()
-}
-
-
-/* =========================================================
-   APPUNTI
-   SINISTRA = PLAYER 2
-   DESTRA = PLAYER 1
-
-   NESSUNA SCRITTA PLAYER 1/2
-   NESSUN PLACEHOLDER
-   ========================================================= */
-
-$("#notesBtn").addEventListener(
-  "pointerdown",
-  e=>{
-
-    e.preventDefault();
-
-    openModal(
-      "Appunti",
-      `
-        <div class="notes-editor">
-
-          <div class="notes-box">
-
-            <textarea
-              id="notesLeft"
-              class="notes-textarea"
-              maxlength="1000"
-            >${escapeHtml(state.notesLeft)}</textarea>
-
-            <div class="notes-divider"></div>
-
-            <textarea
-              id="notesRight"
-              class="notes-textarea"
-              maxlength="1000"
-            >${escapeHtml(state.notesRight)}</textarea>
-
-          </div>
-
-        </div>
-      `
-    );
-
-    let l=$("#notesLeft");
-    let r=$("#notesRight");
-
-    l.addEventListener(
-      "input",
-      ()=>{
-
-        state.notesLeft=
-          l.value.slice(0,1000);
-
-        renderNotes();
-        save()
-      }
-    );
-
-    r.addEventListener(
-      "input",
-      ()=>{
-
-        state.notesRight=
-          r.value.slice(0,1000);
-
-        renderNotes();
-        save()
-      }
-    )
-  }
-);
-
-function secureRandomInt(max){
-
-  if(
-    window.crypto&&
-    typeof crypto.getRandomValues==="function"
-  ){
-
-    let limit=
-      Math.floor(0x100000000/max)*max;
-
-    let arr=new Uint32Array(1);
-
-    do{
-
-      crypto.getRandomValues(arr)
-
-    }while(arr[0]>=limit);
-
-    return arr[0]%max
-  }
-
-  return Math.floor(
-    Math.random()*max
-  )
-}
-
-const secureDie=
-  ()=>1+secureRandomInt(6);
-
-const secureCoin=
-  ()=>secureRandomInt(2)
-    ?"CROCE"
-    :"TESTA";
-
-function temporaryDie(final){
-
-  let v;
-
-  do{
-    v=secureDie()
-  }while(v===final);
-
-  return v
-}
-
-$("#diceBtn").addEventListener(
-  "pointerdown",
-  e=>{
-
-    e.preventDefault();
-
-    openModal(
-      "Dado",
-      `
-        <div class="dice-wrap">
-
-          <div
-            class="die"
-            id="die"
-          >
-            •
-          </div>
-
-          <div class="hint">
-            Tocca il dado per rilanciare
-          </div>
-
-        </div>
-      `
-    );
-
-    setTimeout(
-      rollDie,
-      40
-    )
-  }
-);
-
-function rollDie(){
-
-  let die=$("#die");
-
-  if(!die||diceRolling)return;
-
-  diceRolling=true;
-
-  let final=nextDieResult();
-
-  die.textContent=
-    temporaryDie(final);
-
-  die.classList.remove("rolling");
-
-  void die.offsetWidth;
-
-  die.classList.add("rolling");
-
-  let start=performance.now();
-
-  function anim(now){
-
-    if(!die.isConnected){
-
-      diceRolling=false;
-      return
-    }
-
-    if(now-start<820){
-
-      die.textContent=
-        temporaryDie(final);
-
-      requestAnimationFrame(anim)
-    }
-  }
-
-  requestAnimationFrame(anim);
-
-  setTimeout(()=>{
-
-    if(!die.isConnected){
-
-      diceRolling=false;
-      return
-    }
-
-    die.textContent=final;
-    die.classList.remove("rolling");
-    diceRolling=false
-
-  },930)
-}
-
-$("#coinBtn").addEventListener(
-  "pointerdown",
-  e=>{
-
-    e.preventDefault();
-
-    openModal(
-      "Moneta",
-      `
-        <div class="coin-wrap">
-
-          <div class="coin-stage">
-
-            <div
-              class="coin"
-              id="coin"
-            >
-              •
-            </div>
-
-          </div>
-
-          <div class="hint">
-            Tocca la moneta per rilanciarla
-          </div>
-
-        </div>
-      `
-    );
-
-    setTimeout(
-      flipCoin,
-      40
-    )
-  }
-);
-
-function flipCoin(){
-
-  let coin=$("#coin");
-
-  if(!coin||coinBusy)return;
-
-  coinBusy=true;
-
-  let final=nextCoinResult();
-
-  coin.textContent="•";
-
-  coin.classList.remove("flip");
-
-  void coin.offsetWidth;
-
-  coin.classList.add("flip");
-
-  setTimeout(()=>{
-
-    if(!coin.isConnected){
-
-      coinBusy=false;
-      return
-    }
-
-    coin.textContent=final;
-    coin.classList.remove("flip");
-    coinBusy=false
-
-  },1050)
-}
-
-modalBody.addEventListener(
-  "pointerdown",
-  e=>{
-
-    if(e.target.id==="die"){
-
-      e.preventDefault();
-      rollDie()
-    }
-
-    if(e.target.id==="coin"){
-
-      e.preventDefault();
-      flipCoin()
-    }
-  }
-);
-
-function formatTime(s){
-
-  s=Math.max(
-    0,
-    Math.floor(s)
-  );
-
-  let h=Math.floor(s/3600);
-
-  let m=Math.floor(
-    s%3600/60
-  );
-
-  let sec=s%60;
-
-  return h
-    ?[
-        String(h).padStart(2,"0"),
-        String(m).padStart(2,"0"),
-        String(sec).padStart(2,"0")
-      ].join(":")
-    :[
-        String(m).padStart(2,"0"),
-        String(sec).padStart(2,"0")
-      ].join(":")
-}
-
-function updateTimerButtonIcon(){
-
-  let button=$("#timerBtn");
-
-  if(!button)return;
-
-  if(timerRunning){
-
-    button.textContent=
-      formatTime(
-        state.timerSeconds
-      );
-
-    button.setAttribute(
-      "aria-label",
-      "Timer in corso"
-    )
-
-  }else{
-
-    button.textContent="◷";
-
-    button.setAttribute(
-      "aria-label",
-      "Timer"
-    )
+/* RANDOM */ 
+ 
+function secureRandomInt(max){ 
+ 
+  if( 
+    window.crypto&& 
+    typeof crypto.getRandomValues==="function" 
+  ){ 
+ 
+    const limit=Math.floor(0x100000000/max)*max; 
+ 
+    const arr=new Uint32Array(1); 
+ 
+    do{ 
+      crypto.getRandomValues(arr); 
+    }while(arr[0]>=limit); 
+ 
+    return arr[0]%max; 
+  } 
+ 
+  return Math.floor(Math.random()*max); 
+} 
+ 
+const secureDie=()=>1+secureRandomInt(6); 
+ 
+const secureCoin=()=>secureRandomInt(2) 
+  ?"CROCE" 
+  :"TESTA"; 
+ 
+function temporaryDie(final){ 
+ 
+  let v; 
+ 
+  do{ 
+    v=secureDie(); 
+  }while(v===final); 
+ 
+  return v; 
+} 
+ 
+/* DICE */ 
+ 
+$("#diceBtn").addEventListener("pointerdown",e=>{ 
+ 
+  e.preventDefault(); 
+ 
+  openModal( 
+    "Dado", 
+    ` 
+      <div class="dice-wrap"> 
+ 
+        <div class="die" id="die">•</div> 
+ 
+        <div class="hint"> 
+          Tocca il dado per rilanciare 
+        </div> 
+ 
+      </div> 
+    ` 
+  ); 
+ 
+  setTimeout(rollDie,40); 
+}); 
+ 
+function rollDie(){ 
+ 
+  const die=$("#die"); 
+ 
+  if(!die||diceRolling)return; 
+ 
+  diceRolling=true; 
+ 
+  const final=nextDieResult(); 
+ 
+  die.textContent=temporaryDie(final); 
+ 
+  die.classList.remove("rolling"); 
+ 
+  void die.offsetWidth; 
+ 
+  die.classList.add("rolling"); 
+ 
+  const start=performance.now(); 
+ 
+  function anim(now){ 
+ 
+    if(!die.isConnected){ 
+ 
+      diceRolling=false; 
+      return; 
+    } 
+ 
+    if(now-start<820){ 
+ 
+      die.textContent=temporaryDie(final); 
+ 
+      requestAnimationFrame(anim); 
+    } 
+  } 
+ 
+  requestAnimationFrame(anim); 
+ 
+  setTimeout(()=>{ 
+ 
+    if(!die.isConnected){ 
+ 
+      diceRolling=false; 
+      return; 
+    } 
+ 
+    die.textContent=final; 
+ 
+    die.classList.remove("rolling"); 
+ 
+    diceRolling=false; 
+ 
+  },930); 
+} 
+ 
+/* COIN */ 
+ 
+$("#coinBtn").addEventListener("pointerdown",e=>{ 
+ 
+  e.preventDefault(); 
+ 
+  openModal( 
+    "Moneta", 
+    ` 
+      <div class="coin-wrap"> 
+ 
+        <div class="coin-stage"> 
+ 
+          <div class="coin" id="coin"> 
+            • 
+          </div> 
+ 
+        </div> 
+ 
+        <div class="hint"> 
+          Tocca la moneta per rilanciarla 
+        </div> 
+ 
+      </div> 
+    ` 
+  ); 
+ 
+  setTimeout(flipCoin,40); 
+}); 
+ 
+function flipCoin(){ 
+ 
+  const coin=$("#coin"); 
+ 
+  if(!coin||coinBusy)return; 
+ 
+  coinBusy=true; 
+ 
+  const final=nextCoinResult(); 
+ 
+  coin.textContent="•"; 
+ 
+  coin.classList.remove("flip"); 
+ 
+  void coin.offsetWidth; 
+ 
+  coin.classList.add("flip"); 
+ 
+  setTimeout(()=>{ 
+ 
+    if(!coin.isConnected){ 
+ 
+      coinBusy=false; 
+      return; 
+    } 
+ 
+    coin.textContent=final; 
+ 
+    coin.classList.remove("flip"); 
+ 
+    coinBusy=false; 
+ 
+  },1050); 
+} 
+ 
+modalBody.addEventListener("pointerdown",e=>{ 
+ 
+  if(e.target.id==="die"){ 
+ 
+    e.preventDefault(); 
+    rollDie(); 
+  } 
+ 
+  if(e.target.id==="coin"){ 
+ 
+    e.preventDefault(); 
+    flipCoin(); 
+  } 
+}); 
+ 
+/* TIMER */ 
+ 
+function formatTime(s){ 
+ 
+  s=Math.max(0,Math.floor(s)); 
+ 
+  const h=Math.floor(s/3600); 
+ 
+  const m=Math.floor(s%3600/60); 
+ 
+  const sec=s%60; 
+ 
+  return h 
+    ?[ 
+        String(h).padStart(2,"0"), 
+        String(m).padStart(2,"0"), 
+        String(sec).padStart(2,"0") 
+      ].join(":") 
+    :[ 
+        String(m).padStart(2,"0"), 
+        String(sec).padStart(2,"0") 
+      ].join(":"); 
+} 
+ 
+function updateTimerButtonIcon(){ 
+ 
+  const button=$("#timerBtn"); 
+ 
+  if(!button)return; 
+ 
+  if(timerRunning){ 
+ 
+    button.textContent=formatTime(state.timerSeconds); 
+ 
+    button.setAttribute("aria-label","Timer in corso"); 
+ 
+  }else{ 
+ 
+    button.textContent="◷"; 
+ 
+    button.setAttribute("aria-label","Timer"); 
+  } 
+} 
+ 
+function updateTimerDisplay(){ 
+ 
+  const d=$("#timerDisplay"); 
+ 
+  if(!d)return; 
+ 
+  d.textContent=formatTime(state.timerSeconds); 
+ 
+  d.classList.remove("warning","danger"); 
+ 
+  if(state.timerSeconds<=60){ 
+ 
+    d.classList.add("danger"); 
+ 
+  }else if(state.timerSeconds<=300){ 
+ 
+    d.classList.add("warning"); 
+  } 
+} 
+ 
+function updateTimerButtons(){ 
+ 
+  const a=$("#timerStart"); 
+ 
+  if(!a)return; 
+ 
+  a.disabled=timerRunning||state.timerSeconds<=0; 
+ 
+  a.style.opacity= 
+    timerRunning||state.timerSeconds<=0 
+      ?".45" 
+      :"1"; 
+} 
+ 
+function updateTimerFromClock(){ 
+ 
+  if(!timerRunning)return; 
+ 
+  const now=Date.now(); 
+ 
+  const elapsed=Math.floor( 
+    (now-timerLastTick)/1000 
+  ); 
+ 
+  if(elapsed<=0)return; 
+ 
+  timerLastTick+=elapsed*1000; 
+ 
+  state.timerSeconds=Math.max( 
+    0, 
+    state.timerSeconds-elapsed 
+  ); 
+ 
+  updateTimerDisplay(); 
+  updateTimerButtonIcon(); 
+ 
+  save(); 
+ 
+  if(state.timerSeconds<=0){ 
+ 
+    stopTimer(); 
+ 
+    updateTimerDisplay(); 
+    updateTimerButtons(); 
+    updateTimerButtonIcon(); 
+  } 
+} 
+ 
+function startTimer(){ 
+ 
+  if(timerRunning||state.timerSeconds<=0)return; 
+ 
+  timerRunning=true; 
+ 
+  timerLastTick=Date.now(); 
+ 
+  timerInterval=setInterval( 
+    updateTimerFromClock, 
+    250 
+  ); 
+ 
+  updateTimerDisplay(); 
+  updateTimerButtons(); 
+  updateTimerButtonIcon(); 
+} 
+ 
+function stopTimer(){ 
+ 
+  if(timerInterval!==null){ 
+ 
+    clearInterval(timerInterval); 
+ 
+    timerInterval=null; 
+  } 
+ 
+  timerRunning=false; 
+  timerLastTick=0; 
+ 
+  updateTimerButtonIcon(); 
+} 
+ 
+function resetTimer(){ 
+ 
+  stopTimer(); 
+ 
+  state.timerSeconds=state.timerInitialSeconds; 
+ 
+  updateTimerDisplay(); 
+  updateTimerButtons(); 
+  updateTimerButtonIcon(); 
+ 
+  save(); 
+} 
+ 
+function updateTimerPresetButton(){
+  const b=$("#timerPreset");
+  if(b){
+    b.textContent=String(state.timerQuickTarget===45?45:40);
+    b.setAttribute("aria-label",`Imposta timer a ${b.textContent} minuti`);
   }
 }
 
-function updateTimerDisplay(){
-
-  let d=$("#timerDisplay");
-
-  if(!d)return;
-
-  d.textContent=
-    formatTime(
-      state.timerSeconds
-    );
-
-  d.classList.remove(
-    "warning",
-    "danger"
-  );
-
-  if(state.timerSeconds<=60){
-
-    d.classList.add("danger")
-
-  }else if(state.timerSeconds<=300){
-
-    d.classList.add("warning")
-  }
-}
-
-function updateTimerButtons(){
-
-  let a=$("#timerStart");
-
-  if(!a)return;
-
-  a.disabled=
-    timerRunning||
-    state.timerSeconds<=0;
-
-  a.style.opacity=
-    timerRunning||
-    state.timerSeconds<=0
-      ?".45"
-      :"1"
-}
-
-function updateTimerFromClock(){
-
-  if(!timerRunning)return;
-
-  let now=Date.now();
-
-  let elapsed=
-    Math.floor(
-      (now-timerLastTick)/1000
-    );
-
-  if(elapsed<=0)return;
-
-  timerLastTick+=
-    elapsed*1000;
-
-  state.timerSeconds=
-    Math.max(
-      0,
-      state.timerSeconds-elapsed
-    );
-
-  updateTimerDisplay();
-  updateTimerButtonIcon();
-  save();
-
-  if(state.timerSeconds<=0){
-
-    stopTimer();
-    updateTimerDisplay();
-    updateTimerButtons();
-    updateTimerButtonIcon()
-  }
-}
-
-function startTimer(){
-
-  if(
-    timerRunning||
-    state.timerSeconds<=0
-  )return;
-
-  timerRunning=true;
-
-  timerLastTick=
-    Date.now();
-
-  timerInterval=
-    setInterval(
-      updateTimerFromClock,
-      250
-    );
-
-  updateTimerDisplay();
-  updateTimerButtons();
-  updateTimerButtonIcon()
-}
-
-function stopTimer(){
-
-  if(timerInterval!==null){
-
-    clearInterval(
-      timerInterval
-    );
-
-    timerInterval=null
-  }
-
-  timerRunning=false;
-  timerLastTick=0;
-
-  updateTimerButtonIcon()
-}
-
-function resetTimer(){
-
+function setQuickTimer(minutes){
+  const min=minutes===45?45:40;
+  state.timerInitialSeconds=min*60;
+  state.timerSeconds=min*60;
+  state.timerQuickTarget=min===45?40:45;
   stopTimer();
-
-  state.timerSeconds=
-    state.timerInitialSeconds;
-
+  save();
+  updateTimerPresetButton();
   updateTimerDisplay();
   updateTimerButtons();
   updateTimerButtonIcon();
-  save()
-}
-
-function toggleQuickTimer(){
-
-  let current=
-    Math.round(
-      state.timerInitialSeconds/60
-    );
-
-  let next=
-    current===40
-      ?45
-      :40;
-
-  state.timerInitialSeconds=
-    next*60;
-
-  state.timerSeconds=
-    next*60;
-
-  stopTimer();
-
-  save();
-
-  openTimer()
 }
 
 function openTimer(){
 
-  let quick=
-    Math.round(
-      state.timerInitialSeconds/60
-    )===40
-      ?"45"
-      :"40";
-
   openModal(
     "Timer duello",
     `
-      <div class="timer-head">
-
-        <div
-          class="timer-display"
-          id="timerDisplay"
-        >
-          ${formatTime(
-            state.timerSeconds
-          )}
+      <div class="timer-display-row">
+        <div 
+          class="timer-display" 
+          id="timerDisplay"> 
+          ${formatTime(state.timerSeconds)} 
         </div>
 
         <button
-          class="timer-mini"
-          id="timerQuick"
+          class="timer-preset"
+          id="timerPreset"
           type="button"
-        >
-          ${quick}
+          aria-label="Imposta timer a ${state.timerQuickTarget===45?45:40} minuti">
+          ${state.timerQuickTarget===45?45:40}
         </button>
-
       </div>
 
-      <button
-        class="timer-edit"
-        id="timerEdit"
-        type="button"
-      >
-        CAMBIA DURATA
-      </button>
+      <button 
+        class="timer-edit" 
+        id="timerEdit" 
+        type="button"> 
+        CAMBIA DURATA 
+      </button> 
 
-      <div class="timer-controls">
-
-        <button
-          class="timer-btn"
-          id="timerStart"
-          type="button"
-        >
-          ▶ AVVIA
-        </button>
-
-        <button
-          class="timer-btn"
-          id="timerReset"
-          type="button"
-        >
-          ↻ RESET
-        </button>
-
-      </div>
+      <div class="timer-controls"> 
+        <button 
+          class="timer-btn" 
+          id="timerStart" 
+          type="button"> 
+          ▶ AVVIA 
+        </button> 
+      </div> 
     `
   );
 
   updateTimerDisplay();
   updateTimerButtons();
   updateTimerButtonIcon();
+  updateTimerPresetButton();
 
-  $("#timerStart").addEventListener(
-    "pointerdown",
-    e=>{
+  $("#timerStart").addEventListener("pointerdown",e=>{ 
+    e.preventDefault(); 
+    startTimer(); 
+    closeModal(); 
+  });
 
-      e.preventDefault();
-
-      startTimer();
-      closeModal()
-    }
-  );
-
-  $("#timerReset").addEventListener(
-    "pointerdown",
-    e=>{
-
-      e.preventDefault();
-
-      resetTimer()
-    }
-  );
-
-  $("#timerEdit").addEventListener(
-    "pointerdown",
-    e=>{
-
-      e.preventDefault();
-
-      openTimerKeypad()
-    }
-  );
-
-  $("#timerQuick").addEventListener(
-    "pointerdown",
-    e=>{
-
-      e.preventDefault();
-
-      toggleQuickTimer()
-    }
-  )
-}
-
-function openTimerKeypad(){
-
-  let v="";
-
-  openModal(
-    "Durata timer",
-    `
-      <div class="keypad-wrap">
-
-        <div class="keypad-operation">
-          INSERISCI I MINUTI · DEFAULT 45
-        </div>
-
-        <div
-          class="keypad-value"
-          id="timerKeyValue"
-        >
-          0
-        </div>
-
-        <div class="keypad">
-
-          <button class="key" data-k="1">1</button>
-          <button class="key" data-k="2">2</button>
-          <button class="key" data-k="3">3</button>
-
-          <button class="key" data-k="4">4</button>
-          <button class="key" data-k="5">5</button>
-          <button class="key" data-k="6">6</button>
-
-          <button class="key" data-k="7">7</button>
-          <button class="key" data-k="8">8</button>
-          <button class="key" data-k="9">9</button>
-
-          <button class="key clear" data-k="c">C</button>
-          <button class="key" data-k="0">0</button>
-          <button class="key action" data-k="b">⌫</button>
-
-          <button
-            class="key confirm"
-            data-k="ok"
-            style="grid-column:1/-1"
-          >
-            CONFERMA
-          </button>
-
-        </div>
-
-      </div>
-    `
-  );
-
-  let display=
-    $("#timerKeyValue");
-
-  let update=()=>
-    display.textContent=
-      v||"0";
-
-  $$(".key",modalBody).forEach(
-    b=>
-
-      b.addEventListener(
-        "pointerdown",
-        e=>{
-
-          e.preventDefault();
-          e.stopPropagation();
-
-          let k=b.dataset.k;
-
-          if(/^\d$/.test(k)){
-
-            if(v.length>=3)return;
-
-            v=
-              v==="0"
-                ?k
-                :v+k;
-
-            update()
-
-          }else if(k==="c"){
-
-            v="";
-            update()
-
-          }else if(k==="b"){
-
-            v=v.slice(0,-1);
-            update()
-
-          }else if(k==="ok"){
-
-            applyTimerMinutes(v)
-          }
-        }
-      )
-  )
-}
-
-function applyTimerMinutes(value){
-
-  let min=
-    Math.max(
-      1,
-      parseInt(value,10)||0
-    );
-
-  state.timerInitialSeconds=
-    min*60;
-
-  state.timerSeconds=
-    min*60;
-
-  stopTimer();
-
-  save();
-  closeModal();
-  openTimer()
-}
-
-$("#timerBtn").addEventListener(
-  "pointerdown",
-  e=>{
-
+  $("#timerPreset").addEventListener("pointerdown",e=>{
     e.preventDefault();
+    setQuickTimer(state.timerQuickTarget);
+  });
 
-    openTimer()
-  }
-);
+  $("#timerEdit").addEventListener("pointerdown",e=>{ 
+    e.preventDefault(); 
+    openTimerKeypad(); 
+  });
+} 
+
+/* TIMER KEYPAD */ 
+ 
+function openTimerKeypad(){ 
+ 
+  let v=""; 
+ 
+  openModal( 
+    "Durata timer", 
+    ` 
+      <div class="keypad-wrap"> 
+ 
+        <div class="keypad-operation"> 
+          INSERISCI I MINUTI · DEFAULT 45 
+        </div> 
+ 
+        <div class="keypad-value" id="timerKeyValue"> 
+          0 
+        </div> 
+ 
+        <div class="keypad"> 
+ 
+          <button class="key" data-k="1" type="button">1</button> 
+          <button class="key" data-k="2" type="button">2</button> 
+          <button class="key" data-k="3" type="button">3</button> 
+ 
+          <button class="key" data-k="4" type="button">4</button> 
+          <button class="key" data-k="5" type="button">5</button> 
+          <button class="key" data-k="6" type="button">6</button> 
+ 
+          <button class="key" data-k="7" type="button">7</button> 
+          <button class="key" data-k="8" type="button">8</button> 
+          <button class="key" data-k="9" type="button">9</button> 
+ 
+          <button class="key clear" data-k="c" type="button">C</button> 
+          <button class="key" data-k="0" type="button">0</button> 
+          <button class="key action" data-k="b" type="button">⌫</button> 
+ 
+          <button 
+            class="key confirm" 
+            data-k="ok" 
+            type="button" 
+            style="grid-column:1/-1"> 
+            CONFERMA 
+          </button> 
+ 
+        </div> 
+      </div> 
+    ` 
+  ); 
+ 
+  const display=$("#timerKeyValue"); 
+ 
+  const update=()=>{ 
+    display.textContent=v||"0"; 
+  }; 
+ 
+  $$(".key",modalBody).forEach(b=>b.addEventListener("pointerdown",e=>{ 
+ 
+    e.preventDefault(); 
+    e.stopPropagation(); 
+ 
+    const k=b.dataset.k; 
+ 
+    if(/^\d$/.test(k)){ 
+ 
+      if(v.length>=3)return; 
+ 
+      v=v==="0"?k:v+k; 
+ 
+      update(); 
+ 
+    }else if(k==="c"){ 
+ 
+      v=""; 
+      update(); 
+ 
+    }else if(k==="b"){ 
+ 
+      v=v.slice(0,-1); 
+      update(); 
+ 
+    }else if(k==="ok"){ 
+ 
+      applyTimerMinutes(v); 
+    } 
+  })); 
+} 
+ 
+function applyTimerMinutes(value){ 
+ 
+  const min=Math.max( 
+    1, 
+    parseInt(value,10)||0 
+  ); 
+ 
+  state.timerInitialSeconds=min*60; 
+  state.timerSeconds=min*60; 
+ 
+  stopTimer(); 
+  save(); 
+  closeModal(); 
+  openTimer(); 
+} 
+ 
+$("#timerBtn").addEventListener("pointerdown",e=>{ 
+ 
+  e.preventDefault(); 
+  openTimer(); 
+}); 
+ 
+/* PERSONALIZZAZIONE COLORI PLAYER
+   tap = apre i due colori separati
+   long press = ripristina entrambi ai colori originali
+*/
 
 let bgLongPress=null;
 let bgLongPressed=false;
 
-$("#bgBtn").addEventListener(
-  "pointerdown",
-  e=>{
+function openPlayerColors(){
+  const playerValue=state.playerBg||"#12161f";
+  const lpValue=state.lpColor||"#f6f7fb";
 
-    e.preventDefault();
+  openModal(
+    "Colori player",
+    `
+      <div class="color-settings">
+        <section class="color-setting">
+          <div class="color-setting-title"><b>Interfaccia player</b><small>Colore personalizzato</small></div>
+          <div class="color-value-row">
+            <div class="color-preview" id="playerColorPreview"></div>
+            <input class="color-hex" id="playerColorHex" type="text" inputmode="text" maxlength="7" value="${playerValue}" aria-label="Codice HEX colore player">
+            <input class="color-picker" id="playerColorPicker" type="color" value="${playerValue}" aria-label="Scegli colore player">
+          </div>
+        </section>
+        <section class="color-setting">
+          <div class="color-setting-title"><b>Cifre Life Points</b><small>Colore personalizzato</small></div>
+          <div class="color-value-row">
+            <div class="color-preview" id="lpColorPreview"></div>
+            <input class="color-hex" id="lpColorHex" type="text" inputmode="text" maxlength="7" value="${lpValue}" aria-label="Codice HEX Life Points">
+            <input class="color-picker" id="lpColorPicker" type="color" value="${lpValue}" aria-label="Scegli colore Life Points">
+          </div>
+        </section>
+      </div>
+    `
+  );
 
-    bgLongPressed=false;
+  const setupColor=(type)=>{
+    const isPlayer=type==="player";
+    const preview=$("#"+(isPlayer?"player":"lp")+"ColorPreview");
+    const hex=$("#"+(isPlayer?"player":"lp")+"ColorHex");
+    const picker=$("#"+(isPlayer?"player":"lp")+"ColorPicker");
 
-    clearTimeout(bgLongPress);
+    const current=()=>isPlayer?(state.playerBg||"#12161f"):(state.lpColor||"#f6f7fb");
 
-    bgLongPress=
-      setTimeout(()=>{
+    const refresh=()=>{
+      const value=current();
+      preview.style.background=value;
+      hex.value=value.toUpperCase();
+      picker.value=value;
+    };
 
-        bgLongPressed=true;
+    const setColor=(raw)=>{
+      let value=String(raw||"").trim();
+      if(!value.startsWith("#")) value="#"+value;
+      if(!/^#[0-9a-fA-F]{6}$/.test(value)) return false;
+      value=value.toLowerCase();
 
-        state.bg="";
-
-        applyBackground();
-        save()
-
-      },650)
-  }
-);
-
-[
-  "pointerup",
-  "pointercancel",
-  "pointerleave"
-].forEach(
-  t=>
-    $("#bgBtn").addEventListener(
-      t,
-      e=>{
-
-        clearTimeout(bgLongPress);
-
-        if(
-          t==="pointerup"&&
-          !bgLongPressed
-        ){
-
-          let input=
-            $("#bgInput");
-
-          if(input){
-
-            input.value="";
-            input.click()
-          }
-        }
+      if(isPlayer){
+        state.playerBg=value==="#12161f"?"":value;
+      }else{
+        state.lpColor=value==="#f6f7fb"?"":value;
       }
-    )
-);
-
-$("#bgInput").addEventListener(
-  "change",
-  async e=>{
-
-    let f=e.target.files?.[0];
-
-    if(!f)return;
-
-    try{
-
-      if(!f.type.startsWith("image/")){
-        throw new Error("file")
-      }
-
-      state.bg=
-        await compressImage(
-          f,
-          1600,
-          .78
-        );
-
       applyBackground();
-      save()
+      save();
+      refresh();
+      return true;
+    };
 
-    }catch(err){
+    picker.addEventListener("input",()=>setColor(picker.value));
+    hex.addEventListener("change",()=>{ if(!setColor(hex.value)) refresh(); });
+    hex.addEventListener("keydown",e=>{
+      if(e.key==="Enter"){
+        e.preventDefault();
+        if(!setColor(hex.value)) refresh();
+        hex.blur();
+      }
+    });
+    refresh();
+  };
 
-      console.error(err);
-
-      alert(
-        "Non è stato possibile caricare lo sfondo."
-      )
-
-    }finally{
-
-      e.target.value=""
-    }
-  }
-);
-
-
-/* =========================================================
-   RESET ESTERNO
-
-   1 click = nuova partita, timer invariato
-   2 click ravvicinati = nuova partita + reset timer
-   ========================================================= */
-
-$("#resetBtn").addEventListener(
-  "pointerdown",
-  e=>{
-
-    e.preventDefault();
-
-    resetClicks++;
-
-    clearTimeout(
-      resetClickTimer
-    );
-
-    if(resetClicks>=2){
-
-      resetClicks=0;
-
-      stopTimer();
-
-      state.timerInitialSeconds=2700;
-      state.timerSeconds=2700
-
-    }else{
-
-      resetClickTimer=
-        setTimeout(
-          ()=>{
-            resetClicks=0
-          },
-          650
-        )
-    }
-
-    state.lp=[8000,8000];
-    state.history=[];
-
-    state.notesLeft="";
-    state.notesRight="";
-
-    diceRolling=false;
-    coinBusy=false;
-
-    resetRandomSequences();
-
-    render();
-    closeModal()
-  }
-);
-
-loadState();
-
-if(
-  !state.timerInitialSeconds||
-  state.timerInitialSeconds<1
-){
-
-  state.timerInitialSeconds=2700;
-  state.timerSeconds=2700
+  setupColor("player");
+  setupColor("lp");
 }
 
-resetRandomSequences();
+$("#bgBtn").addEventListener("pointerdown",e=>{
+  e.preventDefault();
+  bgLongPressed=false;
+  clearTimeout(bgLongPress);
+  bgLongPress=setTimeout(()=>{
+    bgLongPressed=true;
+    state.playerBg="";
+    state.lpColor="";
+    applyBackground();
+    save();
+  },650);
+});
 
-applyBackground();
+["pointerup","pointercancel","pointerleave"].forEach(t=>{
+  $("#bgBtn").addEventListener(t,e=>{
+    clearTimeout(bgLongPress);
+    if(t==="pointerup"&&!bgLongPressed) openPlayerColors();
+  });
+});
 
-setupImageSlot(1);
-setupImageSlot(2);
+/* RESET / NUOVA PARTITA */
 
-render();
-</script>
+let resetClickTimer=null;
+let resetClickCount=0;
 
-</body>
+function resetNonTimerState(){
+  state.lp=[8000,8000];
+  state.history=[];
+  state.notes=["",""];
+  diceRolling=false;
+  coinBusy=false;
+  resetRandomSequences();
+  render();
+  closeModal();
+}
+
+$("#resetBtn").addEventListener("pointerdown",e=>{
+
+  e.preventDefault();
+
+  resetClickCount++;
+
+  if(resetClickCount===1){
+    resetNonTimerState();
+  }
+
+  clearTimeout(resetClickTimer);
+  resetClickTimer=setTimeout(()=>{
+    resetClickCount=0;
+  },400);
+
+  if(resetClickCount===2){
+    clearTimeout(resetClickTimer);
+    resetClickCount=0;
+    resetTimer();
+  }
+});
+
+/* INITIALIZATION */ 
+ 
+loadState(); 
+ 
+if( 
+  !state.timerInitialSeconds|| 
+  state.timerInitialSeconds<1 
+){ 
+ 
+  state.timerInitialSeconds=2700; 
+  state.timerSeconds=2700; 
+} 
+ 
+resetRandomSequences(); 
+ 
+if(!/^#[0-9a-fA-F]{6}$/.test(state.playerBg)) state.playerBg="";
+if(!/^#[0-9a-fA-F]{6}$/.test(state.lpColor)) state.lpColor="";
+
+applyBackground(); 
+ 
+setupImageSlot(1); 
+setupImageSlot(2); 
+ 
+render(); 
+ 
+</script> 
+ 
+</body> 
 </html>
-</html>
-```
