@@ -979,6 +979,23 @@ button:active{
   box-shadow:inset 0 0 0 2px rgba(98,217,255,.08); 
 } 
  
+.color-icon{
+  width:22px;
+  height:18px;
+  flex:0 0 22px;
+  display:block;
+  overflow:hidden;
+  fill:none !important;
+  stroke:currentColor;
+  stroke-width:1.55;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  background:transparent !important;
+  box-shadow:none !important;
+}
+.color-icon path{fill:none !important}
+.color-icon circle{display:none !important}
+
 /* MOBILE */ 
 @media(max-height:680px){ 
   .app{ 
@@ -998,17 +1015,6 @@ button:active{
   } 
  
   .icon{border-radius:12px}
-.color-icon{
-  width:21px;
-  height:21px;
-  display:block;
-  fill:none;
-  stroke:currentColor;
-  stroke-width:1.65;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-}
- 
   .players{gap:6px} 
  
   .player{ 
@@ -1105,10 +1111,7 @@ button:active{
   <button class="icon timer" id="timerBtn" type="button" aria-label="Timer">◷</button> 
  
   <button class="icon background" id="bgBtn" type="button" aria-label="Personalizza colori player. Tieni premuto per ripristinare i colori originali">
-    <svg class="color-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <path d="M12 3.5c-4.75 0-8.5 3.05-8.5 7.05 0 3.35 2.55 5.95 5.7 5.95h1.55c.75 0 1.35.6 1.35 1.35 0 .9.7 1.65 1.6 1.65 3.2 0 6.8-3.2 6.8-7.45C20.5 7.15 16.7 3.5 12 3.5Z"/>
-      <path d="M7.5 10h.01M10.5 7.5h.01M14.5 7.5h.01M17 10.5h.01" stroke-width="2.2"/>
-    </svg>
+    <svg class="color-icon" viewBox="0 0 24 18" aria-hidden="true" focusable="false"><path d="M3 10.2C3 5.9 6.8 3 11.5 3H15c3.4 0 6 2.2 6 5.2 0 2.5-1.8 4.3-4.3 4.3h-2.1c-1.7 0-2.4 2.3-.8 3.2-1 .9-2.4 1.3-4.1 1.3C6.1 17 3 14.3 3 10.2Z"/><path d="M7 8h.01M10 6h.01M14 6h.01M17 8h.01" stroke-width="2.3"/></svg>
   </button> 
  
   <button class="icon refresh" id="resetBtn" type="button" aria-label="Refresh">↻</button>
@@ -2996,6 +2999,9 @@ setupImageSlot(2);
 render(); 
  
 </script> 
+ 
+</body> 
+</html>
  
 </body> 
 </html>
